@@ -7,11 +7,10 @@ import {
   StyleSheet,
   Pressable,
 } from "react-native";
-import { router } from "expo-router";
 
 import { Colors, fonts } from "@/constants";
-import { AppText, BackButton } from "@/components";
-import { BackIcon } from "@/assets";
+import { AppText } from "./AppText";
+import { BackButton } from "./BackButton";
 
 export const AuthLayout = ({
   children,
@@ -27,7 +26,6 @@ export const AuthLayout = ({
       <View style={styles.actionContainer}>
         <Pressable style={styles.backButton}>
           <BackButton />
-          {/* <AppText>Back</AppText> */}
         </Pressable>
         {!!showStep && (
           <View style={styles.stepContainer}>

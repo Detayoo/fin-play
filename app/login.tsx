@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Pressable, StyleSheet, View } from "react-native";
 import { Formik } from "formik";
 import { router } from "expo-router";
+import * as LocalAuthentication from "expo-local-authentication";
 
 import {
   TextField,
@@ -29,6 +30,22 @@ const LoginPage = () => {
     }
 
     return null;
+  };
+
+  const promptOptions = {
+    promptMessage: "Login with Biometrics",
+  };
+
+  const loginWithBiometric = async () => {
+    try {
+      const authentication = await LocalAuthentication.authenticateAsync(
+        promptOptions
+      );
+
+      console.log(authentication);
+    } catch (error) {
+      console.log(error);
+    }
   };
   const [rememberMe, setRememberMe] = useState(false);
   const handleSubmit = (values: LoginType) => {
@@ -145,7 +162,10 @@ const LoginPage = () => {
             </View>
 
             {!!isBiometricSupported && (
-              <Pressable style={styles.biometricContainer}>
+              <Pressable
+                onPress={loginWithBiometric}
+                style={styles.biometricContainer}
+              >
                 {renderBiometric()}
               </Pressable>
             )}
