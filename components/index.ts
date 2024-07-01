@@ -7,4 +7,5 @@ export * from "./Dot";
 export * from "./BackButton";
 export * from "./AuthLayout";
 export * from "./PasswordField";
-export * from './Checkbox'
+export * from "./Checkbox";
+export * from "./OTPField";

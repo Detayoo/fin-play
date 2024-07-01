@@ -51,13 +51,14 @@ const LoginPage = () => {
   const handleSubmit = (values: LoginType) => {
     console.log("got here");
     console.log(values);
+    router.push("/account-verification");
   };
 
   return (
     <Formik
       enableReinitialize
       initialValues={{ email: "", password: "" }}
-      validationSchema={loginSchema}
+      // validationSchema={loginSchema}
       onSubmit={handleSubmit}
     >
       {({

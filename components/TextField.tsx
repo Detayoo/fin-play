@@ -11,6 +11,7 @@ export const TextField = ({
   errors,
   disabled,
   label,
+  ...rest
 }: {
   touched: any;
   onChange: any;
@@ -20,6 +21,7 @@ export const TextField = ({
   errors: any;
   disabled?: boolean;
   label: string;
+  [x: string]: any;
 }) => {
   const [focused, setFocused] = useState(false);
 
@@ -48,6 +50,7 @@ export const TextField = ({
         autoCapitalize="none"
         autoCorrect={false}
         placeholderTextColor={Colors.placeholder}
+        {...rest}
       />
       {/* {touched && errors && <Text style={styles.errorText}>{errors}</Text>} */}
     </View>
