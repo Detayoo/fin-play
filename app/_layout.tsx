@@ -52,6 +52,7 @@ export default function RootLayout() {
           <Stack.Screen name="reset-password" options={options} />
           <Stack.Screen name="account-verification" options={options} />
           <Stack.Screen name="bvn-verification" options={options} />
+          <Stack.Screen name="set-transaction-pin" options={options} />
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="+not-found" />
         </Stack>
