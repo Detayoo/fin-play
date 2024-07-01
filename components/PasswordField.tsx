@@ -49,7 +49,7 @@ export const PasswordField = ({
           onChangeText={helper.setValue}
           onBlur={handleBlur}
           cursorColor={Colors.inputFocusBorder}
-            selectionColor={Colors.inputFocusBorder}
+          selectionColor={Colors.inputFocusBorder}
           secureTextEntry={!showPassword}
           editable={!disabled}
           onFocus={() => setFocused(true)}
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 50,
     fontSize: 14,
-    color: Colors.primary,
+    color: Colors.black,
     fontFamily: fonts["satoshi-medium"],
   },
   focusedStyle: {

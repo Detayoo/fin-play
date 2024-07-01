@@ -10,7 +10,8 @@ import {
 import { router } from "expo-router";
 
 import { Colors, fonts } from "@/constants";
-import { AppText } from "@/components";
+import { AppText, BackButton } from "@/components";
+import { BackIcon } from "@/assets";
 
 export const AuthLayout = ({
   children,
@@ -24,9 +25,9 @@ export const AuthLayout = ({
   return (
     <>
       <View style={styles.actionContainer}>
-        <Pressable style={styles.backButton} onPress={() => router.back()}>
-          {/* <BackIcon /> */}
-          <AppText>Back</AppText>
+        <Pressable style={styles.backButton}>
+          <BackButton />
+          {/* <AppText>Back</AppText> */}
         </Pressable>
         {!!showStep && (
           <View style={styles.stepContainer}>
@@ -71,9 +72,9 @@ export const styles = StyleSheet.create({
     opacity: 1,
   },
   backButton: {
-    height: 45,
-    width: 45,
-    borderColor: "#F1F1F1",
-    textAlignVertical: "center",
+    // height: 45,
+    // width: 45,
+    // borderColor: "#F1F1F1",
+    // textAlignVertical: "center",
   },
 });

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { Button, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Formik } from "formik";
+import { router } from "expo-router";
 
 import {
   TextField,
@@ -14,7 +15,6 @@ import {
 import { Colors } from "@/constants";
 import { registrationSchema } from "@/utils";
 import { RegistrationType } from "@/types";
-import { router } from "expo-router";
 
 const RegistrationPage = () => {
   const [terms, setTerms] = useState(false);
@@ -29,7 +29,7 @@ const RegistrationPage = () => {
   return (
     <Formik
       enableReinitialize
-      initialValues={{ email: "", password: "", fullName: "", terms: false }}
+      initialValues={{ email: "", password: "", fullName: "", terms }}
       validationSchema={registrationSchema}
       onSubmit={handleSubmit}
     >
@@ -133,14 +133,14 @@ const RegistrationPage = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 30,
+    paddingVertical: 30,
     backgroundColor: Colors.white,
   },
   inputFields: {
     marginTop: 52,
   },
   termsContainer: {
-    marginTop: 13,
+    marginTop: 16,
     flexDirection: "row",
     gap: 10,
   },

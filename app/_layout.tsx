@@ -46,7 +46,10 @@ export default function RootLayout() {
         > */}
         <Stack>
           <Stack.Screen name="index" options={options} />
+          <Stack.Screen name="login" options={options} />
           <Stack.Screen name="registration" options={options} />
+          <Stack.Screen name="forgot-password" options={options} />
+          <Stack.Screen name="reset-password" options={options} />
           <Stack.Screen name="bvn-verification" options={options} />
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="+not-found" />

@@ -49,7 +49,7 @@ export const TextField = ({
         autoCorrect={false}
         placeholderTextColor={Colors.placeholder}
       />
-      {touched && errors && <Text style={styles.errorText}>{errors}</Text>}
+      {/* {touched && errors && <Text style={styles.errorText}>{errors}</Text>} */}
     </View>
   );
 };
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     paddingHorizontal: 15,
     fontSize: 14,
-    color: Colors.primary,
+    color: Colors.black,
     backgroundColor: Colors.inputBackground,
     fontFamily: fonts["satoshi-medium"],
   },

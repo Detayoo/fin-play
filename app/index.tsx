@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Image, View, Text, StyleSheet } from "react-native";
+import { Image, View, StyleSheet } from "react-native";
 import Carousel from "react-native-reanimated-carousel";
 import Animated, {
   useSharedValue,
