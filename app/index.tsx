@@ -16,21 +16,21 @@ export const data = [
   {
     title: "Instantly transfer money to friends and family.",
     image: require("../assets/images/welcome-image.png"),
-    width: sizes.WINDOW_HEIGHT * 0.5,
+    width: "100%",
     height: sizes.WINDOW_HEIGHT * 0.5,
     isImage: true,
   },
   {
     title: "Pay all your bills quickly and easily.",
     image: require("../assets/images/welcome-image.png"),
-    width: sizes.WINDOW_HEIGHT * 0.5,
-    height: sizes.WINDOW_HEIGHT * 0.5,
+    width: "100%",
+    height: sizes.WINDOW_HEIGHT * 0.54,
     isImage: true,
   },
   {
     title: "Save smarter and reach your financial goals.",
     image: require("../assets/images/welcome-image.png"),
-    width: sizes.WINDOW_HEIGHT * 0.5,
+    width: "100%",
     height: sizes.WINDOW_HEIGHT * 0.5,
     isImage: true,
   },
@@ -84,11 +84,10 @@ export default function WelcomeScreen() {
 
   return (
     <View style={{ padding: 0, height: "100%", backgroundColor: Colors.white }}>
-      <View style={{}}></View>
       <View style={styles.carouselContainer}>
         <Carousel
           loop={false}
-          width={sizes.WINDOW_WIDTH - 40}
+          width={sizes.WINDOW_WIDTH}
           autoPlay={true}
           autoPlayInterval={1500}
           data={data}
@@ -117,9 +116,12 @@ const styles = StyleSheet.create({
   carouselContainer: {
     flex: 1,
     alignItems: "center",
+    marginHorizontal: -1990,
+    paddingHorizontal: -200,
   },
   btnContainer: {
     marginTop: 50,
     gap: 15,
+    paddingHorizontal: 16,
   },
 });
