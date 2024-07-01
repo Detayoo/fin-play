@@ -51,7 +51,12 @@ const LoginPage = () => {
   const handleSubmit = (values: LoginType) => {
     console.log("got here");
     console.log(values);
-    router.push("/account-verification");
+    router.push({
+      pathname: "/account-verification",
+      params: {
+        email: values?.email,
+      },
+    });
   };
 
   return (

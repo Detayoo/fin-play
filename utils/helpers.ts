@@ -1,5 +1,5 @@
-export const maskEmail = (email: string) => {
-  const [username, domain] = email.split("@");
+export const maskEmail = (email: any) => {
+  const [username, domain] = email?.split("@");
 
   const charactersToHide = Math.max(Math.floor(username.length / 2), 1);
 

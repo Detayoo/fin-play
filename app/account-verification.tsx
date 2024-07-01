@@ -6,10 +6,11 @@ import { Colors, fonts } from "@/constants";
 import { AppText, AuthLayout, OtpField } from "@/components";
 import { useCountdown } from "@/hooks";
 import { maskEmail } from "@/utils";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 
 const AccountVerificationPage = () => {
   const OTP_TIME = 300;
+  const { email } = useLocalSearchParams();
 
   const [seconds, setSeconds] = useState(OTP_TIME);
   const { minutes, remainingSeconds } = useCountdown(seconds, setSeconds);
@@ -35,9 +36,7 @@ const AccountVerificationPage = () => {
         </AppText>
         <AppText color={Colors.faintBlack} style={styles.otpSent}>
           A 6-digit OTP was sent to{" "}
-          <AppText style={styles.email}>
-            {maskEmail("teeydigba@gmail.com")}
-          </AppText>
+          <AppText style={styles.email}>{maskEmail(email)}</AppText>
         </AppText>
         <AppText style={{ fontSize: 14 }} color={Colors.faintBlack}>
           Input the code below;
