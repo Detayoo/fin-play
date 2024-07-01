@@ -23,6 +23,8 @@ export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [loaded] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
+    satoshi: require("../assets/fonts/satoshi-regular.otf"),
+    "satoshi-medium": require("../assets/fonts/satoshi-medium.otf"),
   });
 
   useEffect(() => {

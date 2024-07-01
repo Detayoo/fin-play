@@ -17,12 +17,12 @@ export const Screen = ({
   style?: any;
 }) => {
   return (
-    <>
+    <View style={{ backgroundColor: "#fff", flex: 1 }}>
       <ToastComponent />
       <SafeAreaView style={[styles.safeArea, style]}>
         <View style={styles.container}>{children}</View>
       </SafeAreaView>
-    </>
+    </View>
   );
 };
 

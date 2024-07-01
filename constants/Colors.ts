@@ -27,5 +27,11 @@ export const Colors = {
   },
   primary: userPreference ?? "#074D41",
   white: "#fff",
-  black: "#000",
+  black: "#012B24",
+  inputFocusBorder: "#9DB720",
+  placeholder: "#BBBBBB",
+  inputBackground: "#FCFEF5",
+  inputBorder: "#D7E3E1",
+  checkboxBorder: "#AAAAAA",
+  faintBlack: "#7e7e7e",
 };

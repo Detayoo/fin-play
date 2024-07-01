@@ -1,4 +1,4 @@
 export const fonts = {
-  satoshi: "satoshi",
+  satoshi: "satoshi-regular",
   "satoshi-medium": "satoshi-medium",
 };

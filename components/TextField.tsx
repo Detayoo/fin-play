@@ -1,5 +1,7 @@
+import { useState } from "react";
 import { StyleSheet, TextInput, View, Text } from "react-native";
 
+import { Colors, fonts } from "@/constants";
 export const TextField = ({
   touched,
   onChange,
@@ -7,6 +9,8 @@ export const TextField = ({
   value,
   placeholder,
   errors,
+  disabled,
+  label,
 }: {
   touched: any;
   onChange: any;
@@ -14,23 +18,38 @@ export const TextField = ({
   value: string;
   placeholder?: string;
   errors: any;
+  disabled?: boolean;
+  label: string;
 }) => {
+  const [focused, setFocused] = useState(false);
+
+  const handleBlur = (e: any) => {
+    setFocused(false);
+    if (onBlur) {
+      onBlur(e);
+    }
+  };
   return (
     <View style={styles.inputContainer}>
-      <Text style={styles.label}>Email</Text>
+      <Text style={styles.label}>{label}</Text>
       <TextInput
-        style={styles.input}
+        style={[
+          styles.input,
+          focused ? styles.focusedStyle : undefined,
+          disabled ? styles.disabledStyle : undefined,
+        ]}
+        onFocus={() => setFocused(true)}
+        cursorColor={Colors.inputFocusBorder}
+        selectionColor={Colors.inputFocusBorder}
         onChangeText={onChange}
-        onBlur={onBlur}
+        onBlur={handleBlur}
         value={value}
         placeholder={placeholder}
         autoCapitalize="none"
         autoCorrect={false}
-        placeholderTextColor="#999"
+        placeholderTextColor={Colors.placeholder}
       />
-      {touched && errors && (
-        <Text style={styles.errorText}>{errors}</Text>
-      )}
+      {touched && errors && <Text style={styles.errorText}>{errors}</Text>}
     </View>
   );
 };
@@ -43,20 +62,22 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   label: {
-    fontSize: 16,
-    marginBottom: 5,
-    color: "#333",
+    fontSize: 14,
+    color: Colors.black,
+    fontFamily: fonts["satoshi-medium"],
   },
 
   input: {
     height: 50,
     borderWidth: 1,
-    borderColor: "#ddd",
-    borderRadius: 8,
+    borderColor: Colors.inputBorder,
+    borderRadius: 5,
+    marginTop: 10,
     paddingHorizontal: 15,
-    fontSize: 16,
-    color: "#333",
-    backgroundColor: "#fff",
+    fontSize: 14,
+    color: Colors.primary,
+    backgroundColor: Colors.inputBackground,
+    fontFamily: fonts["satoshi-medium"],
   },
   errorText: {
     color: "red",
@@ -73,5 +94,14 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 18,
     fontWeight: "bold",
+  },
+
+  focusedStyle: {
+    borderWidth: 1,
+    borderColor: Colors.inputFocusBorder,
+    backgroundColor: Colors.white,
+  },
+  disabledStyle: {
+    backgroundColor: "#F6FFFC",
   },
 });
