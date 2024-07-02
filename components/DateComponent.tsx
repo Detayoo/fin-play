@@ -40,6 +40,7 @@ export const DateComponent = ({
             onClose();
           }}
           onCancel={onClose}
+          maximumDate={new Date()}
         />
       </View>
     </View>
