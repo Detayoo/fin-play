@@ -1,34 +1,31 @@
 import { useEffect, useState } from "react";
 import { View, StyleSheet } from "react-native";
+import { router, useLocalSearchParams } from "expo-router";
 
 import { Colors, fonts } from "@/constants";
-
 import { AppText, AuthLayout, OtpField, Screen } from "@/components";
 import { useCountdown } from "@/hooks";
 import { maskEmail } from "@/utils";
-import { router, useLocalSearchParams } from "expo-router";
 
 const AccountVerificationPage = () => {
-  let OTP_TIME = 60;
-  const { email, from } = useLocalSearchParams();
-  console.log("from", from);
-
-  const [seconds, setSeconds] = useState(OTP_TIME);
-  const { minutes, remainingSeconds } = useCountdown(seconds, setSeconds);
   const [otp, setOtp] = useState("");
+  let OTP_TIME = 60;
+  const [seconds, setSeconds] = useState(OTP_TIME);
+  const { email, from } = useLocalSearchParams();
+  const { minutes, remainingSeconds } = useCountdown(seconds, setSeconds);
 
   useEffect(() => {
     if (otp.length === 6 && from === "/registration") {
       router.replace("/bvn-verification");
       setOtp("");
-      OTP_TIME = 60;
     }
 
     if (otp.length === 6 && from === "/forgot-password") {
       router.replace("/reset-password");
       setOtp("");
-      OTP_TIME = 60;
     }
+
+    OTP_TIME = 60;
   }, [otp]);
 
   //while registering
