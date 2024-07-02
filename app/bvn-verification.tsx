@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { router } from "expo-router";
 import { Pressable, View, StyleSheet, ScrollView } from "react-native";
 import * as Yup from "yup";
 import { Formik } from "formik";
@@ -6,12 +7,11 @@ import { Formik } from "formik";
 import { AppText, TextField, AuthLayout, PrimaryButton } from "@/components";
 import { Colors, fonts } from "@/constants";
 import { QuestionMark } from "@/assets";
-import { router } from "expo-router";
 
 export const AccountVerificationPage = () => {
-  useEffect(() => {
-    router.push("/set-transaction-pin");
-  }, []);
+  // useEffect(() => {
+  //   router.push("/set-transaction-pin");
+  // }, []);
   const [date, setDate] = useState(new Date());
 
   const initialValues = {

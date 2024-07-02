@@ -34,4 +34,5 @@ export const Colors = {
   inputBorder: "#D7E3E1",
   checkboxBorder: "#AAAAAA",
   faintBlack: "#7e7e7e",
+  error: "#EA4435",
 };

@@ -1,71 +1,68 @@
-import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  SafeAreaView,
-} from "react-native";
-import { Cancel, LockIcon } from "@/assets";
+import React, { useEffect, useState } from "react";
+import { View, Text, StyleSheet, SafeAreaView } from "react-native";
+
+import { LockIcon } from "@/assets";
 import { Colors, fonts } from "@/constants";
+import {
+  ConfirmTransactionPin,
+  SetTransactionPin,
+  ToastComponent,
+  showToast,
+} from "@/components";
 
 const ConfirmTransactionPIN = () => {
+  const [stage, setStage] = useState(1);
   const [pin, setPin] = useState("");
+  const [confirmPin, setConfirmPin] = useState("");
 
-  const handleKeyPress = (key: string) => {
-    if (pin.length < 4) {
-      setPin(pin + key);
+  useEffect(() => {
+    if (pin.length === 4) {
+      setTimeout(() => {
+        setStage(2);
+      }, 500);
     }
+  }, [pin]);
+
+  useEffect(() => {
+    if (confirmPin.length === 4) {
+      handlePin();
+    }
+  });
+
+  const clearFields = () => {
+    setPin("");
+    setConfirmPin("");
   };
 
-  const handleDelete = () => {
-    setPin(pin.slice(0, -1));
-  };
+  const handlePin = () => {
+    if (confirmPin !== pin) {
+      showToast("error", "Pins do not match");
+      clearFields();
+      setStage(1);
+      return;
+    }
 
-  const renderPinIndicators = () => {
-    return Array(4)
-      .fill(0)
-      .map((_, index) => (
-        <View
-          key={index}
-          style={[
-            styles.pinIndicator,
-            index < pin.length && styles.pinIndicatorFilled,
-          ]}
-        />
-      ));
-  };
-
-  const renderKeypad = () => {
-    const keys = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "", "0", "del"];
-    return keys.map((key, index) => (
-      <TouchableOpacity
-        key={index}
-        style={styles.keypadButton}
-        onPress={() => (key === "del" ? handleDelete() : handleKeyPress(key))}
-        disabled={key === ""}
-      >
-        {key === "del" ? (
-          <Cancel />
-        ) : (
-          <Text style={styles.keypadButtonText}>{key}</Text>
-        )}
-      </TouchableOpacity>
-    ));
+    //fire req
   };
 
   return (
     <SafeAreaView style={styles.container}>
+      <ToastComponent />
       <View style={styles.header}>
         <LockIcon />
-        <Text style={styles.title}>Set Transaction PIN</Text>
+        <Text style={styles.title}>
+          {stage == 1 ? "Set" : "Confirm"} Transaction PIN
+        </Text>
         <Text style={styles.subtitle}>
           This is the PIN used to confirm transactions.
         </Text>
         <Text style={styles.subtitle}>Be sure to keep it safe.</Text>
       </View>
-      <View style={styles.pinContainer}>{renderPinIndicators()}</View>
-      <View style={styles.keypadContainer}>{renderKeypad()}</View>
+      {stage === 1 ? (
+        <SetTransactionPin pin={pin} setPin={setPin} />
+      ) : (
+        <ConfirmTransactionPin pin={confirmPin} setPin={setConfirmPin} />
+      )}
     </SafeAreaView>
   );
 };
@@ -75,7 +72,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.white,
     alignItems: "center",
-    // justifyContent: "space-between",
     paddingVertical: 40,
   },
   header: {

@@ -39,8 +39,8 @@ export default function RootLayout() {
 
   return (
     <>
-      <ToastComponent />
       <Screen>
+        <ToastComponent />
         {/* <ThemeProvider
           value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
         > */}

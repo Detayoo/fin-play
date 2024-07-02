@@ -1,3 +1,4 @@
+import { Colors, fonts } from "@/constants";
 import React from "react";
 import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
 
@@ -7,17 +8,20 @@ const toastConfig = {
     <BaseToast
       {...props}
       style={{
-        borderLeftColor: "green",
+        borderLeftColor: Colors.primary,
         zIndex: 9999,
         width: "95%",
       }}
       contentContainerStyle={{ paddingHorizontal: 15 }}
       text1Style={{
         fontSize: 15,
-        fontWeight: "400",
+        fontFamily: fonts["satoshi"],
+        color: Colors.primary,
       }}
       text2Style={{
         fontSize: 13,
+        fontFamily: fonts["satoshi"],
+        color: Colors.primary,
       }}
     />
   ),
@@ -25,17 +29,20 @@ const toastConfig = {
     <ErrorToast
       {...props}
       style={{
-        borderLeftColor: "red",
-        paddingVertical: 30,
+        borderLeftColor: Colors.error,
         zIndex: 9999,
-
         width: "95%",
       }}
+      contentContainerStyle={{ paddingHorizontal: 15 }}
       text1Style={{
         fontSize: 15,
+        fontFamily: fonts["satoshi"],
+        color: Colors.error,
       }}
       text2Style={{
         fontSize: 13,
+        fontFamily: fonts["satoshi"],
+        color: Colors.error,
       }}
     />
   ),

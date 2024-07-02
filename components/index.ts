@@ -9,3 +9,5 @@ export * from "./AuthLayout";
 export * from "./PasswordField";
 export * from "./Checkbox";
 export * from "./OTPField";
+export * from "./SetTransactionPin";
+export * from "./ConfirmTransactionPin";
