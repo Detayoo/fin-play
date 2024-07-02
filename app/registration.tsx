@@ -39,7 +39,7 @@ const RegistrationPage = () => {
       <Formik
         enableReinitialize
         initialValues={{ email: "", password: "", fullName: "", terms }}
-        validationSchema={registrationSchema}
+        // validationSchema={registrationSchema}
         onSubmit={handleSubmit}
       >
         {({

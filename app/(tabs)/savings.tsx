@@ -1,7 +1,11 @@
-import { AppText } from "@/components";
+import { AppText, DashboardLayout } from "@/components";
 
 const RewardsPage = () => {
-  return <AppText>Savings Pagee</AppText>;
+  return (
+    <DashboardLayout>
+      <AppText>Savings Pagee</AppText>
+    </DashboardLayout>
+  );
 };
 
 export default RewardsPage;

@@ -9,7 +9,7 @@ import { maskEmail } from "@/utils";
 import { router, useLocalSearchParams } from "expo-router";
 
 const AccountVerificationPage = () => {
-  const OTP_TIME = 300;
+  let OTP_TIME = 60;
   const { email } = useLocalSearchParams();
 
   const [seconds, setSeconds] = useState(OTP_TIME);
@@ -18,7 +18,9 @@ const AccountVerificationPage = () => {
 
   useEffect(() => {
     if (otp.length === 6) {
-      router.push("/bvn-verification");
+      router.replace("/bvn-verification");
+      setOtp("");
+      OTP_TIME = 60;
     }
   }, [otp]);
 

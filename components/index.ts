@@ -12,3 +12,4 @@ export * from "./OTPField";
 export * from "./SetTransactionPin";
 export * from "./ConfirmTransactionPin";
 export * from "./DashboardLayout";
+export * from "./DateComponent";
