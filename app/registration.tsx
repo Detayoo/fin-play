@@ -31,14 +31,11 @@ const RegistrationPage = () => {
     });
   };
 
-  useEffect(() => {
-    showToast("success", "Login successful", "Welcome back!");
-  }, []);
   return (
     <Screen>
       <Formik
         initialValues={{ email: "", password: "", fullName: "", terms: false }}
-        validationSchema={registrationSchema}
+        // validationSchema={registrationSchema}
         onSubmit={handleSubmit}
       >
         {({

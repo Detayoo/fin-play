@@ -121,7 +121,7 @@ export const AccountVerificationPage = () => {
                 <View style={styles.buttonContainer}>
                   <PrimaryButton
                     label="Continue"
-                    disabled={!date || values?.bvn?.length !== 11}
+                    // disabled={!date || values?.bvn?.length !== 11}
                     onPress={() => handleSubmit()}
                   />
                 </View>

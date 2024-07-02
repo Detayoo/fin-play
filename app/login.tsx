@@ -59,7 +59,7 @@ const LoginPage = () => {
       <Formik
         enableReinitialize
         initialValues={{ email: "", password: "" }}
-        validationSchema={loginSchema}
+        // validationSchema={loginSchema}
         onSubmit={handleSubmit}
       >
         {({

@@ -13,3 +13,4 @@ export * from "./SetTransactionPin";
 export * from "./ConfirmTransactionPin";
 export * from "./DashboardLayout";
 export * from "./DateComponent";
+export * from "./BottomSheetModal";

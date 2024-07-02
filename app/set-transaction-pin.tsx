@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, SafeAreaView } from "react-native";
+import { router } from "expo-router";
 
 import { LockIcon } from "@/assets";
 import { Colors, fonts } from "@/constants";
@@ -42,6 +43,9 @@ const ConfirmTransactionPIN = () => {
       setStage(1);
       return;
     }
+
+    showToast("success", "Transaction pin set");
+    router.push("/login");
 
     //fire req
   };
