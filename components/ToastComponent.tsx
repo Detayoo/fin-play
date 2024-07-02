@@ -3,7 +3,6 @@ import React from "react";
 import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
 import { View, StyleSheet } from "react-native";
 
-// Custom toast styles
 const toastConfig = {
   success: (props: any) => (
     <BaseToast
@@ -54,12 +53,12 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     zIndex: 9999,
-    elevation: 9999, // for Android
+    elevation: 9999,
   },
   toast: {
     width: "100%",
     zIndex: 10000,
-    elevation: 10000, // for Android
+    elevation: 10000,
   },
   successToast: {
     borderLeftColor: Colors.primary,
