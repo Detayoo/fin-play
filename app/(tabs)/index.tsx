@@ -1,24 +1,112 @@
-import { useState } from "react";
-import { ImageBackground, Pressable, ScrollView, View } from "react-native";
+import { useEffect, useState } from "react";
+import {
+  ImageBackground,
+  Pressable,
+  ScrollView,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { Image } from "expo-image";
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withRepeat,
+  withTiming,
+} from "react-native-reanimated";
 
 import { homeStyles as styles } from "@/styles";
-import { AppText, DashboardLayout, ReusableBottomSheet } from "@/components";
+import {
+  AppText,
+  DashboardLayout,
+  Dot,
+  ReusableBottomSheet,
+  Services,
+  showToast,
+} from "@/components";
 import { AddMoney, Bank, Chat, Notification, Show, UserHead } from "@/assets";
-import { Colors } from "@/constants";
+import { Colors, sizes } from "@/constants";
 import { formatMoney } from "@/utils";
+import Carousel from "react-native-reanimated-carousel";
 
 type StateType = {
   accountDetailsModal: boolean;
 };
 
+const data = [
+  {
+    title: "Instantly transfer money to friends and family.",
+    image: require("../../assets/images/welcome-image.png"),
+    width: "100%",
+    height: sizes.WINDOW_HEIGHT * 0.5,
+    isImage: true,
+  },
+  {
+    title: "Pay all your bills quickly and easily.",
+    image: require("../../assets/images/welcome-image.png"),
+    width: "100%",
+    height: sizes.WINDOW_HEIGHT * 0.54,
+    isImage: true,
+  },
+  {
+    title: "Save smarter and reach your financial goals.",
+    image: require("../../assets/images/welcome-image.png"),
+    width: "100%",
+    height: sizes.WINDOW_HEIGHT * 0.5,
+    isImage: true,
+  },
+];
+
 export default function HomeScreen() {
+  const [carouselIndex, setCarouselIndex] = useState(0);
+  const [visible, setVisible] = useState(false);
+  const rotation = useSharedValue("0deg");
   const [state, setState] = useState({
     accountDetailsModal: false,
   });
 
+  const handleToast = () => {
+    setVisible(true);
+    showToast("success", "YAYY");
+  };
+
+  console.log("visi", visible);
   const updateState = (payload: Partial<StateType>) => {
-    setState((prev) => ({ ...payload, ...prev }));
+    setState({ ...payload, ...state });
+  };
+
+  useEffect(() => {
+    rotation.value = withRepeat(
+      withTiming("-15deg", { duration: 1000 }),
+      -1,
+      true
+    );
+  }, []);
+
+  const renderScrollContent = ({ item }: { item: any }) => {
+    return (
+      <View style={{ flex: 1 }}>
+        <Image
+          source={item?.image}
+          style={{
+            width: item?.width,
+            height: item?.height,
+          }}
+        />
+        <AppText
+          style={{
+            fontSize: 20,
+            color: Colors.primary,
+            marginHorizontal: "auto",
+            width: 245,
+            textAlign: "center",
+            marginTop: 36,
+          }}
+          variant="medium"
+        >
+          {item?.title}
+        </AppText>
+      </View>
+    );
   };
 
   console.log(state);
@@ -73,19 +161,15 @@ export default function HomeScreen() {
         </View>
 
         <View style={styles.moneyActions}>
-          <Pressable
-            onPress={() =>
-              updateState({
-                accountDetailsModal: true,
-              })
-            }
+          <TouchableOpacity
+            onPress={handleToast}
             style={{ alignItems: "center" }}
           >
             <AddMoney />
             <AppText variant="medium" style={{ marginTop: 4 }}>
               Add Money
             </AppText>
-          </Pressable>
+          </TouchableOpacity>
           <Pressable style={{ alignItems: "center" }}>
             <UserHead />
             <AppText variant="medium" style={{ marginTop: 4 }}>
@@ -99,12 +183,34 @@ export default function HomeScreen() {
             </AppText>
           </Pressable>
         </View>
+
+        {/* <View style={styles.servicesContainer}>
+          <View style={styles.carouselContainer}>
+            <AppText
+              size="large"
+              variant="medium"
+              style={{ alignSelf: "flex-start" }}
+            >
+              Services
+            </AppText>
+            <Carousel
+              loop={false}
+              width={sizes.WINDOW_WIDTH}
+              height={240}
+              autoPlay={true}
+              autoPlayInterval={1500}
+              data={data}
+              onSnapToItem={(index) => setCarouselIndex(index)}
+              renderItem={renderScrollContent}
+              pagingEnabled
+              style={{ marginTop: 24 }}
+            />
+            <Dot activeIndex={carouselIndex} length={data?.length} />
+          </View>
+        </View> */}
+        <Services />
       </ScrollView>
-      <ReusableBottomSheet
-        visible={state?.accountDetailsModal}
-        setVisible={(x) => updateState({ accountDetailsModal: x })}
-        // snapPoints={["100%"]}
-      >
+      {/* <ReusableBottomSheet visible={visible} setVisible={setVisible}>
         <View style={{ paddingVertical: 16 }}></View>
         <AppText>
           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Labore
@@ -166,7 +272,7 @@ export default function HomeScreen() {
           maxime itaque aspernatur enim, facilis aliquid corporis, molestiae
           possimus!
         </AppText>
-      </ReusableBottomSheet>
+      </ReusableBottomSheet> */}
     </DashboardLayout>
   );
 }

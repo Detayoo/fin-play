@@ -45,4 +45,23 @@ export const homeStyles = StyleSheet.create({
     shadowRadius: 1,
     elevation: 2,
   },
+
+  carouselContainer: {
+    flex: 1,
+    alignItems: "center",
+    width: "100%",
+  },
+
+  servicesContainer: {
+    backgroundColor: "#fff",
+    borderRadius: 10,
+    shadowColor: "#ABABAB1A",
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 4,
+    shadowRadius: 1,
+    elevation: 2,
+    marginTop: 20,
+    paddingVertical: 14,
+    paddingHorizontal: 14,
+  },
 });
