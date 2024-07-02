@@ -10,7 +10,7 @@ import {
   Screen,
 } from "@/components";
 import { Colors } from "@/constants";
-import { loginSchema } from "@/utils";
+import { resetPasswordSchema } from "@/utils";
 import { LoginType } from "@/types";
 
 const ResetPasswordPage = () => {
@@ -25,7 +25,7 @@ const ResetPasswordPage = () => {
       <Formik
         enableReinitialize
         initialValues={{ email: "", password: "" }}
-        validationSchema={loginSchema}
+        validationSchema={resetPasswordSchema}
         onSubmit={handleSubmit}
       >
         {({ handleSubmit }) => (
