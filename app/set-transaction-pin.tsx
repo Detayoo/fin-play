@@ -5,6 +5,7 @@ import { LockIcon } from "@/assets";
 import { Colors, fonts } from "@/constants";
 import {
   ConfirmTransactionPin,
+  Screen,
   SetTransactionPin,
   ToastComponent,
   showToast,
@@ -46,24 +47,26 @@ const ConfirmTransactionPIN = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ToastComponent />
-      <View style={styles.header}>
-        <LockIcon />
-        <Text style={styles.title}>
-          {stage == 1 ? "Set" : "Confirm"} Transaction PIN
-        </Text>
-        <Text style={styles.subtitle}>
-          This is the PIN used to confirm transactions.
-        </Text>
-        <Text style={styles.subtitle}>Be sure to keep it safe.</Text>
-      </View>
-      {stage === 1 ? (
-        <SetTransactionPin pin={pin} setPin={setPin} />
-      ) : (
-        <ConfirmTransactionPin pin={confirmPin} setPin={setConfirmPin} />
-      )}
-    </SafeAreaView>
+    <Screen>
+      <SafeAreaView style={styles.container}>
+        <ToastComponent />
+        <View style={styles.header}>
+          <LockIcon />
+          <Text style={styles.title}>
+            {stage == 1 ? "Set" : "Confirm"} Transaction PIN
+          </Text>
+          <Text style={styles.subtitle}>
+            This is the PIN used to confirm transactions.
+          </Text>
+          <Text style={styles.subtitle}>Be sure to keep it safe.</Text>
+        </View>
+        {stage === 1 ? (
+          <SetTransactionPin pin={pin} setPin={setPin} />
+        ) : (
+          <ConfirmTransactionPin pin={confirmPin} setPin={setConfirmPin} />
+        )}
+      </SafeAreaView>
+    </Screen>
   );
 };
 

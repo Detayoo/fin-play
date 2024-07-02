@@ -14,6 +14,7 @@ import {
 } from "@/components";
 import { Colors, fonts } from "@/constants";
 import { QuestionMark } from "@/assets";
+import { format } from "date-fns";
 
 export const AccountVerificationPage = () => {
   const [date, setDate] = useState(new Date());
@@ -34,6 +35,8 @@ export const AccountVerificationPage = () => {
     { resetForm }: any
   ) => {
     console.log(values);
+    const formattedDate = format(values?.dob, "dd/MM/yyyy");
+    const payload = { bvn: values?.bvn, dob: formattedDate };
     router.push("/set-transaction-pin");
   };
 
@@ -170,7 +173,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   buttonContainer: {
-    paddingVertical: 20,
+    paddingBottom: 20,
     backgroundColor: "white",
     position: "absolute",
     bottom: 0,
