@@ -26,6 +26,7 @@ const RegistrationPage = () => {
       pathname: "/account-verification",
       params: {
         email: values?.email,
+        from: "/registration",
       },
     });
   };

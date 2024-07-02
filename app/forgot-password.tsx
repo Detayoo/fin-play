@@ -16,7 +16,13 @@ const ForgotPasswordPage = () => {
   const handleSubmit = (values: { email: string }) => {
     console.log("got here");
     console.log(values);
-    router.push("/reset-password");
+    router.push({
+      pathname: "/account-verification",
+      params: {
+        email: values?.email,
+        from: "/forgot-password",
+      },
+    });
   };
 
   return (

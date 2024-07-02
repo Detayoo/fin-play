@@ -10,15 +10,22 @@ import { router, useLocalSearchParams } from "expo-router";
 
 const AccountVerificationPage = () => {
   let OTP_TIME = 60;
-  const { email } = useLocalSearchParams();
+  const { email, from } = useLocalSearchParams();
+  console.log("from", from);
 
   const [seconds, setSeconds] = useState(OTP_TIME);
   const { minutes, remainingSeconds } = useCountdown(seconds, setSeconds);
   const [otp, setOtp] = useState("");
 
   useEffect(() => {
-    if (otp.length === 6) {
+    if (otp.length === 6 && from === "/registration") {
       router.replace("/bvn-verification");
+      setOtp("");
+      OTP_TIME = 60;
+    }
+
+    if (otp.length === 6 && from === "/forgot-password") {
+      router.replace("/reset-password");
       setOtp("");
       OTP_TIME = 60;
     }
