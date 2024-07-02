@@ -39,12 +39,12 @@ export default function RootLayout() {
 
   return (
     <>
-      <Screen>
-        <ToastComponent />
-        {/* <ThemeProvider
+      <ToastComponent />
+      {/* <ThemeProvider
           value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
         > */}
-        <Stack>
+      <Stack>
+        {/* <Screen> */}
           <Stack.Screen name="index" options={options} />
           <Stack.Screen name="login" options={options} />
           <Stack.Screen name="registration" options={options} />
@@ -53,11 +53,11 @@ export default function RootLayout() {
           <Stack.Screen name="account-verification" options={options} />
           <Stack.Screen name="bvn-verification" options={options} />
           <Stack.Screen name="set-transaction-pin" options={options} />
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="+not-found" />
-        </Stack>
-        {/* </ThemeProvider> */}
-      </Screen>
+        {/* </Screen> */}
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      </Stack>
+      {/* </ThemeProvider> */}
     </>
   );
 }

@@ -3,7 +3,7 @@ import { View, StyleSheet } from "react-native";
 
 import { Colors, fonts } from "@/constants";
 
-import { AppText, AuthLayout, OtpField } from "@/components";
+import { AppText, AuthLayout, OtpField, Screen } from "@/components";
 import { useCountdown } from "@/hooks";
 import { maskEmail } from "@/utils";
 import { router, useLocalSearchParams } from "expo-router";
@@ -29,43 +29,48 @@ const AccountVerificationPage = () => {
   const handleResendOtp = () => {};
 
   return (
-    <AuthLayout showStep={false}>
-      <View style={styles.container}>
-        <AppText color={Colors.black} style={styles.heading}>
-          Verify your account
-        </AppText>
-        <AppText color={Colors.faintBlack} style={styles.otpSent}>
-          A 6-digit OTP was sent to{" "}
-          <AppText style={styles.email}>{maskEmail(email)}</AppText>
-        </AppText>
-        <AppText style={{ fontSize: 14 }} color={Colors.faintBlack}>
-          Input the code below;
-        </AppText>
-        <OtpField code={otp} setCode={setOtp} count={6} />
-        {!(minutes === 0 && remainingSeconds === 0) ? (
-          <AppText style={styles.expiry} color={Colors.black}>
-            Code expires in:{" "}
-            <AppText color={Colors.inputFocusBorder} style={styles.expiryTime}>
-              {minutes?.toString()?.length !== 1 ? minutes : `0${minutes}`}:
-              {remainingSeconds?.toString()?.length !== 1
-                ? remainingSeconds
-                : `0${remainingSeconds}`}
-            </AppText>
+    <Screen>
+      <AuthLayout showStep={false}>
+        <View style={styles.container}>
+          <AppText color={Colors.black} style={styles.heading}>
+            Verify your account
           </AppText>
-        ) : (
-          <AppText style={styles.expiry} color={Colors.black}>
-            Didn&apos;t receive the code:{" "}
-            <AppText
-              onPress={handleResendOtp}
-              style={styles.resendCode}
-              color={Colors.inputFocusBorder}
-            >
-              Resend Code
-            </AppText>
+          <AppText color={Colors.faintBlack} style={styles.otpSent}>
+            A 6-digit OTP was sent to{" "}
+            <AppText style={styles.email}>{maskEmail(email)}</AppText>
           </AppText>
-        )}
-      </View>
-    </AuthLayout>
+          <AppText style={{ fontSize: 14 }} color={Colors.faintBlack}>
+            Input the code below;
+          </AppText>
+          <OtpField code={otp} setCode={setOtp} count={6} />
+          {!(minutes === 0 && remainingSeconds === 0) ? (
+            <AppText style={styles.expiry} color={Colors.black}>
+              Code expires in:{" "}
+              <AppText
+                color={Colors.inputFocusBorder}
+                style={styles.expiryTime}
+              >
+                {minutes?.toString()?.length !== 1 ? minutes : `0${minutes}`}:
+                {remainingSeconds?.toString()?.length !== 1
+                  ? remainingSeconds
+                  : `0${remainingSeconds}`}
+              </AppText>
+            </AppText>
+          ) : (
+            <AppText style={styles.expiry} color={Colors.black}>
+              Didn&apos;t receive the code:{" "}
+              <AppText
+                onPress={handleResendOtp}
+                style={styles.resendCode}
+                color={Colors.inputFocusBorder}
+              >
+                Resend Code
+              </AppText>
+            </AppText>
+          )}
+        </View>
+      </AuthLayout>
+    </Screen>
   );
 };
 

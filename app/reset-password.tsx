@@ -7,6 +7,7 @@ import {
   AppText,
   PasswordField,
   PrimaryButton,
+  Screen,
 } from "@/components";
 import { Colors } from "@/constants";
 import { loginSchema } from "@/utils";
@@ -20,55 +21,57 @@ const ResetPasswordPage = () => {
   };
 
   return (
-    <Formik
-      enableReinitialize
-      initialValues={{ email: "", password: "" }}
-      validationSchema={loginSchema}
-      onSubmit={handleSubmit}
-    >
-      {({ handleSubmit }) => (
-        <AuthLayout showStep={false}>
-          <View style={styles.container}>
-            <AppText
-              color={Colors.black}
-              variant="medium"
-              style={{
-                fontSize: 20,
-                width: "90%",
-              }}
-            >
-              Reset Password
-            </AppText>
-            <AppText
-              color={Colors.faintBlack}
-              style={{
-                marginTop: 16,
-              }}
-            >
-              Kindly enter your new password for your uzzy account
-            </AppText>
-            <View style={styles.inputFields}>
-              <PasswordField
-                name="password"
-                label="New Password"
-                placeholder="Enter your password"
-              />
-              <PasswordField
-                name="confirmPassword"
-                label="Confirm Password"
-                placeholder="Confirm your password"
-              />
+    <Screen>
+      <Formik
+        enableReinitialize
+        initialValues={{ email: "", password: "" }}
+        validationSchema={loginSchema}
+        onSubmit={handleSubmit}
+      >
+        {({ handleSubmit }) => (
+          <AuthLayout showStep={false}>
+            <View style={styles.container}>
+              <AppText
+                color={Colors.black}
+                variant="medium"
+                style={{
+                  fontSize: 20,
+                  width: "90%",
+                }}
+              >
+                Reset Password
+              </AppText>
+              <AppText
+                color={Colors.faintBlack}
+                style={{
+                  marginTop: 16,
+                }}
+              >
+                Kindly enter your new password for your uzzy account
+              </AppText>
+              <View style={styles.inputFields}>
+                <PasswordField
+                  name="password"
+                  label="New Password"
+                  placeholder="Enter your password"
+                />
+                <PasswordField
+                  name="confirmPassword"
+                  label="Confirm Password"
+                  placeholder="Confirm your password"
+                />
 
-              <PrimaryButton
-                style={{ marginTop: 100 }}
-                onPress={() => handleSubmit()}
-                label="Submit"
-              />
+                <PrimaryButton
+                  style={{ marginTop: 100 }}
+                  onPress={() => handleSubmit()}
+                  label="Submit"
+                />
+              </View>
             </View>
-          </View>
-        </AuthLayout>
-      )}
-    </Formik>
+          </AuthLayout>
+        )}
+      </Formik>
+    </Screen>
   );
 };
 

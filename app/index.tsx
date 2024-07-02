@@ -9,7 +9,7 @@ import Animated, {
 } from "react-native-reanimated";
 
 import { Colors, sizes } from "@/constants";
-import { AppText, Dot, PrimaryButton } from "@/components";
+import { AppText, Dot, PrimaryButton, Screen } from "@/components";
 import { router } from "expo-router";
 
 export const data = [
@@ -83,32 +83,36 @@ export default function WelcomeScreen() {
   };
 
   return (
-    <View style={{ padding: 0, height: "100%", backgroundColor: Colors.white }}>
-      <View style={styles.carouselContainer}>
-        <Carousel
-          loop={false}
-          width={sizes.WINDOW_WIDTH}
-          autoPlay={true}
-          autoPlayInterval={1500}
-          data={data}
-          onSnapToItem={(index) => setCarouselIndex(index)}
-          renderItem={renderScrollContent}
-          pagingEnabled
-        />
-        <Dot activeIndex={carouselIndex} length={data?.length} />
+    <Screen>
+      <View
+        style={{ padding: 0, height: "100%", backgroundColor: Colors.white }}
+      >
+        <View style={styles.carouselContainer}>
+          <Carousel
+            loop={false}
+            width={sizes.WINDOW_WIDTH}
+            autoPlay={true}
+            autoPlayInterval={1500}
+            data={data}
+            onSnapToItem={(index) => setCarouselIndex(index)}
+            renderItem={renderScrollContent}
+            pagingEnabled
+          />
+          <Dot activeIndex={carouselIndex} length={data?.length} />
+        </View>
+        <View style={styles.btnContainer}>
+          <PrimaryButton
+            onPress={() => router.push("/registration")}
+            label="Create an account"
+          />
+          <PrimaryButton
+            onPress={() => router.push("/login")}
+            variant="outline"
+            label="Login"
+          />
+        </View>
       </View>
-      <View style={styles.btnContainer}>
-        <PrimaryButton
-          onPress={() => router.push("/registration")}
-          label="Create an account"
-        />
-        <PrimaryButton
-          onPress={() => router.push("/login")}
-          variant="outline"
-          label="Login"
-        />
-      </View>
-    </View>
+    </Screen>
   );
 }
 

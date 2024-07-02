@@ -4,6 +4,16 @@ import React from "react";
 import { TabBarIcon } from "@/components/navigation/TabBarIcon";
 import { Colors } from "@/constants";
 import { useColorScheme } from "@/hooks/useColorScheme";
+import { View } from "react-native";
+import {
+  ActiveHome,
+  ActiveRewards,
+  ActiveSavings,
+  Home,
+  ProfileIcon,
+  Rewards,
+  Savings,
+} from "@/assets";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -16,7 +26,8 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        // tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
+        tabBarActiveTintColor: Colors.inputFocusBorder,
+        tabBarInactiveTintColor: Colors.faintBlack,
         headerShown: false,
       }}
     >
@@ -25,25 +36,34 @@ export default function TabLayout() {
         options={{
           headerShown: false,
           title: "Home",
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon
-              name={focused ? "home" : "home-outline"}
-              color={color}
-            />
-          ),
+          tabBarIcon: ({ focused }) => (focused ? <ActiveHome /> : <Home />),
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="rewards"
         options={{
           headerShown: false,
-          title: "Explore",
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon
-              name={focused ? "code-slash" : "code-slash-outline"}
-              color={color}
-            />
-          ),
+          title: "Rewards",
+          tabBarIcon: ({ focused }) =>
+            focused ? <ActiveRewards /> : <Rewards />,
+        }}
+      />
+      <Tabs.Screen
+        name="savings"
+        options={{
+          headerShown: false,
+          title: "Savings",
+          tabBarIcon: ({ focused }) =>
+            focused ? <ActiveSavings /> : <Savings />,
+        }}
+      />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          headerShown: false,
+          title: "Profile",
+          tabBarIcon: ({ focused }) =>
+            focused ? <ActiveHome /> : <ProfileIcon />,
         }}
       />
     </Tabs>

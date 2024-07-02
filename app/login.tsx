@@ -11,6 +11,7 @@ import {
   PasswordField,
   Checkbox,
   PrimaryButton,
+  Screen,
 } from "@/components";
 import { Colors } from "@/constants";
 import { loginSchema } from "@/utils";
@@ -50,135 +51,131 @@ const LoginPage = () => {
   const [rememberMe, setRememberMe] = useState(false);
   const handleSubmit = (values: LoginType) => {
     console.log("got here");
-    console.log(values);
-    router.push({
-      pathname: "/account-verification",
-      params: {
-        email: values?.email,
-      },
-    });
+    router.push("/(tabs)");
   };
 
   return (
-    <Formik
-      enableReinitialize
-      initialValues={{ email: "", password: "" }}
-      // validationSchema={loginSchema}
-      onSubmit={handleSubmit}
-    >
-      {({
-        handleChange,
-        handleBlur,
-        handleSubmit,
-        values,
-        errors,
-        touched,
-      }) => (
-        <AuthLayout showStep={false}>
-          <View style={styles.container}>
-            <AppText
-              color={Colors.black}
-              variant="medium"
-              style={{
-                fontSize: 20,
-                width: "90%",
-              }}
-            >
-              Welcome Back! Manage Your Finances with Ease.
-            </AppText>
-            <AppText
-              color={Colors.faintBlack}
-              style={{
-                marginTop: 16,
-              }}
-            >
-              Log in to your account and continue to stay on top of your
-              financial goals seamlessly.
-            </AppText>
-            <View style={styles.inputFields}>
-              <TextField
-                onChange={handleChange("email")}
-                onBlur={handleBlur("email")}
-                value={values.email}
-                placeholder="Enter your email"
-                errors={errors.email}
-                touched={touched.email}
-                label="Email"
-              />
-              <PasswordField
-                name="password"
-                label="Password"
-                placeholder="Enter your password"
-              />
-
-              <View
+    <Screen>
+      <Formik
+        enableReinitialize
+        initialValues={{ email: "", password: "" }}
+        // validationSchema={loginSchema}
+        onSubmit={handleSubmit}
+      >
+        {({
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          values,
+          errors,
+          touched,
+        }) => (
+          <AuthLayout showStep={false}>
+            <View style={styles.container}>
+              <AppText
+                color={Colors.black}
+                variant="medium"
                 style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "center",
+                  fontSize: 20,
+                  width: "90%",
+                }}
+              >
+                Welcome Back! Manage Your Finances with Ease.
+              </AppText>
+              <AppText
+                color={Colors.faintBlack}
+                style={{
                   marginTop: 16,
                 }}
               >
-                <View style={styles.termsContainer}>
-                  <Checkbox
-                    onChange={() => setRememberMe(!rememberMe)}
-                    checked={rememberMe}
-                  />
+                Log in to your account and continue to stay on top of your
+                financial goals seamlessly.
+              </AppText>
+              <View style={styles.inputFields}>
+                <TextField
+                  onChange={handleChange("email")}
+                  onBlur={handleBlur("email")}
+                  value={values.email}
+                  placeholder="Enter your email"
+                  errors={errors.email}
+                  touched={touched.email}
+                  label="Email"
+                />
+                <PasswordField
+                  name="password"
+                  label="Password"
+                  placeholder="Enter your password"
+                />
+
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    marginTop: 16,
+                  }}
+                >
+                  <View style={styles.termsContainer}>
+                    <Checkbox
+                      onChange={() => setRememberMe(!rememberMe)}
+                      checked={rememberMe}
+                    />
+                    <AppText
+                      size="small"
+                      variant="medium"
+                      color={Colors.faintBlack}
+                    >
+                      Remember me
+                    </AppText>
+                  </View>
+
                   <AppText
+                    onPress={() => router.push("/forgot-password")}
                     size="small"
                     variant="medium"
-                    color={Colors.faintBlack}
+                    color={Colors.primary}
                   >
-                    Remember me
+                    Forgot Password?
                   </AppText>
                 </View>
-
+                <PrimaryButton
+                  style={{ marginTop: 60 }}
+                  onPress={() => handleSubmit()}
+                  label="Login"
+                />
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  gap: 5,
+                  justifyContent: "center",
+                  backgroundColor: Colors.white,
+                  marginTop: 25,
+                }}
+              >
+                <AppText variant="medium">Don't have an account?</AppText>
                 <AppText
-                  onPress={() => router.push("/forgot-password")}
-                  size="small"
+                  onPress={() => router.push("/registration")}
                   variant="medium"
-                  color={Colors.primary}
+                  color={Colors.inputFocusBorder}
                 >
-                  Forgot Password?
+                  Create an account
                 </AppText>
               </View>
-              <PrimaryButton
-                style={{ marginTop: 60 }}
-                onPress={() => handleSubmit()}
-                label="Login"
-              />
-            </View>
-            <View
-              style={{
-                flexDirection: "row",
-                gap: 5,
-                justifyContent: "center",
-                backgroundColor: Colors.white,
-                marginTop: 25,
-              }}
-            >
-              <AppText variant="medium">Don't have an account?</AppText>
-              <AppText
-                onPress={() => router.push("/registration")}
-                variant="medium"
-                color={Colors.inputFocusBorder}
-              >
-                Create an account
-              </AppText>
-            </View>
 
-            {!!isBiometricSupported && (
-              <Pressable
-                onPress={loginWithBiometric}
-                style={styles.biometricContainer}
-              >
-                {renderBiometric()}
-              </Pressable>
-            )}
-          </View>
-        </AuthLayout>
-      )}
-    </Formik>
+              {!!isBiometricSupported && (
+                <Pressable
+                  onPress={loginWithBiometric}
+                  style={styles.biometricContainer}
+                >
+                  {renderBiometric()}
+                </Pressable>
+              )}
+            </View>
+          </AuthLayout>
+        )}
+      </Formik>
+    </Screen>
   );
 };
 

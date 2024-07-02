@@ -39,7 +39,7 @@ export const AppText = ({
 const styles = StyleSheet.create({
   label: {
     fontSize: 14,
-    color: Colors.primary,
+    color: Colors.black,
     fontFamily: fonts.satoshi,
   },
   normal: {
