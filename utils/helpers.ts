@@ -1,3 +1,6 @@
+import { showToast } from "@/components";
+import * as Clipboard from "expo-clipboard";
+
 export const maskEmail = (email: any) => {
   if (!email) return null;
   const [username, domain] = email.split("@");
@@ -24,4 +27,13 @@ export const formatNumber = (text: string | number) => {
   return Intl.NumberFormat("NGN", { maximumFractionDigits: 2 }).format(
     Number(text)
   );
+};
+
+export const copyToClipboard = async (text: string) => {
+  try {
+    await Clipboard.setStringAsync(text);
+  } catch (error) {
+    showToast("error", "Could not copy, please try again");
+  }
+  showToast("success", "Copied successfully");
 };

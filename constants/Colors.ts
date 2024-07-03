@@ -35,4 +35,5 @@ export const Colors = {
   checkboxBorder: "#AAAAAA",
   faintBlack: "#7e7e7e",
   error: "#EA4435",
+  lightGreen: "#90AD044D",
 };

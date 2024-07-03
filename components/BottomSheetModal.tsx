@@ -1,108 +1,93 @@
-import React, { useEffect, useRef, useCallback } from "react";
-import { View, StyleSheet, ScrollView } from "react-native";
-import BottomSheet, {
-  BottomSheetBackdrop,
-  BottomSheetScrollView,
-} from "@gorhom/bottom-sheet";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { Colors } from "@/constants";
+import React, { useCallback, useEffect, useRef } from "react";
+import { View, StyleSheet, Pressable, Animated } from "react-native";
+import BottomSheet from "@gorhom/bottom-sheet";
 
 export const ReusableBottomSheet = ({
-  visible,
-  setVisible,
   children,
-  onOpen,
+  visible,
   onClose,
-  snapPoints = ["25%", "50%", "75%", "100%"],
-}: {
-  visible: boolean;
-  setVisible: (state: boolean) => void;
-  children: React.ReactNode;
-  onOpen?: any;
-  onClose?: any;
-  snapPoints?: string[];
-}) => {
+  snapPoints = ["25%", "50%", "75%"],
+}: any) => {
   const bottomSheetRef = useRef<any>(null);
-  console.log(visible, "visible");
+  const fadeAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     if (visible) {
       bottomSheetRef.current?.expand();
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
     } else {
       bottomSheetRef.current?.close();
-      setVisible(false);
+      Animated.timing(fadeAnim, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
     }
-  }, [visible]);
+  }, [visible, fadeAnim]);
 
   const handleSheetChanges = useCallback(
     (index: number) => {
-      if (index === -1) {
-        setVisible(false);
-        onClose && onClose();
-      } else if (index !== -1 && !visible) {
-        setVisible(true);
-        onOpen && onOpen();
+      if (index === -1 && onClose) {
+        onClose();
       }
     },
-    [setVisible, onClose, onOpen, visible]
-  );
-
-  const renderBackdrop = useCallback(
-    (props: any) => (
-      <BottomSheetBackdrop
-        {...props}
-        disappearsOnIndex={-1}
-        appearsOnIndex={0}
-      />
-    ),
-    []
+    [onClose]
   );
 
   return (
-    <GestureHandlerRootView style={styles.container}>
+    <>
+      {visible && (
+        <Animated.View
+          style={[
+            styles.backdrop,
+            {
+              opacity: fadeAnim,
+            },
+          ]}
+        >
+          <Pressable style={styles.backdropPressable} onPress={onClose} />
+        </Animated.View>
+      )}
       <BottomSheet
         ref={bottomSheetRef}
         index={visible ? 0 : -1}
         snapPoints={snapPoints}
         onChange={handleSheetChanges}
         enablePanDownToClose={true}
-        backdropComponent={renderBackdrop}
         style={styles.bottomSheet}
+        handleIndicatorStyle={styles.handleIndicator}
       >
-        <BottomSheetScrollView contentContainerStyle={styles.contentContainer}>
-          {children}
-        </BottomSheetScrollView>
+        <View style={styles.contentContainer}>{children}</View>
       </BottomSheet>
-    </GestureHandlerRootView>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  backdrop: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(0, 0, 0, 0.6)",
+    zIndex: 0,
+  },
+  backdropPressable: {
     flex: 1,
-    position: "absolute",
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-
-    margin: -16,
   },
   bottomSheet: {
-    minHeight: 20,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: -4,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
+    zIndex: 1,
+    borderRadius: 1000,
+  },
+  handleIndicator: {
+    backgroundColor: "#DDDDDD",
+    width: 24,
   },
   contentContainer: {
     flex: 1,
-    alignItems: "center",
+    backgroundColor: "white",
     paddingHorizontal: 16,
-    backgroundColor: Colors.white,
+    borderRadius: 50,
   },
 });

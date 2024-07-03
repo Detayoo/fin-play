@@ -19,3 +19,8 @@ export * from "./AddMoney";
 export * from "./UserHead";
 export * from "./Bank";
 export * from "./Calendar";
+export * from "./Copy";
+export * from "./BigBank";
+export * from "./BigUser";
+export * from "./Recipient";
+export * from "./Empty";

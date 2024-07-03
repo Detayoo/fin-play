@@ -55,6 +55,7 @@ export default function RootLayout() {
         <Stack.Screen name="set-transaction-pin" options={options} />
         <Stack.Screen name="airtime" options={options} />
         <Stack.Screen name="+not-found" />
+        <Stack.Screen name="internal-transfer" options={options} />
         {/* </Screen> */}
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       </Stack>
