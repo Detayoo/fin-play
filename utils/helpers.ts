@@ -29,7 +29,7 @@ export const formatNumber = (text: string | number | string[] | undefined) => {
   );
 };
 
-export const copyToClipboard = async (text: string) => {
+export const copyToClipboard = async (text: any) => {
   try {
     await Clipboard.setStringAsync(text);
   } catch (error) {

@@ -1,11 +1,6 @@
-import { useState } from "react";
-import {
-  KeyboardAvoidingView,
-  ScrollView,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import { useLocalSearchParams } from "expo-router";
+import { useEffect, useState } from "react";
+import { ScrollView, View } from "react-native";
+import { router, useLocalSearchParams } from "expo-router";
 import { format } from "date-fns";
 
 import {
@@ -29,6 +24,17 @@ const PaymentSummary = () => {
   const { accountName, accountNumber, amount, narration } =
     useLocalSearchParams();
   console.log(useLocalSearchParams());
+
+  const makePayment = () => {
+    router.push("/payment-receipt");
+  };
+
+  useEffect(() => {
+    if (pin.length === 4) {
+      makePayment();
+    }
+  }, [pin]);
+
   return (
     <Screen>
       <View

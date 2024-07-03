@@ -33,7 +33,7 @@ export const PrimaryButton = ({
   const getBtnLabelColor = () => {
     switch (variant) {
       case "outline":
-        return Colors.primary;
+        return Colors.inputFocusBorder;
       case "primary":
         return Colors.white;
       case "default":
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
   },
   outline: {
     borderWidth: 1,
-    borderColor: Colors.primary,
+    borderColor: Colors.inputFocusBorder,
     backgroundColor: Colors.white,
   },
   default: {

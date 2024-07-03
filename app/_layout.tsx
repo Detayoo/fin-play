@@ -57,6 +57,7 @@ export default function RootLayout() {
         <Stack.Screen name="+not-found" />
         <Stack.Screen name="internal-transfer" options={options} />
         <Stack.Screen name="payment-summary" options={options} />
+        <Stack.Screen name="payment-receipt" options={options} />
         {/* </Screen> */}
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       </Stack>
