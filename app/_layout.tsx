@@ -8,11 +8,11 @@ import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "react-native-reanimated";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import { useColorScheme } from "@/hooks/useColorScheme";
-import { Screen, ToastComponent } from "@/components";
 import { AuthProvider } from "@/context";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import NetworkLogger from "react-native-network-logger";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -39,7 +39,9 @@ export default function RootLayout() {
     return null;
   }
 
-  const queryClient = new QueryClient({});
+  const queryClient = new QueryClient({
+    defaultOptions: { queries: { retry: 1 } },
+  });
 
   return (
     <>
@@ -72,6 +74,7 @@ export default function RootLayout() {
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           </Stack>
         </QueryClientProvider>
+        {/* <NetworkLogger /> */}
       </AuthProvider>
 
       {/* </ThemeProvider> */}

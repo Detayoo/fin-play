@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Pressable, StyleSheet, View } from "react-native";
 import { Formik } from "formik";
 import { router } from "expo-router";
@@ -16,7 +16,7 @@ import {
   showToast,
 } from "@/components";
 import { Colors } from "@/constants";
-import { extractServerError, loginSchema } from "@/utils";
+import { extractServerError, loginSchema, storeToken } from "@/utils";
 import { LoginType } from "@/types";
 import { FaceId, Fingerprint } from "@/assets";
 import { useBiometrics } from "@/hooks";
@@ -37,6 +37,10 @@ const LoginPage = () => {
 
     return null;
   };
+
+  // useEffect(() => {
+  //   storeToken("MYTOKEN");
+  // }, []);
 
   const promptOptions = {
     promptMessage: "Login with Biometrics",
@@ -59,6 +63,7 @@ const LoginPage = () => {
     mutationFn: loginFn,
     onSuccess: (data) => {},
     onError: (error) => {
+      console.log(error, "err");
       showToast(
         "error",
         extractServerError(error, "Something happened, please try again")
@@ -67,18 +72,17 @@ const LoginPage = () => {
   });
   const handleSubmit = async (values: LoginType) => {
     const { email, password } = values;
-    router.push("/(tabs)");
-    return;
     try {
       await mutateAsync({
         email,
         password,
         token,
       });
-    } catch (error) {}
+    } catch (error) {
+      console.log("error", error);
+    }
     return;
-    console.log("got here");
-    // router.push("/beneficiaries");
+    router.push("/(tabs)");
   };
 
   return (
