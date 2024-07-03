@@ -121,7 +121,10 @@ export default function HomeScreen() {
               To Uzzy
             </AppText>
           </TouchableOpacity>
-          <TouchableOpacity style={{ alignItems: "center" }}>
+          <TouchableOpacity
+            onPress={() => router.push("/bank-transfer")}
+            style={{ alignItems: "center" }}
+          >
             <Bank />
             <AppText variant="medium" style={{ marginTop: 4 }}>
               To Banks

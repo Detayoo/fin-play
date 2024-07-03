@@ -21,7 +21,7 @@ const PaymentSummary = () => {
   const [showModal, setShowModal] = useState(false);
   const [save, setSave] = useState(false);
   const [pin, setPin] = useState("");
-  const { accountName, accountNumber, amount, narration } =
+  const { accountName, accountNumber, amount, narration, bankName } =
     useLocalSearchParams();
   console.log(useLocalSearchParams());
 
@@ -98,7 +98,7 @@ const PaymentSummary = () => {
         <View style={{ gap: 30, width: "100%", marginTop: 35 }}>
           <ListItem name="Recipient Name" value={accountName} />
           <ListItem name="Account Number" value={accountNumber} />
-          <ListItem name="Bank Name" value="Uzzy Account" />
+          <ListItem name="Bank Name" value={bankName ?? "Uzzy Account"} />
           <ListItem name="Narration" value={narration} />
           <ListItem name="Fee" value="NGN 0.00" />
           <View

@@ -56,6 +56,7 @@ export default function RootLayout() {
         <Stack.Screen name="airtime" options={options} />
         <Stack.Screen name="+not-found" />
         <Stack.Screen name="internal-transfer" options={options} />
+        <Stack.Screen name="bank-transfer" options={options} />
         <Stack.Screen name="payment-summary" options={options} />
         <Stack.Screen name="payment-receipt" options={options} />
         <Stack.Screen name="beneficiaries" options={options} />

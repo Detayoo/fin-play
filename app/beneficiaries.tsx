@@ -50,18 +50,13 @@ const Beneficiaries = () => {
         />
       </View>
 
-      <ScrollView>
+      <ScrollView
+        contentContainerStyle={{
+          paddingTop: 10,
+        }}
+      >
         <Formik initialValues={{ search: "" }} onSubmit={onSubmit}>
-          {({
-            handleSubmit,
-            values,
-            errors,
-            handleBlur,
-            handleChange,
-            touched,
-            setFieldValue,
-          }) => {
-            console.log(values);
+          {({}) => {
             return (
               <SearchField
                 onChange={setSearchTerm}
