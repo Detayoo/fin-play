@@ -7,12 +7,14 @@ export const OtpField = ({
   setCode,
   count,
   handleAction,
+  autoFocus,
   ...rest
 }: {
   code: string;
   setCode?: (e: string) => void;
   count: number;
   handleAction?: () => void;
+  autoFocus?: boolean;
   [x: string]: any;
 }) => {
   return (
@@ -21,12 +23,13 @@ export const OtpField = ({
         pinCount={count}
         secureTextEntry={true}
         onCodeChanged={setCode}
-        autoFocusOnLoad={false}
+        autoFocusOnLoad={autoFocus || false}
         keyboardType="number-pad"
         style={styles.otpInput}
         codeInputFieldStyle={styles.codeInputFieldStyle}
         codeInputHighlightStyle={styles.codeInputHighlightStyle}
-        selectionColor={Colors.primary}
+        selectionColor={Colors.inputFocusBorder}
+        placeholderTextColor={Colors.inputFocusBorder}
         code={code}
         onCodeFilled={handleAction}
         {...rest}
@@ -53,7 +56,7 @@ const styles = StyleSheet.create({
     width: 50,
     borderRadius: 5,
     color: Colors.black,
-    fontSize: 30,
+    fontSize: 16,
   },
   codeInputHighlightStyle: {
     borderColor: Colors.inputFocusBorder,

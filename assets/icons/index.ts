@@ -24,3 +24,4 @@ export * from "./BigBank";
 export * from "./BigUser";
 export * from "./Recipient";
 export * from "./Empty";
+export * from "./PaymentRecipient";

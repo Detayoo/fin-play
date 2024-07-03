@@ -16,14 +16,14 @@ export const maskEmail = (email: any) => {
   return maskedEmail;
 };
 
-export const formatMoney = (text: string | number) => {
+export const formatMoney = (text: string | number | string[] | undefined) => {
   return Intl.NumberFormat("NGN", {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(Number(text));
 };
 
-export const formatNumber = (text: string | number) => {
+export const formatNumber = (text: string | number | string[] | undefined) => {
   return Intl.NumberFormat("NGN", { maximumFractionDigits: 2 }).format(
     Number(text)
   );

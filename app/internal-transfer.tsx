@@ -1,3 +1,7 @@
+import { Formik } from "formik";
+import { ScrollView, View } from "react-native";
+import { router } from "expo-router";
+
 import { Empty, Recipient } from "@/assets";
 import {
   AppText,
@@ -7,17 +11,28 @@ import {
   TextField,
 } from "@/components";
 import { Colors } from "@/constants";
-import { Formik } from "formik";
-import { ScrollView, View } from "react-native";
+
+type FormField = {
+  accountNumber: string;
+  amount: string;
+  narration: string;
+  accountName: string;
+};
 
 const InternalTransfer = () => {
   const initialValues = {
     accountNumber: "",
     amount: "",
     narration: "",
+    accountName: "ADEDIGBA PETER ADETAYO LOMOH LATILE",
   };
 
-  const onSubmit = () => {};
+  const onSubmit = (values: FormField) => {
+    router.push({
+      pathname: "/payment-summary",
+      params: values,
+    });
+  };
   return (
     <Screen>
       <BackButton />
@@ -70,7 +85,7 @@ const InternalTransfer = () => {
                     }}
                   >
                     <Recipient />
-                    <AppText variant="medium">ADEDIGBA PETER ADETAYO</AppText>
+                    <AppText variant="medium">{values.accountName}</AppText>
                   </View>
                 )}
 
@@ -93,7 +108,11 @@ const InternalTransfer = () => {
                   touched={touched.narration}
                   label="Narration"
                 />
-                <PrimaryButton label="Next" style={{ marginTop: 40 }} />
+                <PrimaryButton
+                  onPress={() => handleSubmit()}
+                  label="Next"
+                  style={{ marginTop: 40 }}
+                />
               </View>
             );
           }}

@@ -1,11 +1,11 @@
 import { router } from "expo-router";
-import { Pressable, StyleSheet } from "react-native";
+import { Pressable, StyleSheet, TextStyle } from "react-native";
 
 import { BackIcon } from "@/assets";
 import { Colors } from "@/constants";
-export const BackButton = () => {
+export const BackButton = ({ style }: { style?: TextStyle }) => {
   return (
-    <Pressable onPress={() => router.back()} style={styles.container}>
+    <Pressable onPress={() => router.back()} style={[styles.container, style]}>
       <BackIcon />
     </Pressable>
   );
