@@ -51,7 +51,8 @@ const LoginPage = () => {
   const [rememberMe, setRememberMe] = useState(false);
   const handleSubmit = (values: LoginType) => {
     console.log("got here");
-    router.push("/(tabs)");
+    // router.push("/(tabs)");
+    router.push("/beneficiaries");
   };
 
   return (

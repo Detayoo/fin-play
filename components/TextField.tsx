@@ -2,6 +2,7 @@ import { useState } from "react";
 import { StyleSheet, TextInput, View, Text } from "react-native";
 
 import { Colors, fonts } from "@/constants";
+import { Search } from "@/assets";
 export const TextField = ({
   touched,
   onChange,
@@ -52,6 +53,68 @@ export const TextField = ({
         placeholderTextColor={Colors.placeholder}
         {...rest}
       />
+      {/* {touched && errors && <Text style={styles.errorText}>{errors}</Text>} */}
+    </View>
+  );
+};
+export const SearchField = ({
+  touched,
+  onChange,
+  onBlur,
+  value,
+  errors,
+  disabled,
+  ...rest
+}: {
+  touched?: any;
+  onChange: any;
+  onBlur?: any;
+  value: string;
+  errors?: any;
+  disabled?: boolean;
+  [x: string]: any;
+}) => {
+  const [focused, setFocused] = useState(false);
+
+  const handleBlur = (e: any) => {
+    setFocused(false);
+    if (onBlur) {
+      onBlur(e);
+    }
+  };
+  return (
+    <View style={styles.inputContainer}>
+      <View
+        style={[
+          styles.input,
+          focused ? styles.focusedStyle : undefined,
+          disabled ? styles.disabledStyle : undefined,
+          {
+            flexDirection: "row",
+            gap: 10,
+            paddingHorizontal: 20,
+            alignItems: "center",
+          },
+        ]}
+      >
+        <Search />
+        <TextInput
+          style={{
+            flex: 1,
+          }}
+          onFocus={() => setFocused(true)}
+          cursorColor={Colors.inputFocusBorder}
+          selectionColor={Colors.inputFocusBorder}
+          onChangeText={onChange}
+          onBlur={handleBlur}
+          value={value}
+          placeholder="Search"
+          autoCapitalize="none"
+          autoCorrect={false}
+          placeholderTextColor={Colors.placeholder}
+          {...rest}
+        />
+      </View>
       {/* {touched && errors && <Text style={styles.errorText}>{errors}</Text>} */}
     </View>
   );

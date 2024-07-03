@@ -27,3 +27,5 @@ export * from "./Empty";
 export * from "./PaymentRecipient";
 export * from "./ReceiptTypeImage";
 export * from "./ReceiptTypePDF";
+export * from "./Search";
+export * from "./Delete";

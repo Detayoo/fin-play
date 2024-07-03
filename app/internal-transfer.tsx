@@ -76,38 +76,40 @@ const InternalTransfer = () => {
                   keyboardType="number-pad"
                 />
                 {values.accountNumber.length === 10 && (
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      gap: 10,
-                      marginBottom: 20,
-                      alignItems: "center",
-                    }}
-                  >
-                    <Recipient />
-                    <AppText variant="medium">{values.accountName}</AppText>
-                  </View>
+                  <>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        gap: 10,
+                        marginBottom: 20,
+                        alignItems: "center",
+                      }}
+                    >
+                      <Recipient />
+                      <AppText variant="medium">{values.accountName}</AppText>
+                    </View>
+                    <TextField
+                      onChange={handleChange("amount")}
+                      onBlur={handleBlur("amount")}
+                      value={values.amount}
+                      placeholder="Enter amount"
+                      errors={errors.amount}
+                      touched={touched.amount}
+                      label="Amount"
+                      keyboardType="number-pad"
+                    />
+                    <TextField
+                      onChange={handleChange("narration")}
+                      onBlur={handleBlur("narration")}
+                      value={values.narration}
+                      placeholder="Add a note"
+                      errors={errors.narration}
+                      touched={touched.narration}
+                      label="Narration"
+                    />
+                  </>
                 )}
 
-                <TextField
-                  onChange={handleChange("amount")}
-                  onBlur={handleBlur("amount")}
-                  value={values.amount}
-                  placeholder="Enter amount"
-                  errors={errors.amount}
-                  touched={touched.amount}
-                  label="Amount"
-                  keyboardType="number-pad"
-                />
-                <TextField
-                  onChange={handleChange("narration")}
-                  onBlur={handleBlur("narration")}
-                  value={values.narration}
-                  placeholder="Add a note"
-                  errors={errors.narration}
-                  touched={touched.narration}
-                  label="Narration"
-                />
                 <PrimaryButton
                   onPress={() => handleSubmit()}
                   label="Next"
@@ -128,7 +130,11 @@ const InternalTransfer = () => {
             <AppText style={{ fontSize: 15 }} variant="medium">
               Beneficiaries
             </AppText>
-            <AppText style={{ fontSize: 15 }} color={Colors.inputFocusBorder}>
+            <AppText
+              onPress={() => router.push("/beneficiaries")}
+              style={{ fontSize: 15 }}
+              color={Colors.inputFocusBorder}
+            >
               View all
             </AppText>
           </View>

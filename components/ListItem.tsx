@@ -2,8 +2,8 @@ import { Pressable, View } from "react-native";
 
 import { AppText } from "./AppText";
 import { Colors } from "@/constants";
-import { Copy } from "@/assets";
-import { copyToClipboard } from "@/utils";
+import { Copy } from "../assets";
+import { copyToClipboard } from "../utils";
 
 export const ListItem = ({
   name,
