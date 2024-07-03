@@ -1,4 +1,3 @@
-import { Colors } from "@/constants";
 import { StyleSheet } from "react-native";
 
 export const homeStyles = StyleSheet.create({
@@ -64,4 +63,7 @@ export const homeStyles = StyleSheet.create({
     paddingVertical: 14,
     paddingHorizontal: 14,
   },
+  
+
+
 });

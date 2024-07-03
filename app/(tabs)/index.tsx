@@ -1,20 +1,21 @@
 import { useState } from "react";
 import {
   ImageBackground,
-  Pressable,
   ScrollView,
   TouchableOpacity,
   View,
 } from "react-native";
 import { Image } from "expo-image";
-import * as Clipboard from "expo-clipboard";
+import { router } from "expo-router";
 
 import { homeStyles as styles } from "@/styles";
 import {
   AppText,
   DashboardLayout,
+  EmptyComponent,
   ReusableBottomSheet,
   Services,
+  TransactionIcon,
 } from "@/components";
 import {
   AddMoney,
@@ -23,13 +24,13 @@ import {
   BigUser,
   Chat,
   Copy,
+  Empty,
   Notification,
   Show,
   UserHead,
 } from "@/assets";
 import { Colors } from "@/constants";
 import { copyToClipboard, formatMoney } from "@/utils";
-import { router } from "expo-router";
 
 type StateType = {
   accountDetailsModal: boolean;
@@ -133,6 +134,47 @@ export default function HomeScreen() {
         </View>
 
         <Services />
+        <View style={{ marginVertical: 40 }}>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+              marginBottom: 30,
+            }}
+          >
+            <AppText style={{ fontSize: 16 }} variant="medium">
+              Recent Transactions
+            </AppText>
+            <AppText
+              onPress={() => router.push("/transactions")}
+              style={{ fontSize: 15 }}
+              color={Colors.inputFocusBorder}
+            >
+              View all
+            </AppText>
+          </View>
+          {/* <EmptyComponent message="No Transaction Found" /> */}
+
+          <TransactionIcon
+            onPress={() =>
+              router.push({
+                pathname: "/payment-receipt",
+                params: {},
+              })
+            }
+            status="GLO"
+          />
+          <TransactionIcon
+            onPress={() =>
+              router.push({
+                pathname: "/payment-receipt",
+                params: {},
+              })
+            }
+            status="DEBIT"
+          />
+        </View>
       </ScrollView>
 
       <ReusableBottomSheet

@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   title: {
-    fontSize: 20,
+    fontSize: 16,
   },
   pageContainer: {
     width: width - 32,

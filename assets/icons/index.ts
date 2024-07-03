@@ -29,3 +29,5 @@ export * from "./ReceiptTypeImage";
 export * from "./ReceiptTypePDF";
 export * from "./Search";
 export * from "./Delete";
+export * from "./BankOutward";
+export * from "./GloOutward";
