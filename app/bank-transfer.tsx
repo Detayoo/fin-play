@@ -58,7 +58,6 @@ const BankTransfer = () => {
   const [list, setList] = useState(beneficiaries);
   const [showModal, setShowModal] = useState(false);
   const [selectedBank, setSelectedBank] = useState<Option | null>(null);
-  console.log("selectedBank", selectedBank?.label);
   const initialValues = {
     accountNumber: "",
     amount: "",
@@ -111,7 +110,6 @@ const BankTransfer = () => {
                   handleChange,
                   touched,
                 }) => {
-                  console.log(values);
                   return (
                     <View style={{ marginTop: 20 }}>
                       <View style={{ gap: 20 }}>

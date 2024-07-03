@@ -1,15 +1,15 @@
 import { config } from "@/config";
 import { useAuth } from "@/context";
-import { getToken } from "@/utils";
 import axios from "axios";
 
+// const { token } = useAuth();
 export const baseRequest = axios.create({
   baseURL: config.SERVER_URL,
 });
 
 export const authenticatedRequest = (token: string | null) => {
   const instance = axios.create({
-    baseURL: "hey-there.com",
+    baseURL: config.SERVER_URL,
     headers: {
       "ngrok-skip-browser-warning": "any",
       "Content-Type": "application/json",

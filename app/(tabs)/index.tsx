@@ -43,9 +43,6 @@ export default function HomeScreen() {
 
   const accountNumber = "8140809078";
 
-  useEffect(() => {
-    showToast("success", "YYAA");
-  }, []);
   const updateState = (payload: Partial<StateType>) => {
     setState({ ...state, ...payload });
   };

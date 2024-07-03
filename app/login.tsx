@@ -16,7 +16,7 @@ import {
   showToast,
 } from "@/components";
 import { Colors } from "@/constants";
-import { extractServerError, loginSchema, storeToken } from "@/utils";
+import { extractServerError, getUser, loginSchema } from "@/utils";
 import { LoginType } from "@/types";
 import { FaceId, Fingerprint } from "@/assets";
 import { useBiometrics } from "@/hooks";
@@ -24,23 +24,11 @@ import { loginFn } from "@/services";
 import { useAuth } from "@/context";
 
 const LoginPage = () => {
+  const { token, saveUser, user, logout } = useAuth();
+  console.log("userName is here", user);
+  console.log("token is here", token);
+
   const { isBiometricSupported, isBiometricType } = useBiometrics();
-  const { token } = useAuth();
-  const renderBiometric = () => {
-    if (isBiometricType === 1) {
-      return <Fingerprint />;
-    }
-
-    if (isBiometricType === 2) {
-      return <FaceId />;
-    }
-
-    return null;
-  };
-
-  // useEffect(() => {
-  //   storeToken("MYTOKEN");
-  // }, []);
 
   const promptOptions = {
     promptMessage: "Login with Biometrics",
@@ -72,6 +60,13 @@ const LoginPage = () => {
   });
   const handleSubmit = async (values: LoginType) => {
     const { email, password } = values;
+    saveUser(
+      {
+        firstName: "yas",
+        lastName: "YASS",
+      },
+      "tokenhere"
+    );
     try {
       await mutateAsync({
         email,
@@ -81,8 +76,20 @@ const LoginPage = () => {
     } catch (error) {
       console.log("error", error);
     }
-    return;
+    // return;
     router.push("/(tabs)");
+  };
+
+  const renderBiometric = () => {
+    if (isBiometricType === 1) {
+      return <Fingerprint />;
+    }
+
+    if (isBiometricType === 2) {
+      return <FaceId />;
+    }
+
+    return null;
   };
 
   return (
@@ -170,9 +177,16 @@ const LoginPage = () => {
                   </AppText>
                 </View>
                 <PrimaryButton
+                  disabled={isPending}
                   style={{ marginTop: 60 }}
                   onPress={() => handleSubmit()}
                   label="Login"
+                />
+                <PrimaryButton
+                  disabled={isPending}
+                  style={{ marginTop: 60 }}
+                  onPress={logout}
+                  label="Logout"
                 />
               </View>
               <View

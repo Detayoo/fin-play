@@ -34,7 +34,6 @@ export const AccountVerificationPage = () => {
     values: { bvn: string; dob: Date },
     { resetForm }: any
   ) => {
-    console.log(values);
     const formattedDate = format(values?.dob, "dd/MM/yyyy");
     const payload = { bvn: values?.bvn, dob: formattedDate };
     router.push("/set-transaction-pin");

@@ -25,14 +25,6 @@ export const storeToken = async (token: string) => {
   }
 };
 
-export const saveUser = async (user: any) => {
-  try {
-    await AsyncStorage.setItem("USER", user);
-  } catch (error) {
-    console.log("Error saving user:", error);
-  }
-};
-
 export const getUser = async () => {
   try {
     const user = await AsyncStorage.getItem("USER");
