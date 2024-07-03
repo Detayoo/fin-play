@@ -211,6 +211,7 @@ const BankTransfer = () => {
                     ({ accountNumber, accountName, bankName }, index) => {
                       return (
                         <TouchableOpacity
+                          key={index}
                           onPress={() =>
                             router.push({
                               pathname: "/beneficiary-transfer",

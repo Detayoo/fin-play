@@ -10,11 +10,9 @@ export const DashboardLayout = ({
 }) => {
   return (
     <SafeAreaView style={styles.container}>
+      <ToastComponent />
       <GestureHandlerRootView style={{ flex: 1 }}>
-        <View style={{ paddingHorizontal: 16, flex: 1 }}>
-          <ToastComponent />
-          {children}
-        </View>
+        <View style={{ paddingHorizontal: 16, flex: 1 }}>{children}</View>
       </GestureHandlerRootView>
     </SafeAreaView>
   );

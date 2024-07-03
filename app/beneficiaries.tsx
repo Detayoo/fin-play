@@ -70,6 +70,7 @@ const Beneficiaries = () => {
         {searchToReturn?.map(({ accountNumber, accountName }, index) => {
           return (
             <TouchableOpacity
+              key={index}
               onPress={() =>
                 router.push({
                   pathname: "/beneficiary-transfer",

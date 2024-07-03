@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ImageBackground,
   ScrollView,
@@ -16,6 +16,7 @@ import {
   ReusableBottomSheet,
   Services,
   TransactionIcon,
+  showToast,
 } from "@/components";
 import {
   AddMoney,
@@ -24,7 +25,6 @@ import {
   BigUser,
   Chat,
   Copy,
-  Empty,
   Notification,
   Show,
   UserHead,
@@ -42,8 +42,10 @@ export default function HomeScreen() {
   });
 
   const accountNumber = "8140809078";
-  console.log("state");
 
+  useEffect(() => {
+    showToast("success", "YYAA");
+  }, []);
   const updateState = (payload: Partial<StateType>) => {
     setState({ ...state, ...payload });
   };

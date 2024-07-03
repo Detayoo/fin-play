@@ -1,18 +1,26 @@
+import { LoginResponse, LoginType } from "@/types";
 import { authenticatedRequest } from "../api";
 
 export const loginFn = async ({
   email,
   password,
+  token,
 }: {
   email: string;
   password: string;
+  token: string | null;
 }) => {
-  const instance = await authenticatedRequest();
+  const { data } = await authenticatedRequest(token).post<LoginResponse>(
+    "/auth/login",
+    {
+      email,
+      password,
+    }
+  );
 
-  const res = instance.post("/auth/login", {
-    email,
-    password,
-  });
+  return { data };
+};
 
-  return res;
+export const registerFn = async () => {
+  // const { data } = await authenticatedApi().post("/", {});
 };

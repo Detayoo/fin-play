@@ -11,6 +11,8 @@ import "react-native-reanimated";
 
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { Screen, ToastComponent } from "@/components";
+import { AuthProvider } from "@/context";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -37,34 +39,41 @@ export default function RootLayout() {
     return null;
   }
 
+  const queryClient = new QueryClient({});
+
   return (
     <>
-      <ToastComponent />
-      {/* <ThemeProvider
+      <AuthProvider>
+        <QueryClientProvider client={queryClient}>
+          {/* <ThemeProvider
           value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
         > */}
-      <Stack>
-        {/* <Screen> */}
-        <Stack.Screen name="index" options={options} />
-        <Stack.Screen name="login" options={options} />
-        <Stack.Screen name="registration" options={options} />
-        <Stack.Screen name="forgot-password" options={options} />
-        <Stack.Screen name="reset-password" options={options} />
-        <Stack.Screen name="account-verification" options={options} />
-        <Stack.Screen name="bvn-verification" options={options} />
-        <Stack.Screen name="set-transaction-pin" options={options} />
-        <Stack.Screen name="airtime" options={options} />
-        <Stack.Screen name="+not-found" />
-        <Stack.Screen name="internal-transfer" options={options} />
-        <Stack.Screen name="bank-transfer" options={options} />
-        <Stack.Screen name="payment-summary" options={options} />
-        <Stack.Screen name="payment-receipt" options={options} />
-        <Stack.Screen name="beneficiaries" options={options} />
-        <Stack.Screen name="beneficiary-transfer" options={options} />
-        <Stack.Screen name="transactions" options={options} />
-        {/* </Screen> */}
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      </Stack>
+          <Stack>
+            {/* <Screen> */}
+
+            <Stack.Screen name="index" options={options} />
+            <Stack.Screen name="login" options={options} />
+            <Stack.Screen name="registration" options={options} />
+            <Stack.Screen name="forgot-password" options={options} />
+            <Stack.Screen name="reset-password" options={options} />
+            <Stack.Screen name="account-verification" options={options} />
+            <Stack.Screen name="bvn-verification" options={options} />
+            <Stack.Screen name="set-transaction-pin" options={options} />
+            <Stack.Screen name="airtime" options={options} />
+            <Stack.Screen name="+not-found" />
+            <Stack.Screen name="internal-transfer" options={options} />
+            <Stack.Screen name="bank-transfer" options={options} />
+            <Stack.Screen name="payment-summary" options={options} />
+            <Stack.Screen name="payment-receipt" options={options} />
+            <Stack.Screen name="beneficiaries" options={options} />
+            <Stack.Screen name="beneficiary-transfer" options={options} />
+            <Stack.Screen name="transactions" options={options} />
+            {/* </Screen> */}
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          </Stack>
+        </QueryClientProvider>
+      </AuthProvider>
+
       {/* </ThemeProvider> */}
     </>
   );

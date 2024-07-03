@@ -8,7 +8,6 @@ import {
   ConfirmTransactionPin,
   Screen,
   SetTransactionPin,
-  ToastComponent,
   showToast,
 } from "@/components";
 
@@ -53,7 +52,6 @@ const ConfirmTransactionPIN = () => {
   return (
     <Screen>
       <SafeAreaView style={styles.container}>
-        <ToastComponent />
         <View style={styles.header}>
           <LockIcon />
           <Text style={styles.title}>

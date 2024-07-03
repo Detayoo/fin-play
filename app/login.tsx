@@ -3,6 +3,7 @@ import { Pressable, StyleSheet, View } from "react-native";
 import { Formik } from "formik";
 import { router } from "expo-router";
 import * as LocalAuthentication from "expo-local-authentication";
+import { useMutation } from "@tanstack/react-query";
 
 import {
   TextField,
@@ -12,15 +13,19 @@ import {
   Checkbox,
   PrimaryButton,
   Screen,
+  showToast,
 } from "@/components";
 import { Colors } from "@/constants";
-import { loginSchema } from "@/utils";
+import { extractServerError, loginSchema } from "@/utils";
 import { LoginType } from "@/types";
 import { FaceId, Fingerprint } from "@/assets";
 import { useBiometrics } from "@/hooks";
+import { loginFn } from "@/services";
+import { useAuth } from "@/context";
 
 const LoginPage = () => {
   const { isBiometricSupported, isBiometricType } = useBiometrics();
+  const { token } = useAuth();
   const renderBiometric = () => {
     if (isBiometricType === 1) {
       return <Fingerprint />;
@@ -49,9 +54,30 @@ const LoginPage = () => {
     }
   };
   const [rememberMe, setRememberMe] = useState(false);
-  const handleSubmit = (values: LoginType) => {
-    console.log("got here");
+
+  const { mutateAsync, isPending } = useMutation({
+    mutationFn: loginFn,
+    onSuccess: (data) => {},
+    onError: (error) => {
+      showToast(
+        "error",
+        extractServerError(error, "Something happened, please try again")
+      );
+    },
+  });
+  const handleSubmit = async (values: LoginType) => {
+    const { email, password } = values;
     router.push("/(tabs)");
+    return;
+    try {
+      await mutateAsync({
+        email,
+        password,
+        token,
+      });
+    } catch (error) {}
+    return;
+    console.log("got here");
     // router.push("/beneficiaries");
   };
 
