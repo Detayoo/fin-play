@@ -13,7 +13,7 @@ import { PaymentRecipient } from "@/assets";
 import { Colors } from "@/constants";
 
 const BeneficiaryTransfer = () => {
-  const { accountName, accountNumber } = useLocalSearchParams();
+  const { accountName, accountNumber, bankName } = useLocalSearchParams();
   const initialValues = {
     amount: "",
     narration: "",
@@ -41,7 +41,7 @@ const BeneficiaryTransfer = () => {
       >
         <BackButton />
         <AppText size="xlarge" variant="medium">
-          Transfer to Uzzy Account
+          {bankName ? "Transfer to Bank" : "Transfer to Uzzy Account"}
         </AppText>
         <BackButton
           style={{
