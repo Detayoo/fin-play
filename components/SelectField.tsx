@@ -5,6 +5,7 @@ import {
   Pressable,
   StyleSheet,
   TouchableOpacity,
+  Animated,
 } from "react-native";
 import { BottomSheetModal, BottomSheetFlatList } from "@gorhom/bottom-sheet";
 
@@ -27,6 +28,7 @@ export const SelectField = ({
   snapPoints?: string[];
 }) => {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+  const fadeAnim = useRef(new Animated.Value(0)).current;
 
   const defaultSnapPoints = useMemo(
     () => snapPoints || ["25%", "50%", "75%"],
@@ -38,14 +40,33 @@ export const SelectField = ({
   }, []);
 
   useEffect(() => {
-    if (visible) handlePresentModalPress();
-  }, [visible]);
+    if (visible) {
+      handlePresentModalPress();
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+    } else {
+      bottomSheetModalRef.current?.close();
+      Animated.timing(fadeAnim, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+    }
+  }, [visible, fadeAnim]);
 
   const handleSheetChanges = useCallback((index: number) => {
     if (index === -1) {
       setVisible(false);
     }
   }, []);
+
+  const onClose = () => {
+    bottomSheetModalRef.current?.close();
+    setVisible(false);
+  };
 
   const renderItem = useCallback(
     ({ item }: { item: any }) => (
@@ -63,46 +84,61 @@ export const SelectField = ({
     ),
     []
   );
+
+  console.log("vis", visible);
   return (
-    visible && (
-      <View
-        style={{
-          display: visible ? "flex" : "none",
-          position: "absolute",
-          bottom: 20,
-          left: 0,
-          right: 0,
-          alignItems: "center",
-        }}
-      >
-        <View style={styles.backdrop} />
-        <BottomSheetModal
-          ref={bottomSheetModalRef}
-          index={1}
-          snapPoints={defaultSnapPoints}
-          onChange={handleSheetChanges}
-          enablePanDownToClose
+    <>
+      {visible && (
+        <Animated.View
+          style={[
+            styles.backdrop,
+            {
+              opacity: fadeAnim,
+            },
+          ]}
         >
-          <BottomSheetFlatList
-            data={options}
-            keyExtractor={(item: any, index) => index.toString()}
-            renderItem={renderItem}
-            contentContainerStyle={styles.contentContainer}
-          />
-        </BottomSheetModal>
-      </View>
-    )
+          <Pressable style={styles.backdropPressable} onPress={onClose} />
+        </Animated.View>
+      )}
+      <BottomSheetModal
+        ref={bottomSheetModalRef}
+        index={1}
+        snapPoints={defaultSnapPoints}
+        onChange={handleSheetChanges}
+        enablePanDownToClose
+        style={styles.bottomSheet}
+      >
+        <BottomSheetFlatList
+          data={options}
+          keyExtractor={(item: any, index) => index.toString()}
+          renderItem={renderItem}
+          contentContainerStyle={styles.contentContainer}
+        />
+      </BottomSheetModal>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   backdrop: {
-    position: "absolute",
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(0, 0, 0, 0.6)",
+    zIndex: 0,
+  },
+  backdropPressable: {
     flex: 1,
-    backgroundColor: "red",
+  },
+  bottomSheet: {
+    zIndex: 1,
+    borderRadius: 1000,
+  },
+  handleIndicator: {
+    backgroundColor: "#DDDDDD",
+    width: 24,
   },
   contentContainer: {
     padding: 16,
+    backgroundColor: "white",
     // borderRadius: 100,
   },
   item: {
