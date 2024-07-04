@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import {
   ImageBackground,
+  Pressable,
   ScrollView,
   TouchableOpacity,
   View,
@@ -15,7 +16,7 @@ import {
   EmptyComponent,
   ReusableBottomSheet,
   Services,
-  TransactionIcon,
+  TransactionItem,
   showToast,
 } from "@/components";
 import {
@@ -25,6 +26,7 @@ import {
   BigUser,
   Chat,
   Copy,
+  Hide,
   Notification,
   Show,
   UserHead,
@@ -34,11 +36,13 @@ import { copyToClipboard, formatMoney } from "@/utils";
 
 type StateType = {
   accountDetailsModal: boolean;
+  showAccountBalance: boolean;
 };
 
 export default function HomeScreen() {
   const [state, setState] = useState({
     accountDetailsModal: false,
+    showAccountBalance: false,
   });
 
   const accountNumber = "8140809078";
@@ -70,7 +74,10 @@ export default function HomeScreen() {
         </View>
       </View>
 
-      <ScrollView style={styles.scrollView}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={styles.scrollView}
+      >
         <View
           style={{
             borderRadius: 5,
@@ -84,7 +91,19 @@ export default function HomeScreen() {
             <View
               style={{ flexDirection: "row", alignItems: "center", gap: 12 }}
             >
-              <Show />
+              <Pressable
+                onPress={() =>
+                  updateState({
+                    showAccountBalance: !state.showAccountBalance,
+                  })
+                }
+              >
+                {state.showAccountBalance ? (
+                  <Hide color={Colors.white} />
+                ) : (
+                  <Show />
+                )}
+              </Pressable>
               <AppText color={Colors.white}>Wallet Balance</AppText>
             </View>
             <AppText
@@ -93,7 +112,9 @@ export default function HomeScreen() {
               variant="medium"
               size="xxlarge"
             >
-              NGN {formatMoney("500000")}
+              {state.showAccountBalance
+                ? `NGN ${formatMoney("500000")}`
+                : "***********"}
             </AppText>
           </ImageBackground>
         </View>
@@ -133,6 +154,68 @@ export default function HomeScreen() {
         </View>
 
         <Services />
+
+        <View style={{ marginTop: 30 }}>
+          <AppText variant="medium" size="large">
+            Learn More About Finance
+          </AppText>
+          <TouchableOpacity
+            style={{
+              marginTop: 15,
+              paddingVertical: 16,
+              paddingHorizontal: 16,
+              backgroundColor: Colors.primary,
+              borderRadius: 10,
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <View style={{ gap: 12, width: "50%" }}>
+              <AppText color={Colors.boldGreen} size="small">
+                Refer and get up to
+              </AppText>
+              <View
+                style={{
+                  borderRadius: 5,
+                  backgroundColor: Colors.white,
+                  alignSelf: "flex-start",
+                }}
+              >
+                <AppText
+                  style={{
+                    paddingHorizontal: 12,
+                    paddingVertical: 5,
+                    borderRadius: 5,
+                  }}
+                >
+                  N20,000
+                </AppText>
+              </View>
+              <View
+                style={{
+                  borderRadius: 5,
+                  backgroundColor: Colors.boldGreen,
+                }}
+              >
+                <AppText
+                  color={Colors.white}
+                  style={{
+                    paddingVertical: 5,
+                    paddingHorizontal: 12,
+                  }}
+                  size="small"
+                >
+                  Commission bonus when you refer a friend
+                </AppText>
+              </View>
+            </View>
+            <Image
+              source={require("../../assets/images/learn-more.png")}
+              style={{ width: 112, height: 117 }}
+            />
+          </TouchableOpacity>
+        </View>
         <View style={{ marginVertical: 40 }}>
           <View
             style={{
@@ -146,7 +229,7 @@ export default function HomeScreen() {
               Recent Transactions
             </AppText>
             <AppText
-              onPress={() => router.push("/transactions")}
+              onPress={() => router.push("/transactions-history")}
               style={{ fontSize: 15 }}
               color={Colors.inputFocusBorder}
             >
@@ -155,7 +238,7 @@ export default function HomeScreen() {
           </View>
           {/* <EmptyComponent message="No Transaction Found" /> */}
 
-          <TransactionIcon
+          <TransactionItem
             onPress={() =>
               router.push({
                 pathname: "/payment-receipt",
@@ -164,7 +247,7 @@ export default function HomeScreen() {
             }
             status="GLO"
           />
-          <TransactionIcon
+          <TransactionItem
             onPress={() =>
               router.push({
                 pathname: "/payment-receipt",

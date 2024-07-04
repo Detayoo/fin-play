@@ -59,7 +59,10 @@ export const AccountVerificationPage = () => {
             console.log(values);
             return (
               <View style={styles.container}>
-                <ScrollView contentContainerStyle={styles.scrollContent}>
+                <ScrollView
+                  showsVerticalScrollIndicator={false}
+                  contentContainerStyle={styles.scrollContent}
+                >
                   <View style={styles.contentContainer}>
                     <AppText style={styles.heading}>
                       Bank Verification Number

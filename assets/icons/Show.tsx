@@ -1,9 +1,17 @@
 import * as React from "react";
 import Svg, { SvgProps, Path } from "react-native-svg";
-export const Show = (props: SvgProps) => (
-  <Svg width={24} height={24} fill="none" {...props}>
+export const Show = ({
+  stroke,
+  width,
+  onPress,
+}: {
+  stroke?: string;
+  width?: number;
+  onPress?: () => void;
+}) => (
+  <Svg onPress={onPress} width={width ?? 24} height={width ?? 24} fill="none">
     <Path
-      stroke="#fff"
+      stroke={stroke ?? "#fff"}
       strokeLinecap="round"
       strokeLinejoin="round"
       strokeWidth={1.5}
@@ -11,7 +19,7 @@ export const Show = (props: SvgProps) => (
       clipRule="evenodd"
     />
     <Path
-      stroke="#fff"
+      stroke={stroke ?? "#fff"}
       strokeLinecap="round"
       strokeLinejoin="round"
       strokeWidth={1.5}

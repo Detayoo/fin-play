@@ -11,6 +11,7 @@ import { BottomSheetModal, BottomSheetFlatList } from "@gorhom/bottom-sheet";
 import { Colors, fonts } from "@/constants";
 import { AppText } from "./AppText";
 import { ChevronDown } from "./ChevronDown";
+import { GTBank } from "@/assets";
 
 export const SelectField = ({
   visible,
@@ -143,7 +144,10 @@ export const SelectPlaceholder = ({
     <View style={{}}>
       <AppText variant="medium">{title}</AppText>
       <TouchableOpacity onPress={onSelect} style={styles.input}>
-        <AppText>{label || "Select"}</AppText>
+        <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+          {label && <GTBank />}
+          <AppText>{label || "Select"}</AppText>
+        </View>
         <ChevronDown />
       </TouchableOpacity>
     </View>

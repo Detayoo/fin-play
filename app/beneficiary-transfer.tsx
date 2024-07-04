@@ -51,6 +51,7 @@ const BeneficiaryTransfer = () => {
       </View>
 
       <ScrollView
+        showsVerticalScrollIndicator={false}
         contentContainerStyle={{
           justifyContent: "center",
           alignItems: "center",

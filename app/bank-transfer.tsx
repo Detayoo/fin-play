@@ -4,6 +4,7 @@ import { router } from "expo-router";
 
 import { Empty, Recipient } from "@/assets";
 import {
+  AmountField,
   AppText,
   BackButton,
   PrimaryButton,
@@ -81,7 +82,7 @@ const BankTransfer = () => {
         <View style={{ flex: 1 }}>
           <Screen>
             <BackButton />
-            <ScrollView>
+            <ScrollView showsVerticalScrollIndicator={false}>
               <AppText
                 style={{ marginTop: 20 }}
                 size="xxlarge"
@@ -128,6 +129,7 @@ const BankTransfer = () => {
                           label="Account Number"
                           maxLength={10}
                           keyboardType="number-pad"
+                          hasBalance
                         />
                       </View>
                       {values.accountNumber.length === 10 && (
@@ -145,7 +147,7 @@ const BankTransfer = () => {
                               {values.accountName}
                             </AppText>
                           </View>
-                          <TextField
+                          <AmountField
                             onChange={handleChange("amount")}
                             onBlur={handleBlur("amount")}
                             value={values.amount}

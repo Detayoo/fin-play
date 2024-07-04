@@ -45,6 +45,7 @@ const PaymentReceipt = () => {
         />
       </View>
       <ScrollView
+        showsVerticalScrollIndicator={false}
         contentContainerStyle={{
           alignItems: "center",
           backgroundColor: "#90AD0408",

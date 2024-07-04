@@ -182,12 +182,12 @@ const LoginPage = () => {
                   onPress={() => handleSubmit()}
                   label="Login"
                 />
-                <PrimaryButton
+                {/* <PrimaryButton
                   disabled={isPending}
                   style={{ marginTop: 60 }}
                   onPress={logout}
                   label="Logout"
-                />
+                /> */}
               </View>
               <View
                 style={{

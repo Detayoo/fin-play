@@ -31,3 +31,6 @@ export * from "./Search";
 export * from "./Delete";
 export * from "./BankOutward";
 export * from "./GloOutward";
+export * from "./SmallChevron";
+export * from "./Filter";
+export * from "./GTBank";

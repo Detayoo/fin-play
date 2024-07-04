@@ -26,5 +26,5 @@ export * from "./Water";
 export * from "./ListItem";
 export * from "./Switch";
 export * from "./SelectField";
-export * from "./TransactionIcon";
+export * from "./TransactionItem";
 export * from "./EmptyComponent";

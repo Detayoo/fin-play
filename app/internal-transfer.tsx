@@ -36,7 +36,7 @@ const InternalTransfer = () => {
   return (
     <Screen>
       <BackButton />
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <AppText style={{ marginTop: 20 }} size="xxlarge" variant="medium">
           Send Money to Uzzy app user
         </AppText>
@@ -74,6 +74,7 @@ const InternalTransfer = () => {
                   label="Account Number"
                   maxLength={10}
                   keyboardType="number-pad"
+                  hasBalance
                 />
                 {values.accountNumber.length === 10 && (
                   <>

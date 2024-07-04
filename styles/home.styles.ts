@@ -63,7 +63,4 @@ export const homeStyles = StyleSheet.create({
     paddingVertical: 14,
     paddingHorizontal: 14,
   },
-  
-
-
 });

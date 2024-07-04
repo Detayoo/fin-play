@@ -69,7 +69,7 @@ export default function RootLayout() {
             <Stack.Screen name="payment-receipt" options={options} />
             <Stack.Screen name="beneficiaries" options={options} />
             <Stack.Screen name="beneficiary-transfer" options={options} />
-            <Stack.Screen name="transactions" options={options} />
+            <Stack.Screen name="transactions-history" options={options} />
             {/* </Screen> */}
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           </Stack>

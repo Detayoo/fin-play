@@ -36,4 +36,5 @@ export const Colors = {
   faintBlack: "#7e7e7e",
   error: "#EA4435",
   lightGreen: "#90AD044D",
+  boldGreen: "#90AD04",
 };

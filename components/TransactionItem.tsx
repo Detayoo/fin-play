@@ -6,7 +6,7 @@ import { formatMoney } from "@/utils";
 import { Colors } from "@/constants";
 import { BankOutward, GloOutward } from "@/assets";
 
-export const TransactionIcon = ({
+export const TransactionItem = ({
   addBorder = true,
   status,
   onPress,

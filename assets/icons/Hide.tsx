@@ -1,9 +1,9 @@
 import * as React from "react";
-import Svg, { SvgProps, Path } from "react-native-svg";
-export const Hide = (props: SvgProps) => (
-  <Svg width={24} height={24} fill="none" {...props}>
+import Svg, { Path } from "react-native-svg";
+export const Hide = ({ color }: { color?: string }) => (
+  <Svg width={24} height={24} fill="none">
     <Path
-      stroke="#272A27"
+      stroke={color ?? "#272A27"}
       strokeLinecap="round"
       strokeLinejoin="round"
       strokeWidth={1.5}
@@ -11,7 +11,7 @@ export const Hide = (props: SvgProps) => (
       opacity={0.4}
     />
     <Path
-      stroke="#272A27"
+      stroke={color ?? "#272A27"}
       strokeLinecap="round"
       strokeLinejoin="round"
       strokeWidth={1.5}

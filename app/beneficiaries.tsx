@@ -51,6 +51,7 @@ const Beneficiaries = () => {
       </View>
 
       <ScrollView
+        showsVerticalScrollIndicator={false}
         contentContainerStyle={{
           paddingTop: 10,
         }}

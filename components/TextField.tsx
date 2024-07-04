@@ -2,7 +2,9 @@ import { useState } from "react";
 import { StyleSheet, TextInput, View, Text } from "react-native";
 
 import { Colors, fonts } from "@/constants";
-import { Search } from "@/assets";
+import { Hide, Search, Show } from "@/assets";
+import { AppText } from "./AppText";
+import { formatMoney } from "@/utils";
 export const TextField = ({
   touched,
   onChange,
@@ -12,6 +14,7 @@ export const TextField = ({
   errors,
   disabled,
   label,
+  hasBalance = false,
   ...rest
 }: {
   touched: any;
@@ -22,9 +25,11 @@ export const TextField = ({
   errors: any;
   disabled?: boolean;
   label: string;
+  hasBalance?: boolean;
   [x: string]: any;
 }) => {
   const [focused, setFocused] = useState(false);
+  const [show, setShow] = useState(false);
 
   const handleBlur = (e: any) => {
     setFocused(false);
@@ -34,7 +39,38 @@ export const TextField = ({
   };
   return (
     <View style={styles.inputContainer}>
-      <Text style={styles.label}>{label}</Text>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <Text style={styles.label}>{label}</Text>
+        {!!hasBalance && (
+          <View
+            style={{
+              backgroundColor: "#90AD044D",
+              height: 25,
+              borderRadius: 100,
+              paddingHorizontal: 10,
+              paddingVertical: 4,
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 2,
+            }}
+          >
+            <AppText size="small">
+              Bal. {show ? formatMoney("5000") : "*****"}
+            </AppText>
+            {show ? (
+              <Hide onPress={() => setShow(!show)} />
+            ) : (
+              <Show onPress={() => setShow(!show)} stroke={Colors.black} />
+            )}
+          </View>
+        )}
+      </View>
       <TextInput
         style={[
           styles.input,
@@ -109,6 +145,104 @@ export const SearchField = ({
           onBlur={handleBlur}
           value={value}
           placeholder="Search"
+          autoCapitalize="none"
+          autoCorrect={false}
+          placeholderTextColor={Colors.placeholder}
+          {...rest}
+        />
+      </View>
+      {/* {touched && errors && <Text style={styles.errorText}>{errors}</Text>} */}
+    </View>
+  );
+};
+
+export const AmountField = ({
+  touched,
+  onChange,
+  onBlur,
+  value,
+  placeholder,
+  errors,
+  disabled,
+  label,
+  hasBalance = false,
+  ...rest
+}: {
+  touched: any;
+  onChange: any;
+  onBlur: any;
+  value: string;
+  placeholder?: string;
+  errors: any;
+  disabled?: boolean;
+  label: string;
+  hasBalance?: boolean;
+  [x: string]: any;
+}) => {
+  const [focused, setFocused] = useState(false);
+  const [show, setShow] = useState(false);
+
+  const handleBlur = (e: any) => {
+    setFocused(false);
+    if (onBlur) {
+      onBlur(e);
+    }
+  };
+  return (
+    <View style={styles.inputContainer}>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <Text style={styles.label}>{label}</Text>
+        {!!hasBalance && (
+          <View
+            style={{
+              backgroundColor: "#90AD044D",
+              height: 25,
+              borderRadius: 100,
+              paddingHorizontal: 10,
+              paddingVertical: 4,
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 2,
+            }}
+          >
+            <AppText size="small">
+              Bal. {show ? formatMoney("5000") : "*****"}
+            </AppText>
+            {show ? (
+              <Hide onPress={() => setShow(!show)} />
+            ) : (
+              <Show onPress={() => setShow(!show)} stroke={Colors.black} />
+            )}
+          </View>
+        )}
+      </View>
+      <View
+        style={[
+          styles.input,
+          focused ? styles.focusedStyle : undefined,
+          disabled ? styles.disabledStyle : undefined,
+          { flexDirection: "row", alignItems: "center", gap: 15 },
+        ]}
+      >
+        <AppText variant="medium">NGN</AppText>
+        <View
+          style={{ backgroundColor: Colors.inputBorder, height: 35, width: 1 }}
+        />
+        <TextInput
+          style={{ flex: 1 }}
+          onFocus={() => setFocused(true)}
+          cursorColor={Colors.inputFocusBorder}
+          selectionColor={Colors.inputFocusBorder}
+          onChangeText={onChange}
+          onBlur={handleBlur}
+          value={value}
+          placeholder={placeholder}
           autoCapitalize="none"
           autoCorrect={false}
           placeholderTextColor={Colors.placeholder}
