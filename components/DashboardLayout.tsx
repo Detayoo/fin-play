@@ -9,12 +9,14 @@ export const DashboardLayout = ({
   children: React.ReactNode;
 }) => {
   return (
-    <SafeAreaView style={styles.container}>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <ToastComponent />
-        <View style={{ paddingHorizontal: 16, flex: 1 }}>{children}</View>
-      </GestureHandlerRootView>
-    </SafeAreaView>
+    <>
+      <ToastComponent />
+      <SafeAreaView style={styles.container}>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <View style={{ paddingHorizontal: 16, flex: 1 }}>{children}</View>
+        </GestureHandlerRootView>
+      </SafeAreaView>
+    </>
   );
 };
 

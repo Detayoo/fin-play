@@ -262,7 +262,7 @@ export default function HomeScreen() {
         </ScrollView>
       </DashboardLayout>
       <ReusableBottomSheet
-        snapPoints={["50%", "75%"]}
+        snapPoints={["50%"]}
         visible={state.accountDetailsModal}
         onClose={() =>
           updateState({

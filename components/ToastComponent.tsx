@@ -49,7 +49,7 @@ export const ToastComponent = () => (
 const styles = StyleSheet.create({
   container: {
     position: "absolute",
-    top: 40,
+    top: 60,
     left: 0,
     right: 0,
     zIndex: 9999,
