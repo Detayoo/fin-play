@@ -60,6 +60,8 @@ export const ReusableBottomSheet = ({
         enablePanDownToClose={true}
         style={styles.bottomSheet}
         handleIndicatorStyle={styles.handleIndicator}
+        // keyboardBehavior='interactive'
+        
       >
         <View style={styles.contentContainer}>{children}</View>
       </BottomSheet>

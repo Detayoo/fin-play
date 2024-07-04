@@ -3,7 +3,7 @@ import { ScrollView, View } from "react-native";
 
 import { AppText, BackButton, Screen } from "@/components";
 
-const AirtimePage = () => {
+const DataPage = () => {
   const { type } = useLocalSearchParams();
   return (
     <Screen>
@@ -32,4 +32,4 @@ const AirtimePage = () => {
   );
 };
 
-export default AirtimePage;
+export default DataPage;

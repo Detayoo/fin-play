@@ -25,7 +25,7 @@ const ResetPasswordPage = () => {
       <Formik
         enableReinitialize
         initialValues={{ email: "", password: "" }}
-        validationSchema={resetPasswordSchema}
+        // validationSchema={resetPasswordSchema}
         onSubmit={handleSubmit}
       >
         {({ handleSubmit }) => (

@@ -49,7 +49,9 @@ const Service = ({
   <View style={styles.pageContainer}>
     {services.map((service: any, index: number) => (
       <ServiceItem
-        onPress={() => router.push(service.label.toLowerCase())}
+        onPress={() => {
+          if (service.route) router.push(service.route);
+        }}
         key={index}
         icon={service.icon}
         label={service.label}
@@ -64,10 +66,22 @@ export const Services = () => {
 
   const services = [
     {
+      route: {
+        pathname: "initiate-bill-payment",
+        params: {
+          type: "Airtime",
+        },
+      },
       icon: <Airtime />,
       label: "Airtime",
     },
     {
+      route: {
+        pathname: "initiate-bill-payment",
+        params: {
+          type: "Data",
+        },
+      },
       icon: <Data />,
       label: "Data",
     },

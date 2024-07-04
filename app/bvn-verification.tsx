@@ -45,7 +45,7 @@ export const AccountVerificationPage = () => {
         <Formik
           initialValues={initialValues}
           onSubmit={onSubmit}
-          validationSchema={validationSchema}
+          // validationSchema={validationSchema}
         >
           {({
             handleSubmit,
@@ -82,7 +82,7 @@ export const AccountVerificationPage = () => {
                           placeholder="Enter your BVN"
                           errors={errors.bvn}
                           touched={touched.bvn}
-                          label="Email"
+                          label="BVN"
                           maxLength={11}
                           keyboardType="number-pad"
                         />
@@ -118,15 +118,16 @@ export const AccountVerificationPage = () => {
                         />
                       </View>
                     </View>
+                    <View style={styles.buttonContainer}>
+                      <PrimaryButton
+                        style={{ marginTop: 100 }}
+                        label="Continue"
+                        // disabled={!date || values?.bvn?.length !== 11}
+                        onPress={() => handleSubmit()}
+                      />
+                    </View>
                   </View>
                 </ScrollView>
-                <View style={styles.buttonContainer}>
-                  <PrimaryButton
-                    label="Continue"
-                    // disabled={!date || values?.bvn?.length !== 11}
-                    onPress={() => handleSubmit()}
-                  />
-                </View>
               </View>
             );
           }}
@@ -144,6 +145,7 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     flexGrow: 1,
+    paddingBottom: 100,
   },
   contentContainer: {
     flex: 1,
@@ -175,10 +177,10 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   buttonContainer: {
-    paddingBottom: 20,
+    // paddingBottom: 20,
     backgroundColor: "white",
-    position: "absolute",
-    bottom: 0,
+    // position: "absolute",
+    // bottom: 120,
     width: "100%",
   },
 });

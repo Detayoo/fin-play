@@ -62,6 +62,7 @@ export default function RootLayout() {
             <Stack.Screen name="bvn-verification" options={options} />
             <Stack.Screen name="set-transaction-pin" options={options} />
             <Stack.Screen name="airtime" options={options} />
+            <Stack.Screen name="data" options={options} />
             <Stack.Screen name="+not-found" />
             <Stack.Screen name="internal-transfer" options={options} />
             <Stack.Screen name="bank-transfer" options={options} />
@@ -70,6 +71,7 @@ export default function RootLayout() {
             <Stack.Screen name="beneficiaries" options={options} />
             <Stack.Screen name="beneficiary-transfer" options={options} />
             <Stack.Screen name="transactions-history" options={options} />
+            <Stack.Screen name="initiate-bill-payment" options={options} />
             {/* </Screen> */}
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           </Stack>

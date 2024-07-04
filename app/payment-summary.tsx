@@ -94,7 +94,9 @@ const PaymentSummary = () => {
                 textAlign: "center",
               }}
             >
-              Zero charges, Instant payment, Fast
+              {bankName
+                ? "Transaction fee of ₦10 applies"
+                : "Zero charges, Instant payment, Fast"}
             </AppText>
           </View>
 

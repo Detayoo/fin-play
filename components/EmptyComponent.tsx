@@ -9,11 +9,11 @@ export const EmptyComponent = ({ message }: { message: string }) => {
       style={{
         justifyContent: "center",
         alignItems: "center",
-        paddingVertical: 40,
+        paddingVertical: 50,
       }}
     >
       <Empty />
-      <AppText style={{ marginTop: 10 }} variant="medium">
+      <AppText style={{ marginTop: 15 }} variant="medium">
         {message}
       </AppText>
     </View>

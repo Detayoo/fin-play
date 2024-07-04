@@ -60,6 +60,8 @@ const LoginPage = () => {
   });
   const handleSubmit = async (values: LoginType) => {
     const { email, password } = values;
+    router.push("/(tabs)");
+    return;
 
     saveUser(
       {
@@ -78,7 +80,6 @@ const LoginPage = () => {
       console.log("error", error);
     }
     // return;
-    router.push("/(tabs)");
   };
 
   const renderBiometric = () => {
