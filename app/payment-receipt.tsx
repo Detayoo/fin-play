@@ -19,6 +19,7 @@ import {
   ReceiptTypePDF,
 } from "@/assets";
 import { formatMoney } from "@/utils";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 const PaymentReceipt = () => {
   const [showModal, setShowModal] = useState(false);
@@ -26,93 +27,99 @@ const PaymentReceipt = () => {
     useLocalSearchParams();
   console.log(useLocalSearchParams());
   return (
-    <Screen>
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <BackButton />
-        <AppText size="xlarge" variant="medium">
-          Payment Summary
-        </AppText>
-        <BackButton
-          style={{
-            opacity: 0,
-          }}
-        />
-      </View>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{
-          alignItems: "center",
-          backgroundColor: "#90AD0408",
-          paddingTop: 20,
-          paddingBottom: 30,
-          borderRadius: 10,
-          marginTop: 15,
-          shadowColor: "#ABABAB1A",
-          shadowOffset: { width: 4, height: 6 },
-          shadowOpacity: 4,
-          shadowRadius: 1,
-          elevation: 2,
-          paddingHorizontal: 16,
-        }}
-      >
-        {/* <PaymentRecipient /> */}
-        <BigBank />
-        <AppText style={{ marginTop: 14 }} size="xlarge" variant="medium">
-          NGN {formatMoney("0")}
-        </AppText>
-        <AppText style={{ marginTop: 10 }} color={Colors.inputFocusBorder}>
-          Transfer Successful
-        </AppText>
-        <AppText style={{ marginTop: 10, marginBottom: 30 }}>
-          {format(new Date(), "MMMM dd, yyyy hh:mma")}
-        </AppText>
-
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <Screen>
         <View
           style={{
-            gap: 30,
-            width: "100%",
-            borderTopWidth: 1,
-            borderColor: "#EDEDED",
-            paddingTop: 20,
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
           }}
         >
-          <ListItem
-            name="Recipient's Details"
-            value={accountName || "Adedigba Peter Adetayo"}
-            value2={"Uzzy Bank | 01234567890"}
-          />
-          <ListItem
-            name="Sender's Details"
-            value={accountNumber || "Starboy"}
-            value2={"Uzzy Bank | 01234567890"}
-          />
-          <ListItem name="Narration" value={narration} />
-          <ListItem name="Fee" value="NGN 0.00" />
-          <ListItem name="Transaction ID" value="axhjdajjj1215613653" canCopy />
-          <ListItem
-            name="Session ID"
-            value="5dhsSHSIU3SJey2747299472 hIY7s3"
-            canCopy
+          <BackButton />
+          <AppText size="xlarge" variant="medium">
+            Payment Summary
+          </AppText>
+          <BackButton
+            style={{
+              opacity: 0,
+            }}
           />
         </View>
-      </ScrollView>
-      <PrimaryButton
-        onPress={() => router.push("/(tabs)")}
-        variant="outline"
-        style={{ marginTop: 30 }}
-        label="Go back to Home"
-      />
-      <PrimaryButton
-        onPress={() => setShowModal(true)}
-        style={{ marginTop: 16 }}
-        label="Share Receipt"
-      />
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{
+            alignItems: "center",
+            backgroundColor: "#90AD0408",
+            paddingTop: 20,
+            paddingBottom: 30,
+            borderRadius: 10,
+            marginTop: 15,
+            shadowColor: "#ABABAB1A",
+            shadowOffset: { width: 4, height: 6 },
+            shadowOpacity: 4,
+            shadowRadius: 1,
+            elevation: 2,
+            paddingHorizontal: 16,
+          }}
+        >
+          {/* <PaymentRecipient /> */}
+          <BigBank />
+          <AppText style={{ marginTop: 14 }} size="xlarge" variant="medium">
+            NGN {formatMoney("0")}
+          </AppText>
+          <AppText style={{ marginTop: 10 }} color={Colors.inputFocusBorder}>
+            Transfer Successful
+          </AppText>
+          <AppText style={{ marginTop: 10, marginBottom: 30 }}>
+            {format(new Date(), "MMMM dd, yyyy hh:mma")}
+          </AppText>
+
+          <View
+            style={{
+              gap: 30,
+              width: "100%",
+              borderTopWidth: 1,
+              borderColor: "#EDEDED",
+              paddingTop: 20,
+            }}
+          >
+            <ListItem
+              name="Recipient's Details"
+              value={accountName || "Adedigba Peter Adetayo"}
+              value2={"Uzzy Bank | 01234567890"}
+            />
+            <ListItem
+              name="Sender's Details"
+              value={accountNumber || "Starboy"}
+              value2={"Uzzy Bank | 01234567890"}
+            />
+            <ListItem name="Narration" value={narration} />
+            <ListItem name="Fee" value="NGN 0.00" />
+            <ListItem
+              name="Transaction ID"
+              value="axhjdajjj1215613653"
+              canCopy
+            />
+            <ListItem
+              name="Session ID"
+              value="5dhsSHSIU3SJey2747299472 hIY7s3"
+              canCopy
+            />
+          </View>
+        </ScrollView>
+        <PrimaryButton
+          onPress={() => router.push("/(tabs)")}
+          variant="outline"
+          style={{ marginTop: 30 }}
+          label="Go back to Home"
+        />
+        <PrimaryButton
+          onPress={() => setShowModal(true)}
+          style={{ marginTop: 16 }}
+          label="Share Receipt"
+        />
+      </Screen>
       <ReusableBottomSheet
         snapPoints={["30%"]}
         visible={showModal}
@@ -159,7 +166,7 @@ const PaymentReceipt = () => {
           </TouchableOpacity>
         </View>
       </ReusableBottomSheet>
-    </Screen>
+    </GestureHandlerRootView>
   );
 };
 
