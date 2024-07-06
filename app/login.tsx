@@ -60,16 +60,10 @@ const LoginPage = () => {
   });
   const handleSubmit = async (values: LoginType) => {
     const { email, password } = values;
+
     router.push("/(tabs)");
     return;
 
-    saveUser(
-      {
-        firstName: "yas",
-        lastName: "YASS",
-      },
-      "tokenhere"
-    );
     try {
       await mutateAsync({
         email,

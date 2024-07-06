@@ -1,10 +1,8 @@
-import { Redirect, Tabs } from "expo-router";
 import React from "react";
+import { Redirect, Tabs } from "expo-router";
 
-import { TabBarIcon } from "@/components/navigation/TabBarIcon";
 import { Colors } from "@/constants";
 import { useColorScheme } from "@/hooks/useColorScheme";
-import { View } from "react-native";
 import {
   ActiveHome,
   ActiveRewards,
@@ -14,13 +12,14 @@ import {
   Rewards,
   Savings,
 } from "@/assets";
+import { useAuth } from "@/context";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
-  const token = "hh";
+  const { token } = useAuth();
 
   if (!token) {
-    return <Redirect href="/" />;
+    return <Redirect href="/login" />;
   }
 
   return (

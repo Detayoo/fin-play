@@ -8,12 +8,14 @@ import {
 } from "react-native";
 import { Image } from "expo-image";
 import { router } from "expo-router";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 import { homeStyles as styles } from "@/styles";
 import {
   AppText,
   DashboardLayout,
   EmptyComponent,
+  PrimaryButton,
   ReusableBottomSheet,
   Services,
   TransactionItem,
@@ -33,7 +35,7 @@ import {
 } from "@/assets";
 import { Colors } from "@/constants";
 import { copyToClipboard, formatMoney } from "@/utils";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { useAuth } from "@/context";
 
 type StateType = {
   accountDetailsModal: boolean;
@@ -41,6 +43,7 @@ type StateType = {
 };
 
 export default function HomeScreen() {
+  const { logout } = useAuth();
   const [state, setState] = useState({
     accountDetailsModal: false,
     showAccountBalance: false,
@@ -52,7 +55,6 @@ export default function HomeScreen() {
     setState({ ...state, ...payload });
   };
 
-  console.log(state);
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <DashboardLayout>
@@ -120,6 +122,7 @@ export default function HomeScreen() {
               </AppText>
             </ImageBackground>
           </View>
+          <PrimaryButton label="Logout" onPress={logout} />
 
           <View style={styles.moneyActions}>
             <TouchableOpacity
