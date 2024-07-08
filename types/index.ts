@@ -10,3 +10,5 @@ export type BareResponse = {
 export type TokenizedPayload = {
   token: string;
 };
+
+export type TokenType = string | null;

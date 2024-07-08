@@ -3,6 +3,7 @@ import {
   LoginType,
   RegistrationResponse,
   RegistrationType,
+  TokenType,
 } from "@/types";
 import { authenticatedRequest, baseRequest } from "../api";
 
@@ -41,7 +42,7 @@ export const verifyAccountFn = async ({
   token,
   otp,
 }: {
-  token: string;
+  token: TokenType;
   otp: string;
 }) => {
   const { data } = await authenticatedRequest(token).patch("/auth/otp/verify", {
@@ -66,7 +67,7 @@ export const verifyBVNFn = async ({
   return data;
 };
 
-export const resendOTPFn = async ({ token }: { token: string }) => {
+export const resendOTPFn = async ({ token }: { token: TokenType }) => {
   const { data } = await authenticatedRequest(token).post("/auth/send-otp");
   return data;
 };

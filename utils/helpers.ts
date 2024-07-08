@@ -40,4 +40,5 @@ export const copyToClipboard = async (text: any) => {
 
 export const ERRORS = {
   SOMETHING_HAPPENED: "Something happened, please try again",
+  FAILED_ACCOUNT_VERIFICATION: "Could ot verify account, please try again",
 };

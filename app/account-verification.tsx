@@ -1,38 +1,78 @@
 import { useEffect, useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
+import { useMutation } from "@tanstack/react-query";
 
 import { Colors, fonts } from "@/constants";
-import { AppText, AuthLayout, OtpField, Screen } from "@/components";
+import { AppText, AuthLayout, OtpField, Screen, showToast } from "@/components";
 import { useCountdown } from "@/hooks";
-import { maskEmail } from "@/utils";
+import { ERRORS, extractServerError, maskEmail } from "@/utils";
+import { resendOTPFn, verifyAccountFn } from "@/services";
+import { useAuth } from "@/context";
 
 const AccountVerificationPage = () => {
+  const { token } = useAuth();
+  const { email, from } = useLocalSearchParams();
   const [otp, setOtp] = useState("");
   let OTP_TIME = 60;
   const [seconds, setSeconds] = useState(OTP_TIME);
-  const { email, from } = useLocalSearchParams();
   const { minutes, remainingSeconds } = useCountdown(seconds, setSeconds);
 
   useEffect(() => {
-    if (otp.length === 6 && from === "/registration") {
-      router.replace("/bvn-verification");
-      setOtp("");
-    }
-
-    if (otp.length === 6 && from === "/forgot-password") {
-      router.replace("/reset-password");
-      setOtp("");
-    }
-
-    OTP_TIME = 60;
+    handleVerification();
+    setSeconds(OTP_TIME);
   }, [otp]);
 
+  const { mutateAsync: verifyAsync, isPending: isVerifying } = useMutation({
+    mutationFn: verifyAccountFn,
+    onSuccess: () => {
+      if (from === "/registration") {
+        router.replace("/bvn-verification");
+        setOtp("");
+        return;
+      }
+      if (from === "/forgot-password") {
+        router.replace("/reset-password");
+        setOtp("");
+        return;
+      }
+    },
+    onError: (error) => {
+      showToast(
+        "error",
+        extractServerError(error, ERRORS.FAILED_ACCOUNT_VERIFICATION)
+      );
+    },
+  });
+
+  const { mutateAsync: resendAsync, isPending: isResending } = useMutation({
+    mutationFn: resendOTPFn,
+    onSuccess: () => {
+      setSeconds(OTP_TIME);
+    },
+    onError: (error) => {
+      showToast("error", extractServerError(error, ERRORS.SOMETHING_HAPPENED));
+    },
+  });
+
   //while registering
-  const handleVerification = async () => {};
+  const handleVerification = async () => {
+    try {
+      await verifyAsync({
+        otp,
+        token,
+      });
+    } catch (error) {}
+  };
 
   //resend an otp
-  const handleResendOtp = () => {};
+  const handleResendOtp = async () => {
+    try {
+      await resendAsync({
+        token,
+      });
+    } catch (error) {}
+  };
 
   return (
     <Screen>
@@ -70,7 +110,7 @@ const AccountVerificationPage = () => {
                 style={styles.resendCode}
                 color={Colors.inputFocusBorder}
               >
-                Resend Code
+                {isResending ? "Resending" : "Resend Code"}
               </AppText>
             </AppText>
           )}
