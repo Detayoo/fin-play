@@ -40,7 +40,7 @@ const RegistrationPage = () => {
       showToast("error", extractServerError(error, ERRORS.SOMETHING_HAPPENED));
     },
   });
-  const handleSubmit = async (values: RegistrationType) => {
+  const handleSubmit = async (values: RegistrationType, { resetForm }: any) => {
     const { email, fullName, password } = values;
     setEmail(values.email);
     try {
@@ -49,6 +49,7 @@ const RegistrationPage = () => {
         password,
         fullName,
       });
+      resetForm();
     } catch (error) {}
   };
 

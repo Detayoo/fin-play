@@ -1,8 +1,10 @@
 import { useState } from "react";
-import { router } from "expo-router";
 import { Pressable, View, StyleSheet, ScrollView } from "react-native";
-import * as Yup from "yup";
+import { router } from "expo-router";
 import { Formik } from "formik";
+import * as Yup from "yup";
+import { format } from "date-fns";
+import { useMutation } from "@tanstack/react-query";
 
 import {
   AppText,
@@ -11,13 +13,16 @@ import {
   PrimaryButton,
   Screen,
   DateComponent,
+  showToast,
 } from "@/components";
 import { Colors, fonts } from "@/constants";
 import { QuestionMark } from "@/assets";
-import { format } from "date-fns";
+import { verifyBVNFn } from "@/services";
+import { ERRORS, extractServerError } from "@/utils";
+import { useAuth } from "@/context";
 
 export const AccountVerificationPage = () => {
-  const [date, setDate] = useState(new Date());
+  const { token } = useAuth();
   const [showDate, setShowDate] = useState(false);
 
   const initialValues = {
@@ -30,13 +35,32 @@ export const AccountVerificationPage = () => {
     dob: Yup.string().required(),
   });
 
+  const { mutateAsync, isPending } = useMutation({
+    mutationFn: verifyBVNFn,
+    onSuccess: (data) => {
+      showToast(
+        "success",
+        extractServerError(data?.message, ERRORS.SOMETHING_HAPPENED)
+      );
+
+      router.push("/set-transaction-pin"); // todo: this is subject to change
+    },
+    onError: (error) => {
+      showToast("error", extractServerError(error, ERRORS.SOMETHING_HAPPENED));
+    },
+  });
+
   const onSubmit = async (
     values: { bvn: string; dob: Date },
     { resetForm }: any
   ) => {
     const formattedDate = format(values?.dob, "dd/MM/yyyy");
-    const payload = { bvn: values?.bvn, dob: formattedDate };
-    router.push("/set-transaction-pin");
+    const payload = { bvn: values.bvn, dob: formattedDate, token };
+
+    try {
+      await mutateAsync(payload);
+      resetForm();
+    } catch (error) {}
   };
 
   return (
@@ -45,7 +69,7 @@ export const AccountVerificationPage = () => {
         <Formik
           initialValues={initialValues}
           onSubmit={onSubmit}
-          // validationSchema={validationSchema}
+          validationSchema={validationSchema}
         >
           {({
             handleSubmit,
@@ -56,7 +80,6 @@ export const AccountVerificationPage = () => {
             touched,
             setFieldValue,
           }) => {
-            console.log(values);
             return (
               <View style={styles.container}>
                 <ScrollView

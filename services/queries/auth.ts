@@ -1,4 +1,5 @@
 import {
+  BareResponse,
   LoginResponse,
   LoginType,
   RegistrationResponse,
@@ -56,14 +57,17 @@ export const verifyBVNFn = async ({
   bvn,
   dob,
 }: {
-  token: string;
+  token: TokenType;
   bvn: string;
   dob: string;
 }) => {
-  const { data } = await authenticatedRequest(token).patch("/auth/bvn", {
-    bvn,
-    dob,
-  });
+  const { data } = await authenticatedRequest(token).patch<BareResponse>(
+    "/auth/bvn",
+    {
+      bvn,
+      dob,
+    }
+  );
   return data;
 };
 
