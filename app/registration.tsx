@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Formik } from "formik";
+import { useMutation } from "@tanstack/react-query";
 import { router } from "expo-router";
 
 import {
@@ -14,28 +15,48 @@ import {
   Screen,
 } from "@/components";
 import { Colors } from "@/constants";
-import { registrationSchema } from "@/utils";
+import { ERRORS, extractServerError, registrationSchema } from "@/utils";
 import { RegistrationType } from "@/types";
+import { registerFn } from "@/services";
+import { useAuth } from "@/context";
 
 const RegistrationPage = () => {
-  const handleSubmit = (values: RegistrationType) => {
-    console.log("got here");
-    console.log(values);
-
-    router.push({
-      pathname: "/account-verification",
-      params: {
-        email: values?.email,
-        from: "/registration",
-      },
-    });
+  const { saveUser } = useAuth();
+  const [email, setEmail] = useState("");
+  const { mutateAsync, isPending } = useMutation({
+    mutationFn: registerFn,
+    onSuccess: (data) => {
+      console.log("token is now", data?.data?.token);
+      saveUser({}, data?.data?.token);
+      router.push({
+        pathname: "/account-verification",
+        params: {
+          email,
+          from: "/registration",
+        },
+      });
+    },
+    onError: (error) => {
+      showToast("error", extractServerError(error, ERRORS.SOMETHING_HAPPENED));
+    },
+  });
+  const handleSubmit = async (values: RegistrationType) => {
+    const { email, fullName, password } = values;
+    setEmail(values.email);
+    try {
+      await mutateAsync({
+        email,
+        password,
+        fullName,
+      });
+    } catch (error) {}
   };
 
   return (
     <Screen>
       <Formik
         initialValues={{ email: "", password: "", fullName: "", terms: false }}
-        // validationSchema={registrationSchema}
+        validationSchema={registrationSchema}
         onSubmit={handleSubmit}
       >
         {({
@@ -46,6 +67,7 @@ const RegistrationPage = () => {
           errors,
           touched,
           setFieldValue,
+          isValid,
         }) => {
           return (
             <AuthLayout>
@@ -110,6 +132,7 @@ const RegistrationPage = () => {
                     </AppText>
                   </View>
                   <PrimaryButton
+                    disabled={isPending || !isValid}
                     style={{ marginTop: 47 }}
                     onPress={() => handleSubmit()}
                     label="Continue"

@@ -1,26 +1,86 @@
-import { LoginResponse, LoginType } from "@/types";
-import { authenticatedRequest } from "../api";
+import {
+  LoginResponse,
+  LoginType,
+  RegistrationResponse,
+  RegistrationType,
+} from "@/types";
+import { authenticatedRequest, baseRequest } from "../api";
 
 export const loginFn = async ({
   email,
   password,
-  token,
 }: {
   email: string;
   password: string;
-  token: string | null;
 }) => {
-  const { data } = await authenticatedRequest(token).post<LoginResponse>(
-    "/auth/login",
-    {
-      email,
-      password,
-    }
-  );
+  const { data } = await baseRequest.post<LoginResponse>("/auth/login", {
+    email,
+    password,
+  });
 
   return { data };
 };
 
-export const registerFn = async () => {
-  // const { data } = await authenticatedApi().post("/", {});
+export const registerFn = async ({
+  email,
+  fullName,
+  password,
+}: RegistrationType) => {
+  const { data } = await baseRequest.post<RegistrationResponse>(
+    "/auth/register",
+    {
+      email,
+      fullName,
+      password,
+    }
+  );
+  return data;
+};
+
+export const verifyAccountFn = async ({
+  token,
+  otp,
+}: {
+  token: string;
+  otp: string;
+}) => {
+  const { data } = await authenticatedRequest(token).patch("/auth/otp/verify", {
+    otp,
+  });
+  return data;
+};
+
+export const verifyBVNFn = async ({
+  token,
+  bvn,
+  dob,
+}: {
+  token: string;
+  bvn: string;
+  dob: string;
+}) => {
+  const { data } = await authenticatedRequest(token).patch("/auth/bvn", {
+    bvn,
+    dob,
+  });
+  return data;
+};
+
+export const resendOTPFn = async ({ token }: { token: string }) => {
+  const { data } = await authenticatedRequest(token).post("/auth/send-otp");
+  return data;
+};
+
+export const forgotPasswordFn = async ({
+  token,
+  email,
+}: {
+  token: string;
+  email: string;
+}) => {
+  const { data } = await authenticatedRequest(token).post(
+    "/auth/password/forgot",
+    { email }
+  );
+  return data;
 };

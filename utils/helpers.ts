@@ -37,3 +37,7 @@ export const copyToClipboard = async (text: any) => {
   }
   showToast("success", "Copied successfully");
 };
+
+export const ERRORS = {
+  SOMETHING_HAPPENED: "Something happened, please try again",
+};

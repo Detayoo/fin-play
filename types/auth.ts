@@ -1,6 +1,7 @@
 export type RegistrationType = {
-  fullName: string;
   email: string;
+  fullName: string;
+  password: string;
 };
 
 export type LoginType = {
@@ -10,4 +11,10 @@ export type LoginType = {
 
 export type LoginResponse = {};
 
-export type RegistrationResponse = {};
+export type RegistrationResponse = {
+  statusCode: number;
+  message: string;
+  data: {
+    token: string;
+  };
+};

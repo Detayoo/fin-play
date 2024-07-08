@@ -13,6 +13,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { AuthProvider } from "@/context";
 import NetworkLogger from "react-native-network-logger";
+import { View } from "react-native";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -76,7 +77,9 @@ export default function RootLayout() {
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           </Stack>
         </QueryClientProvider>
-        {/* <NetworkLogger /> */}
+        <View style={{ height: 300 }}>
+          <NetworkLogger />
+        </View>
       </AuthProvider>
 
       {/* </ThemeProvider> */}

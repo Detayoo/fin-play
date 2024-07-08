@@ -68,7 +68,6 @@ const LoginPage = () => {
       await mutateAsync({
         email,
         password,
-        token,
       });
     } catch (error) {
       console.log("error", error);
