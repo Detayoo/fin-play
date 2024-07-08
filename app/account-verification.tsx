@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 import { Colors, fonts } from "@/constants";
 import { AppText, AuthLayout, OtpField, Screen, showToast } from "@/components";
@@ -12,6 +12,7 @@ import { useAuth } from "@/context";
 
 const AccountVerificationPage = () => {
   const { token } = useAuth();
+  console.log(token);
   const { email, from } = useLocalSearchParams();
   const [otp, setOtp] = useState("");
   let OTP_TIME = 60;
@@ -19,9 +20,23 @@ const AccountVerificationPage = () => {
   const { minutes, remainingSeconds } = useCountdown(seconds, setSeconds);
 
   useEffect(() => {
-    handleVerification();
-    setSeconds(OTP_TIME);
+    if (otp.length === 6) {
+      handleVerification();
+      setSeconds(OTP_TIME);
+    }
   }, [otp]);
+
+  // useEffect(() => {
+  //   if (from === "/login") {
+  //     handleResendOtp();
+  //   }
+  // }, []);
+
+  const { data } = useQuery({
+    queryKey: ["resend otp"],
+    queryFn: () => resendOTPFn({ token }),
+    enabled: from === "/login",
+  });
 
   const { mutateAsync: verifyAsync, isPending: isVerifying } = useMutation({
     mutationFn: verifyAccountFn,

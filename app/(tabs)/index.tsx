@@ -122,7 +122,7 @@ export default function HomeScreen() {
               </AppText>
             </ImageBackground>
           </View>
-          <PrimaryButton label="Logout" onPress={logout} />
+          {/* <PrimaryButton label="Logout" onPress={logout} /> */}
 
           <View style={styles.moneyActions}>
             <TouchableOpacity

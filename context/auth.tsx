@@ -41,12 +41,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const logout = async() => {
+  const logout = async () => {
     setIsLoading(true);
     try {
       await AsyncStorage.multiRemove(["USER", "TOKEN"]);
       setUser(null);
-      setToken(null)
+      setToken(null);
     } catch (error) {
       console.error("Sign out failed", error);
     } finally {
@@ -56,10 +56,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const saveUser = async (user: any, token: string) => {
     try {
-      await AsyncStorage.setItem("USER", JSON.stringify(user));
-      await AsyncStorage.setItem("TOKEN", token);
       setUser(user);
       setToken(token);
+      await AsyncStorage.setItem("USER", JSON.stringify(user));
+      await AsyncStorage.setItem("TOKEN", token);
     } catch (error) {
       console.log("error saving user", user);
     }

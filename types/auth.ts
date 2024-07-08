@@ -9,7 +9,21 @@ export type LoginType = {
   password: string;
 };
 
-export type LoginResponse = {};
+export type LoginResponse = {
+  statusCode: number;
+  message: string;
+  data: {
+    token: string;
+  };
+  metadata: {
+    id: string;
+    email: string;
+    fullName: string;
+    bvnVerified: boolean;
+    verified: boolean;
+    deactivated: boolean;
+  };
+};
 
 export type RegistrationResponse = {
   statusCode: number;

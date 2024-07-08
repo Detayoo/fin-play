@@ -1,7 +1,7 @@
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { config } from "@/config";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const logout = async () => {
   await AsyncStorage.multiRemove(["USER", "TOKEN"]);
@@ -17,7 +17,7 @@ export const authenticatedRequest = (token: string | null) => {
     headers: {
       "ngrok-skip-browser-warning": "any",
       "Content-Type": "application/json",
-      "X-Access-Token": token,
+      "X-Access-Token": `Bearer ${token}`,
     },
   });
 

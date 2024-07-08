@@ -18,9 +18,9 @@ export default function TabLayout() {
   const colorScheme = useColorScheme();
   const { token } = useAuth();
 
-  if (!token) {
-    return <Redirect href="/login" />;
-  }
+  // if (!token) {
+  //   return <Redirect href="/login" />;
+  // }
 
   return (
     <Tabs

@@ -77,9 +77,9 @@ export default function RootLayout() {
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           </Stack>
         </QueryClientProvider>
-        <View style={{ height: 300 }}>
+        {/* <View style={{ height: 300 }}>
           <NetworkLogger />
-        </View>
+        </View> */}
       </AuthProvider>
 
       {/* </ThemeProvider> */}

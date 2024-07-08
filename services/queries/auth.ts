@@ -72,7 +72,7 @@ export const verifyBVNFn = async ({
 };
 
 export const resendOTPFn = async ({ token }: { token: TokenType }) => {
-  const { data } = await authenticatedRequest(token).post("/auth/send-otp");
+  const { data } = await authenticatedRequest(token).get("/auth/otp/send");
   return data;
 };
 

@@ -16,7 +16,7 @@ import {
   showToast,
 } from "@/components";
 import { Colors } from "@/constants";
-import { extractServerError, getUser, loginSchema } from "@/utils";
+import { extractServerError, getUser, loginSchema, storeToken } from "@/utils";
 import { LoginType } from "@/types";
 import { FaceId, Fingerprint } from "@/assets";
 import { useBiometrics } from "@/hooks";
@@ -25,8 +25,18 @@ import { useAuth } from "@/context";
 
 const LoginPage = () => {
   const { token, saveUser, user, logout } = useAuth();
+  const [email, setEmail] = useState("");
   console.log("userName is here", user);
   console.log("token is here", token);
+
+  const clearStorage = async () => {
+    await storeToken("");
+    await saveUser(null, "");
+  };
+
+  useEffect(() => {
+    clearStorage();
+  }, []); //todo: to be removed
 
   const { isBiometricSupported, isBiometricType } = useBiometrics();
 
@@ -49,7 +59,31 @@ const LoginPage = () => {
 
   const { mutateAsync, isPending } = useMutation({
     mutationFn: loginFn,
-    onSuccess: (data) => {},
+    onSuccess: (data) => {
+      // router.push("/(tabs)");
+      // return;
+      if (!data.data.metadata.verified) {
+        saveUser(data.data.metadata, data.data.data.token);
+        storeToken(data.data.data.token);
+        showToast("error", "Please verify your account to continue");
+        router.push({
+          pathname: "/account-verification",
+          params: {
+            email,
+            from: "/login",
+          },
+        });
+        return;
+      }
+
+      if (!data.data.metadata.bvnVerified) {
+        showToast("error", "Please link your BVN to continue");
+        router.push("/bvn-verification");
+        return;
+      }
+
+      return;
+    },
     onError: (error) => {
       console.log(error, "err");
       showToast(
@@ -63,6 +97,7 @@ const LoginPage = () => {
 
     router.push("/(tabs)");
     return;
+    setEmail(email);
 
     try {
       await mutateAsync({
@@ -72,7 +107,6 @@ const LoginPage = () => {
     } catch (error) {
       console.log("error", error);
     }
-    // return;
   };
 
   const renderBiometric = () => {
