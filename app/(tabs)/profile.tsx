@@ -89,6 +89,7 @@ const ProfilePage = () => {
             {MORE_ROUTES.map((setting, index) => {
               return (
                 <Pressable
+                  onPress={() => handleNavigation(setting.route)}
                   key={index}
                   style={{
                     flexDirection: "row",

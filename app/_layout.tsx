@@ -75,6 +75,7 @@ export default function RootLayout() {
             <Stack.Screen name="initiate-bill-payment" options={options} />
             <Stack.Screen name="user-profile" options={options} />
             <Stack.Screen name="preferences" options={options} />
+            <Stack.Screen name="contact-support" options={options} />
             {/* </Screen> */}
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           </Stack>

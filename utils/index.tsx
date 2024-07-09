@@ -43,7 +43,7 @@ export const MORE_ROUTES = [
   {
     icon: <CustomerSupport />,
     label: "Customer Support",
-    route: "/customer-support",
+    route: "/contact-support",
   },
   {
     icon: <ReferAFriend />,
