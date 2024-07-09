@@ -4,8 +4,13 @@ import { AppText, DashboardLayout, PrimaryButton } from "@/components";
 import { Image } from "expo-image";
 import { MORE_ROUTES, SETTINGS_ROUTES } from "@/utils";
 import { ChevronDown } from "@/components/ChevronDown";
+import { router } from "expo-router";
 
-const RewardsPage = () => {
+const ProfilePage = () => {
+  const handleNavigation = (route: any) => {
+    router.push(route);
+  };
+
   return (
     <DashboardLayout>
       <ScrollView
@@ -49,6 +54,7 @@ const RewardsPage = () => {
             {SETTINGS_ROUTES.map((setting, index) => {
               return (
                 <Pressable
+                  onPress={() => handleNavigation(setting.route)}
                   key={index}
                   style={{
                     flexDirection: "row",
@@ -125,4 +131,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RewardsPage;
+export default ProfilePage;
