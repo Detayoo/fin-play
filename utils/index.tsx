@@ -4,12 +4,14 @@ import {
   ReferAFriend,
   SettingsProfile,
   TermsAndConditions,
+  UpgradeTier,
 } from "@/assets";
 
 export * from "./extractAppError";
 export * from "./storage";
 export * from "./validators";
 export * from "./helpers";
+export const naira = <>&#8358;</>;
 
 export const SETTINGS_ROUTES = [
   {
@@ -23,7 +25,7 @@ export const SETTINGS_ROUTES = [
     route: "/account-limit",
   },
   {
-    icon: <AccountLimit />,
+    icon: <UpgradeTier />,
     label: "Upgrade Tier",
     route: "/upgrade-tier",
   },

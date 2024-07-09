@@ -44,8 +44,9 @@ export * from "./ReferAFriend";
 export * from "./TermsAndConditions";
 export * from "./EmailNotification";
 export * from "./PushNotification";
-export * from './Telephone'
-export * from './LiveChat'
-export * from './Facebook'
-export * from './X'
-export * from './Instagram'
+export * from "./Telephone";
+export * from "./LiveChat";
+export * from "./Facebook";
+export * from "./X";
+export * from "./Instagram";
+export * from "./DashedBorder";
