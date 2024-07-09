@@ -30,7 +30,7 @@ const PreferencesPage = () => {
       >
         <BackButton />
         <AppText size="xlarge" variant="medium">
-          User Profile
+          Preferences
         </AppText>
         <BackButton
           style={{
