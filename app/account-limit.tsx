@@ -92,7 +92,6 @@ const AccountLimitPage = () => {
                 flexDirection: "row",
                 gap: 5,
                 alignItems: "center",
-                paddingBottom: 20,
               }}
             >
               <AppText size="small">Copy</AppText>
