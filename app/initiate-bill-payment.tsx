@@ -34,7 +34,7 @@ const InitiateBillPaymentPage = () => {
         <Pressable
           onPress={() =>
             router.push({
-              pathname: `/${lowerCaseType}`,
+              pathname: `/buy-${lowerCaseType}`,
               params: {
                 type,
               },

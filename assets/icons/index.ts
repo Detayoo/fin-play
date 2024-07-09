@@ -52,3 +52,4 @@ export * from "./Instagram";
 export * from "./DashedBorder";
 export * from "./Gift";
 export * from "./Logout";
+export * from "./BigMtn";

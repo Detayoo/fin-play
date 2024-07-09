@@ -78,6 +78,8 @@ export default function RootLayout() {
             <Stack.Screen name="contact-support" options={options} />
             <Stack.Screen name="account-limit" options={options} />
             <Stack.Screen name="referrals" options={options} />
+            <Stack.Screen name="buy-airtime" options={options} />
+            <Stack.Screen name="review-payment" options={options} />
             {/* </Screen> */}
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           </Stack>
