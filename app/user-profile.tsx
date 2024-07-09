@@ -1,9 +1,9 @@
 import { ScrollView, View } from "react-native";
+import { format } from "date-fns";
+import { Image } from "expo-image";
 
 import { AppText, BackButton, ListItem, Screen } from "@/components";
-import { Image } from "expo-image";
 import { Colors } from "@/constants";
-import { format } from "date-fns";
 
 const UserProfilePage = () => {
   return (
