@@ -1,5 +1,9 @@
-import { router, useLocalSearchParams } from "expo-router";
+import { useState } from "react";
 import { Pressable, ScrollView, View } from "react-native";
+import { router, useLocalSearchParams } from "expo-router";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+import { Formik } from "formik";
 
 import {
   AppText,
@@ -10,11 +14,7 @@ import {
   SelectPlaceholder,
   TextField,
 } from "@/components";
-import { Formik } from "formik";
 import { Recipient } from "@/assets";
-import { useState } from "react";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 
 type Options = { id: number; label: string }[];
 type State = {

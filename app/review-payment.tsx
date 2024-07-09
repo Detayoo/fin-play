@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { ScrollView, View } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import { format } from "date-fns";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 import {
   AppText,
@@ -14,14 +15,13 @@ import {
   SwitchComponent,
 } from "@/components";
 import { Colors } from "@/constants";
-import { BigMtn, PaymentRecipient } from "@/assets";
+import { BigMtn } from "@/assets";
 import { formatMoney } from "@/utils";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 const ReviewPayment = () => {
   const [showModal, setShowModal] = useState(false);
   const [save, setSave] = useState(false);
-  const [useCashback, setSUseCashback] = useState(false);
+  const [useCashback, setUseCashback] = useState(false);
   const [pin, setPin] = useState("");
   const {
     accountNumber,
@@ -119,7 +119,7 @@ const ReviewPayment = () => {
               <AppText color={Colors.faintBlack}>Use cashback</AppText>
               <SwitchComponent
                 state={useCashback}
-                toggleSwitch={() => setSUseCashback(!useCashback)}
+                toggleSwitch={() => setUseCashback(!useCashback)}
               />
             </View>
             <View
