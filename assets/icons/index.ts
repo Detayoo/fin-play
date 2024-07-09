@@ -50,3 +50,4 @@ export * from "./Facebook";
 export * from "./X";
 export * from "./Instagram";
 export * from "./DashedBorder";
+export * from "./Gift";

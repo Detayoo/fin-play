@@ -1,10 +1,10 @@
 import { Pressable, ScrollView, StyleSheet, View } from "react-native";
+import { Image } from "expo-image";
+import { router } from "expo-router";
 
 import { AppText, DashboardLayout, PrimaryButton } from "@/components";
-import { Image } from "expo-image";
 import { MORE_ROUTES, SETTINGS_ROUTES } from "@/utils";
 import { ChevronDown } from "@/components/ChevronDown";
-import { router } from "expo-router";
 
 const ProfilePage = () => {
   const handleNavigation = (route: any) => {

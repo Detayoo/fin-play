@@ -1,4 +1,4 @@
-import { Pressable, View } from "react-native";
+import { Pressable, StyleProp, TextStyle, View } from "react-native";
 
 import { AppText } from "./AppText";
 import { Colors } from "../constants";
@@ -12,6 +12,8 @@ export const ListItem = ({
   canCopy = false,
   hasBottomBorder = false,
   hasBackgroundColor,
+  size,
+  maxWidth,
 }: {
   name: string;
   value: string | string[] | undefined;
@@ -19,6 +21,8 @@ export const ListItem = ({
   canCopy?: boolean;
   hasBottomBorder?: boolean;
   hasBackgroundColor?: boolean;
+  size?: "normal" | "xsmall" | "small" | "large" | "xlarge" | "xxlarge";
+  maxWidth?: any;
 }) => {
   return (
     <View
@@ -30,7 +34,11 @@ export const ListItem = ({
         paddingTop: hasBottomBorder ? 20 : 0,
       }}
     >
-      <AppText style={{ maxWidth: "35%" }} color={Colors.faintBlack}>
+      <AppText
+        size={size}
+        style={{ maxWidth: maxWidth ? maxWidth : "35%" }}
+        color={Colors.faintBlack}
+      >
         {name}
       </AppText>
       <View

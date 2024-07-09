@@ -209,7 +209,9 @@ const AccountLimitPage = () => {
                   </AppText>
                   <AppText variant="medium">
                     {maxAccountBalance === "UNLIMITED" ? (
-                      <AppText>{maxAccountBalance}</AppText>
+                      <AppText color={Colors.inputFocusBorder}>
+                        {maxAccountBalance}
+                      </AppText>
                     ) : (
                       <AppText>
                         {naira}
