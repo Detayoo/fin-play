@@ -1,6 +1,7 @@
 import {
   AccountLimit,
   CustomerSupport,
+  Logout,
   ReferAFriend,
   SettingsProfile,
   TermsAndConditions,
@@ -56,5 +57,10 @@ export const MORE_ROUTES = [
     icon: <TermsAndConditions />,
     label: "Terms & Conditions",
     route: "/terms-and-conditions",
+  },
+  {
+    icon: <Logout />,
+    label: "Log Out",
+    route: "/",
   },
 ];

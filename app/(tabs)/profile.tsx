@@ -5,9 +5,15 @@ import { router } from "expo-router";
 import { AppText, DashboardLayout, PrimaryButton } from "@/components";
 import { MORE_ROUTES, SETTINGS_ROUTES } from "@/utils";
 import { ChevronDown } from "@/components/ChevronDown";
+import { useAuth } from "@/context";
+import { Colors } from "@/constants";
 
 const ProfilePage = () => {
+  const { logout } = useAuth();
   const handleNavigation = (route: any) => {
+    if (route === "/") {
+      return logout();
+    }
     router.push(route);
   };
 
@@ -108,7 +114,16 @@ const ProfilePage = () => {
                     }}
                   >
                     {setting.icon}
-                    <AppText variant="medium">{setting.label}</AppText>
+                    <AppText
+                      variant="medium"
+                      color={
+                        setting.label === "Log Out"
+                          ? Colors.error
+                          : Colors.primary
+                      }
+                    >
+                      {setting.label}
+                    </AppText>
                   </View>
                   <ChevronDown style={{ transform: [{ rotate: "280deg" }] }} />
                 </Pressable>
