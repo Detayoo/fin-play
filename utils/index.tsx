@@ -30,7 +30,7 @@ export const SETTINGS_ROUTES = [
   {
     icon: <AccountLimit />,
     label: "Preference",
-    route: "/preference",
+    route: "/preferences",
   },
   {
     icon: <AccountLimit />,

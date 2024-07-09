@@ -42,3 +42,5 @@ export * from "./Security";
 export * from "./CustomerSupport";
 export * from "./ReferAFriend";
 export * from "./TermsAndConditions";
+export * from "./EmailNotification";
+export * from "./PushNotification";
