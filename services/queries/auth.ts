@@ -81,6 +81,14 @@ export const forgotPasswordFn = async ({ email }: { email: string }) => {
   return data;
 };
 
+export const verifyForgotPasswordOTPFn = async ({ otp }: { otp: string }) => {
+  //new one
+  const { data } = await baseRequest.patch("/auth/otp/verify", {
+    otp,
+  });
+  return data;
+};
+
 export const setTransactionPinFn = async ({
   token,
   pin,

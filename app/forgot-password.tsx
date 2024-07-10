@@ -1,6 +1,7 @@
 import { StyleSheet, View } from "react-native";
 import { Formik } from "formik";
 import { router } from "expo-router";
+import { useMutation } from "@tanstack/react-query";
 
 import {
   TextField,
@@ -12,12 +13,9 @@ import {
 } from "@/components";
 import { Colors } from "@/constants";
 import { ERRORS, extractServerError, forgotPasswordSchema } from "@/utils";
-import { useMutation } from "@tanstack/react-query";
 import { forgotPasswordFn } from "@/services";
-import { useAuth } from "@/context";
 
 const ForgotPasswordPage = () => {
-  const { token } = useAuth();
   const { isPending, mutateAsync } = useMutation({
     mutationFn: forgotPasswordFn,
     onError: (error) => {
@@ -25,11 +23,9 @@ const ForgotPasswordPage = () => {
     },
   });
   const handleSubmit = async (values: { email: string }) => {
-    console.log("got here");
     try {
       await mutateAsync({
         email: values.email,
-        // token,
       });
       router.push({
         pathname: "/account-verification",

@@ -7,7 +7,11 @@ import { Colors, fonts } from "@/constants";
 import { AppText, AuthLayout, OtpField, Screen, showToast } from "@/components";
 import { useCountdown } from "@/hooks";
 import { ERRORS, extractServerError, maskEmail } from "@/utils";
-import { resendOTPFn, verifyAccountFn } from "@/services";
+import {
+  resendOTPFn,
+  verifyAccountFn,
+  verifyForgotPasswordOTPFn,
+} from "@/services";
 import { useAuth } from "@/context";
 
 const AccountVerificationPage = () => {
@@ -19,8 +23,14 @@ const AccountVerificationPage = () => {
   const { minutes, remainingSeconds } = useCountdown(seconds, setSeconds);
 
   useEffect(() => {
-    if (otp.length === 6) {
+    if (otp.length === 6 && from !== "/forgot-password") {
       handleVerification();
+      setSeconds(OTP_TIME);
+      return;
+    }
+
+    if (otp.length === 6 && from === "/forgot-password") {
+      handleForgotPasswordOtpVerification();
       setSeconds(OTP_TIME);
     }
   }, [otp]);
@@ -64,7 +74,27 @@ const AccountVerificationPage = () => {
     },
   });
 
-  //while registering
+  const { mutateAsync: verifyForgotFlowAsync } = useMutation({
+    mutationFn: verifyForgotPasswordOTPFn,
+    onSuccess: () => {
+      router.push("/reset-password");
+    },
+    onError: (error) => {
+      showToast(
+        "error",
+        extractServerError(error, ERRORS.FAILED_ACCOUNT_VERIFICATION)
+      );
+    },
+  });
+
+  //while trying to reset password
+  const handleForgotPasswordOtpVerification = async () => {
+    try {
+      await verifyForgotFlowAsync({
+        otp,
+      });
+    } catch (error) {}
+  };
   const handleVerification = async () => {
     try {
       await verifyAsync({
