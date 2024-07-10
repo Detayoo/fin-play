@@ -8,7 +8,7 @@ import {
   BackHandler,
 } from "react-native";
 import { Image } from "expo-image";
-import { router, useNavigation } from "expo-router";
+import { router } from "expo-router";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 import { homeStyles as styles } from "@/styles";
@@ -45,7 +45,6 @@ type StateType = {
 
 export default function HomeScreen() {
   const { logout } = useAuth();
-  const navigation = useNavigation();
   const [state, setState] = useState({
     accountDetailsModal: false,
     showAccountBalance: false,

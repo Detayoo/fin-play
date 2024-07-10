@@ -2,6 +2,7 @@ import React, { createContext, useState, useContext, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { getToken, getUser } from "@/utils";
+import { router } from "expo-router";
 
 interface User {
   id: string;
@@ -47,6 +48,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       await AsyncStorage.multiRemove(["USER", "TOKEN"]);
       setUser(null);
       setToken(null);
+      // router.push("/login");
     } catch (error) {
       console.error("Sign out failed", error);
     } finally {

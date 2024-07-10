@@ -13,14 +13,19 @@ import {
   Savings,
 } from "@/assets";
 import { useAuth } from "@/context";
+import { AppText } from "@/components";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
-  const { token } = useAuth();
+  const { token, isLoading } = useAuth();
+  console.log("isloading", isLoading);
 
+  // if (isLoading) return <AppText style={{ fontSize: 40 }}>ISLOADING</AppText>;
   // if (!token) {
   //   return <Redirect href="/login" />;
   // }
+
+  // console.log("token is then", token);
 
   return (
     <Tabs

@@ -10,8 +10,13 @@ import {
   SetTransactionPin,
   showToast,
 } from "@/components";
+import { useMutation } from "@tanstack/react-query";
+import { setTransactionPinFn } from "@/services";
+import { ERRORS, extractServerError } from "@/utils";
+import { useAuth } from "@/context";
 
 const ConfirmTransactionPIN = () => {
+  const { token } = useAuth();
   const [stage, setStage] = useState(1);
   const [pin, setPin] = useState("");
   const [confirmPin, setConfirmPin] = useState("");
@@ -26,16 +31,29 @@ const ConfirmTransactionPIN = () => {
 
   useEffect(() => {
     if (confirmPin.length === 4) {
-      handlePin();
+      setTimeout(() => {
+        handlePin();
+      }, 500);
     }
-  });
+  }, [confirmPin]);
 
   const clearFields = () => {
     setPin("");
     setConfirmPin("");
   };
 
-  const handlePin = () => {
+  const { mutateAsync } = useMutation({
+    mutationFn: setTransactionPinFn,
+    onSuccess: (data) => {
+      showToast("success", data?.message);
+      router.push("/(tabs)");
+    },
+    onError: (error) => {
+      showToast("error", extractServerError(error, ERRORS.SOMETHING_HAPPENED));
+    },
+  });
+
+  const handlePin = async () => {
     if (confirmPin !== pin) {
       showToast("error", "Pins do not match");
       clearFields();
@@ -43,10 +61,12 @@ const ConfirmTransactionPIN = () => {
       return;
     }
 
-    showToast("success", "Transaction pin set");
-    router.push("/login");
-
-    //fire req
+    try {
+      await mutateAsync({
+        pin,
+        token,
+      });
+    } catch (error) {}
   };
 
   return (

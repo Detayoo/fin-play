@@ -12,7 +12,7 @@ const ProfilePage = () => {
   const { logout } = useAuth();
   const handleNavigation = (route: any) => {
     if (route === "/") {
-      return logout();
+      logout();
     }
     router.push(route);
   };

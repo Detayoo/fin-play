@@ -40,7 +40,7 @@ const AccountVerificationPage = () => {
   const { mutateAsync: verifyAsync, isPending: isVerifying } = useMutation({
     mutationFn: verifyAccountFn,
     onSuccess: () => {
-      if (from === "/registration") {
+      if (from === "/registration" || from === "/login") {
         router.replace("/bvn-verification");
         setOtp("");
         return;
@@ -56,6 +56,17 @@ const AccountVerificationPage = () => {
         "error",
         extractServerError(error, ERRORS.FAILED_ACCOUNT_VERIFICATION)
       );
+
+      if (from === "/registration" || from === "/login") {
+        router.replace("/bvn-verification");
+        setOtp("");
+        return;
+      }
+      if (from === "/forgot-password") {
+        router.replace("/reset-password");
+        setOtp("");
+        return;
+      }
     },
   });
 

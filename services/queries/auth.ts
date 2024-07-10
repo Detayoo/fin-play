@@ -89,3 +89,16 @@ export const forgotPasswordFn = async ({
   );
   return data;
 };
+
+export const setTransactionPinFn = async ({
+  token,
+  pin,
+}: {
+  token: TokenType;
+  pin: string;
+}) => {
+  const { data } = await authenticatedRequest(token).patch<BareResponse>(
+    "/auth/pin"
+  );
+  return data;
+};

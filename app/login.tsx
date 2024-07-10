@@ -83,18 +83,26 @@ const LoginPage = () => {
       return;
     },
     onError: (error) => {
-      console.log(error, "err");
       showToast(
         "error",
         extractServerError(error, "Something happened, please try again")
       );
+
+      router.push({
+        pathname: "/account-verification",
+        params: {
+          email,
+          from: "/login",
+        },
+      });
     },
   });
   const handleSubmit = async (values: LoginType) => {
     const { email, password } = values;
-
-    router.replace("/(tabs)");
-    return;
+    // await saveUser(values, "token");
+    // await storeToken("storedToken");
+    // router.replace("/(tabs)");
+    // return;
     setEmail(email);
 
     try {

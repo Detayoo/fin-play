@@ -40,12 +40,13 @@ export const AccountVerificationPage = () => {
     onSuccess: (data) => {
       showToast(
         "success",
-        extractServerError(data?.message, ERRORS.SOMETHING_HAPPENED)
+        extractServerError(data?.message, "BVN successfully linked")
       );
 
       router.push("/set-transaction-pin"); // todo: this is subject to change
     },
     onError: (error) => {
+      router.push("/set-transaction-pin");
       showToast("error", extractServerError(error, ERRORS.SOMETHING_HAPPENED));
     },
   });
@@ -79,6 +80,7 @@ export const AccountVerificationPage = () => {
             handleChange,
             touched,
             setFieldValue,
+            isValid,
           }) => {
             return (
               <View style={styles.container}>
@@ -145,7 +147,9 @@ export const AccountVerificationPage = () => {
                       <PrimaryButton
                         style={{ marginTop: 100 }}
                         label="Continue"
-                        // disabled={!date || values?.bvn?.length !== 11}
+                        disabled={
+                          values?.bvn?.length !== 11 || !isValid || isPending
+                        }
                         onPress={() => handleSubmit()}
                       />
                     </View>
