@@ -13,6 +13,7 @@ const ProfilePage = () => {
   const handleNavigation = (route: any) => {
     if (route === "/") {
       logout();
+      return;
     }
     router.push(route);
   };

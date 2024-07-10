@@ -13,19 +13,19 @@ import {
   Savings,
 } from "@/assets";
 import { useAuth } from "@/context";
-import { AppText } from "@/components";
+import { Loading } from "@/components";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
-  const { token, isLoading } = useAuth();
-  console.log("isloading", isLoading);
-
-  // if (isLoading) return <AppText style={{ fontSize: 40 }}>ISLOADING</AppText>;
-  // if (!token) {
-  //   return <Redirect href="/login" />;
-  // }
-
+  const { token, isLoading, user } = useAuth();
+  // console.log("isloading is", isLoading);
   // console.log("token is then", token);
+  // console.log("user is then", user);
+
+  if (isLoading) return <Loading />;
+  if (!token) {
+    return <Redirect href="/login" />;
+  }
 
   return (
     <Tabs

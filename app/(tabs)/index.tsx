@@ -37,6 +37,8 @@ import {
 import { Colors } from "@/constants";
 import { copyToClipboard, formatMoney } from "@/utils";
 import { useAuth } from "@/context";
+import { useQueries } from "@tanstack/react-query";
+import { getUserAccountDetailsFn, getUserMainBalanceFn } from "@/services";
 
 type StateType = {
   accountDetailsModal: boolean;
@@ -44,13 +46,11 @@ type StateType = {
 };
 
 export default function HomeScreen() {
-  const { logout } = useAuth();
+  const { token } = useAuth();
   const [state, setState] = useState({
     accountDetailsModal: false,
     showAccountBalance: false,
   });
-
-  const accountNumber = "8140809078";
 
   const updateState = (payload: Partial<StateType>) => {
     setState({ ...state, ...payload });
@@ -64,6 +64,22 @@ export default function HomeScreen() {
     );
     return () => backHandler.remove();
   }, []);
+
+  const [userBalanceData, userAccountData] = useQueries({
+    queries: [
+      {
+        queryKey: ["user main balance"],
+        queryFn: () => getUserMainBalanceFn({ token }),
+      },
+      {
+        queryKey: ["user account details"],
+        queryFn: () => getUserAccountDetailsFn({ token }),
+      },
+    ],
+  });
+
+  const { accountName, accountNumber, bankName } =
+    userAccountData?.data?.data || {};
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -127,12 +143,13 @@ export default function HomeScreen() {
                 size="xxlarge"
               >
                 {state.showAccountBalance
-                  ? `NGN ${formatMoney("500000")}`
+                  ? `NGN ${formatMoney(
+                      userBalanceData?.data?.data?.balance || "0"
+                    )}`
                   : "***********"}
               </AppText>
             </ImageBackground>
           </View>
-          {/* <PrimaryButton label="Logout" onPress={logout} /> */}
 
           <View style={styles.moneyActions}>
             <TouchableOpacity
@@ -350,7 +367,7 @@ export default function HomeScreen() {
             <View style={{ marginLeft: 10 }}>
               <AppText size="small">Bank Name</AppText>
               <AppText size="xlarge" variant="medium">
-                Uzzy App
+                {bankName}
               </AppText>
             </View>
           </View>
@@ -365,7 +382,7 @@ export default function HomeScreen() {
             <View style={{ marginLeft: 10 }}>
               <AppText size="small">Account Name</AppText>
               <AppText size="xlarge" variant="medium">
-                AYODELE TUNDE SAMUEL
+                {accountName}
               </AppText>
             </View>
           </View>

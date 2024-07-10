@@ -26,6 +26,7 @@ import { useAuth } from "@/context";
 const LoginPage = () => {
   const { token, saveUser, user, logout } = useAuth();
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const clearStorage = async () => {
     await storeToken("");
@@ -61,7 +62,7 @@ const LoginPage = () => {
       // router.push("/(tabs)");
       // return;
       if (!data.data.metadata.verified) {
-        saveUser(data.data.metadata, data.data.data.token);
+        saveUser({ ...data.data.metadata, password }, data.data.data.token);
         storeToken(data.data.data.token);
         showToast("error", "Please verify your account to continue");
         router.push({
@@ -99,11 +100,15 @@ const LoginPage = () => {
   });
   const handleSubmit = async (values: LoginType) => {
     const { email, password } = values;
-    // await saveUser(values, "token");
-    // await storeToken("storedToken");
-    // router.replace("/(tabs)");
-    // return;
     setEmail(email);
+    setPassword(password);
+
+    saveUser({ ...values, password }, "my TOKen");
+    // await saveUser(values, "token");
+    await storeToken("storedToken");
+    router.push("/(tabs)");
+
+    return;
 
     try {
       await mutateAsync({

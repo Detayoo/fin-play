@@ -28,3 +28,4 @@ export * from "./Switch";
 export * from "./SelectField";
 export * from "./TransactionItem";
 export * from "./EmptyComponent";
+export * from "./Loading";
