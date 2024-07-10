@@ -7,9 +7,14 @@ import { MORE_ROUTES, SETTINGS_ROUTES } from "@/utils";
 import { ChevronDown } from "@/components/ChevronDown";
 import { useAuth } from "@/context";
 import { Colors } from "@/constants";
+import { useR } from "@/services";
 
 const ProfilePage = () => {
-  const { logout } = useAuth();
+  const { logout, token, user: loggedInUser } = useAuth();
+  const { data: user } = useR({
+    token,
+  });
+  const { tier } = user?.data || {};
   const handleNavigation = (route: any) => {
     if (route === "/") {
       logout();
@@ -41,10 +46,10 @@ const ProfilePage = () => {
             style={{ width: 50, height: 50 }}
           />
           <AppText style={{ fontSize: 15, marginTop: 12 }} variant="medium">
-            Ayodele Tunde
+            {loggedInUser?.fullName}
           </AppText>
           <View style={styles.dashedBorder} />
-          <AppText size="small">You're currently on Tier 1 </AppText>
+          <AppText size="small">You're currently on Tier {tier} </AppText>
           <AppText style={{ fontSize: 13, marginTop: 5 }} variant="medium">
             Upgrade your account
           </AppText>
@@ -82,7 +87,35 @@ const ProfilePage = () => {
                     {setting.icon}
                     <AppText variant="medium">{setting.label}</AppText>
                   </View>
-                  <ChevronDown style={{ transform: [{ rotate: "280deg" }] }} />
+
+                  <View
+                    style={{
+                      gap: 24,
+                      flexDirection: "row",
+                      alignItems: "center",
+                    }}
+                  >
+                    {setting.label === "Upgrade Tier" && (
+                      <View
+                        style={{
+                          backgroundColor: Colors.lightGreen,
+                          paddingVertical: 4,
+                          paddingHorizontal: 10,
+                          borderRadius: 3,
+                        }}
+                      >
+                        <AppText
+                          style={{ textAlign: "right" }}
+                          variant="medium"
+                        >
+                          Tier {tier}
+                        </AppText>
+                      </View>
+                    )}
+                    <ChevronDown
+                      style={{ transform: [{ rotate: "280deg" }] }}
+                    />
+                  </View>
                 </Pressable>
               );
             })}

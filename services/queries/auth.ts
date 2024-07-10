@@ -12,8 +12,8 @@ export const loginFn = async ({
   email,
   password,
 }: {
-  email: string;
-  password: string;
+  email: string | undefined;
+  password: string | undefined;
 }) => {
   const { data } = await baseRequest.post<LoginResponse>("/auth/login", {
     email,

@@ -83,6 +83,7 @@ export const TextField = ({
         onChangeText={onChange}
         onBlur={handleBlur}
         value={value}
+        editable={!disabled}
         placeholder={placeholder}
         autoCapitalize="none"
         autoCorrect={false}
@@ -147,6 +148,7 @@ export const SearchField = ({
           placeholder="Search"
           autoCapitalize="none"
           autoCorrect={false}
+          editable={!disabled}
           placeholderTextColor={Colors.placeholder}
           {...rest}
         />
@@ -302,6 +304,6 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.white,
   },
   disabledStyle: {
-    backgroundColor: "#F6FFFC",
+    backgroundColor: "#fff",
   },
 });

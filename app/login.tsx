@@ -14,9 +14,10 @@ import {
   PrimaryButton,
   Screen,
   showToast,
+  Loading,
 } from "@/components";
 import { Colors } from "@/constants";
-import { extractServerError, getUser, loginSchema, storeToken } from "@/utils";
+import { extractServerError, loginSchema, storeToken } from "@/utils";
 import { LoginType } from "@/types";
 import { FaceId, Fingerprint } from "@/assets";
 import { useBiometrics } from "@/hooks";
@@ -24,13 +25,16 @@ import { loginFn } from "@/services";
 import { useAuth } from "@/context";
 
 const LoginPage = () => {
-  const { token, saveUser, user, logout } = useAuth();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const { saveUser, user, logout, isLoading, biometrics, saveBiometrics } =
+    useAuth();
+  const [email, setEmail] = useState<string | undefined>("");
+  const [password, setPassword] = useState<string | undefined>("");
+  const [isUsingBiometrics, setIsUsingBiometrics] = useState(false);
+  const [rememberMe, setRememberMe] = useState(user?.rememberMe);
 
   const clearStorage = async () => {
     await storeToken("");
-    await saveUser(null, "");
+    // await saveUser(null, "");
   };
 
   useEffect(() => {
@@ -44,25 +48,30 @@ const LoginPage = () => {
   };
 
   const loginWithBiometric = async () => {
+    setIsUsingBiometrics(true);
     try {
       const authentication = await LocalAuthentication.authenticateAsync(
         promptOptions
       );
 
-      console.log(authentication);
+      if (authentication.success) {
+        handleSubmit({ email: user?.email, password: user?.password });
+      }
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsUsingBiometrics(false);
     }
   };
-  const [rememberMe, setRememberMe] = useState(false);
 
   const { mutateAsync, isPending } = useMutation({
     mutationFn: loginFn,
     onSuccess: (data) => {
-      // router.push("/(tabs)");
-      // return;
+      saveUser(
+        { ...data.data.metadata, password, rememberMe },
+        data.data.data.token
+      );
       if (!data.data.metadata.verified) {
-        saveUser({ ...data.data.metadata, password }, data.data.data.token);
         storeToken(data.data.data.token);
         showToast("error", "Please verify your account to continue");
         router.push({
@@ -81,21 +90,13 @@ const LoginPage = () => {
         return;
       }
 
-      return;
+      router.push("/(tabs)");
     },
     onError: (error) => {
       showToast(
         "error",
         extractServerError(error, "Something happened, please try again")
       );
-
-      router.push({
-        pathname: "/account-verification",
-        params: {
-          email,
-          from: "/login",
-        },
-      });
     },
   });
   const handleSubmit = async (values: LoginType) => {
@@ -103,21 +104,28 @@ const LoginPage = () => {
     setEmail(email);
     setPassword(password);
 
-    saveUser({ ...values, password }, "my TOKen");
-    // await saveUser(values, "token");
+    await saveUser({ ...values, password, rememberMe }, "my TOKen");
+
     await storeToken("storedToken");
     router.push("/(tabs)");
-
     return;
 
     try {
       await mutateAsync({
         email,
-        password,
+        password: user?.rememberMe ? user?.password : values.password,
       });
     } catch (error) {
       console.log("error", error);
     }
+
+    return;
+  };
+
+  const switchAccount = () => {
+    saveUser(null, "");
+    logout();
+    saveBiometrics(false);
   };
 
   const renderBiometric = () => {
@@ -132,11 +140,16 @@ const LoginPage = () => {
     return null;
   };
 
+  if (isLoading) return <Loading />;
+
   return (
     <Screen>
       <Formik
-        enableReinitialize
-        initialValues={{ email: "", password: "" }}
+        enableReinitialize={true}
+        initialValues={{
+          email: user?.email || "",
+          password: "",
+        }}
         // validationSchema={loginSchema}
         onSubmit={handleSubmit}
       >
@@ -147,118 +160,142 @@ const LoginPage = () => {
           values,
           errors,
           touched,
-        }) => (
-          <AuthLayout showStep={false}>
-            <View style={styles.container}>
-              <AppText
-                color={Colors.black}
-                variant="medium"
-                style={{
-                  fontSize: 20,
-                  width: "90%",
-                }}
-              >
-                Welcome Back! Manage Your Finances with Ease.
-              </AppText>
-              <AppText
-                color={Colors.faintBlack}
-                style={{
-                  marginTop: 16,
-                }}
-              >
-                Log in to your account and continue to stay on top of your
-                financial goals seamlessly.
-              </AppText>
-              <View style={styles.inputFields}>
-                <TextField
-                  onChange={handleChange("email")}
-                  onBlur={handleBlur("email")}
-                  value={values.email}
-                  placeholder="Enter your email"
-                  errors={errors.email}
-                  touched={touched.email}
-                  label="Email"
-                />
-                <PasswordField
-                  name="password"
-                  label="Password"
-                  placeholder="Enter your password"
-                />
-
-                <View
+        }) => {
+          return (
+            <AuthLayout showStep={false}>
+              <View style={styles.container}>
+                <AppText
+                  color={Colors.black}
+                  variant="medium"
                   style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
+                    fontSize: 20,
+                    width: "90%",
+                  }}
+                >
+                  Welcome Back! Manage Your Finances with Ease.
+                </AppText>
+                <AppText
+                  color={Colors.faintBlack}
+                  style={{
                     marginTop: 16,
                   }}
                 >
-                  <View style={styles.termsContainer}>
-                    <Checkbox
-                      onChange={() => setRememberMe(!rememberMe)}
-                      checked={rememberMe}
-                    />
+                  Log in to your account and continue to stay on top of your
+                  financial goals seamlessly.
+                </AppText>
+                <View style={styles.inputFields}>
+                  <TextField
+                    onChange={handleChange("email")}
+                    onBlur={handleBlur("email")}
+                    value={values.email}
+                    placeholder="Enter your email"
+                    errors={errors.email}
+                    touched={touched.email}
+                    label="Email"
+                    disabled={!!user?.rememberMe}
+                  />
+                  <PasswordField
+                    name="password"
+                    label="Password"
+                    placeholder="Enter your password"
+                  />
+
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      marginTop: 16,
+                    }}
+                  >
+                    <View style={styles.termsContainer}>
+                      <Checkbox
+                        onChange={() => setRememberMe(!rememberMe)}
+                        checked={rememberMe}
+                      />
+                      <AppText
+                        size="small"
+                        variant="medium"
+                        color={Colors.faintBlack}
+                      >
+                        Remember me
+                      </AppText>
+                    </View>
+
                     <AppText
+                      onPress={() => router.push("/forgot-password")}
                       size="small"
                       variant="medium"
-                      color={Colors.faintBlack}
+                      color={Colors.primary}
                     >
-                      Remember me
+                      Forgot Password?
                     </AppText>
                   </View>
-
-                  <AppText
-                    onPress={() => router.push("/forgot-password")}
-                    size="small"
-                    variant="medium"
-                    color={Colors.primary}
-                  >
-                    Forgot Password?
-                  </AppText>
+                  <PrimaryButton
+                    disabled={isPending || isUsingBiometrics}
+                    style={{ marginTop: 60 }}
+                    onPress={() => handleSubmit()}
+                    label="Login"
+                  />
+                  {/* <PrimaryButton
+                    disabled={isPending}
+                    style={{ marginTop: 60 }}
+                    onPress={() => saveBiometrics(!biometrics)}
+                    label="Toggle"
+                  /> */}
                 </View>
-                <PrimaryButton
-                  disabled={isPending}
-                  style={{ marginTop: 60 }}
-                  onPress={() => handleSubmit()}
-                  label="Login"
-                />
-                {/* <PrimaryButton
-                  disabled={isPending}
-                  style={{ marginTop: 60 }}
-                  onPress={logout}
-                  label="Logout"
-                /> */}
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  gap: 5,
-                  justifyContent: "center",
-                  backgroundColor: Colors.white,
-                  marginTop: 25,
-                }}
-              >
-                <AppText variant="medium">Don't have an account?</AppText>
-                <AppText
-                  onPress={() => router.push("/registration")}
-                  variant="medium"
-                  color={Colors.inputFocusBorder}
-                >
-                  Create an account
-                </AppText>
-              </View>
+                {user?.rememberMe ? (
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      gap: 5,
+                      justifyContent: "center",
+                      backgroundColor: Colors.white,
+                      marginTop: 25,
+                    }}
+                  >
+                    <AppText variant="medium">Not {user?.email}?</AppText>
+                    <AppText
+                      onPress={switchAccount}
+                      variant="medium"
+                      color={Colors.inputFocusBorder}
+                    >
+                      Switch Account
+                    </AppText>
+                  </View>
+                ) : (
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      gap: 5,
+                      justifyContent: "center",
+                      backgroundColor: Colors.white,
+                      marginTop: 25,
+                    }}
+                  >
+                    <AppText variant="medium">Don't have an account?</AppText>
+                    <AppText
+                      onPress={() => router.push("/registration")}
+                      variant="medium"
+                      color={Colors.inputFocusBorder}
+                    >
+                      Create an account
+                    </AppText>
+                  </View>
+                )}
 
-              {!!isBiometricSupported && (
-                <Pressable
-                  onPress={loginWithBiometric}
-                  style={styles.biometricContainer}
-                >
-                  {renderBiometric()}
-                </Pressable>
-              )}
-            </View>
-          </AuthLayout>
-        )}
+                {!!isBiometricSupported && biometrics && (
+                  <Pressable
+                    onPress={loginWithBiometric}
+                    style={styles.biometricContainer}
+                  >
+                    {renderBiometric()}
+                  </Pressable>
+                )}
+              </View>
+            </AuthLayout>
+          );
+        }}
       </Formik>
     </Screen>
   );

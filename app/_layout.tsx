@@ -9,11 +9,11 @@ import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "react-native-reanimated";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import NetworkLogger from "react-native-network-logger";
+import { View } from "react-native";
 
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { AuthProvider } from "@/context";
-import NetworkLogger from "react-native-network-logger";
-import { View } from "react-native";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -80,6 +80,7 @@ export default function RootLayout() {
             <Stack.Screen name="referrals" options={options} />
             <Stack.Screen name="buy-airtime" options={options} />
             <Stack.Screen name="review-payment" options={options} />
+            <Stack.Screen name="security" options={options} />
             {/* </Screen> */}
             <Stack.Screen
               name="(tabs)"

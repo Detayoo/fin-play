@@ -29,6 +29,25 @@ export const formatNumber = (text: string | number | string[] | undefined) => {
   );
 };
 
+export const getFirstLetter = (str: string | undefined) => {
+  if (!str || typeof str !== "string") {
+    return "";
+  }
+
+  return str.trim().charAt(0).toUpperCase();
+};
+
+export const getMultiWordFirstLetters = (str: string) => {
+  if (!str || typeof str !== "string") {
+    return "";
+  }
+
+  return str
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase())
+    .join("");
+};
+
 export const copyToClipboard = async (text: any) => {
   try {
     await Clipboard.setStringAsync(text);

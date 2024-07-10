@@ -10,6 +10,7 @@ import {
 import { Image } from "expo-image";
 import { router } from "expo-router";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { useQueries } from "@tanstack/react-query";
 
 import { homeStyles as styles } from "@/styles";
 import {
@@ -35,9 +36,8 @@ import {
   UserHead,
 } from "@/assets";
 import { Colors } from "@/constants";
-import { copyToClipboard, formatMoney } from "@/utils";
+import { copyToClipboard, formatMoney, getFirstLetter } from "@/utils";
 import { useAuth } from "@/context";
-import { useQueries } from "@tanstack/react-query";
 import { getUserAccountDetailsFn, getUserMainBalanceFn } from "@/services";
 
 type StateType = {
@@ -46,7 +46,7 @@ type StateType = {
 };
 
 export default function HomeScreen() {
-  const { token } = useAuth();
+  const { token, user } = useAuth();
   const [state, setState] = useState({
     accountDetailsModal: false,
     showAccountBalance: false,
@@ -93,7 +93,7 @@ export default function HomeScreen() {
             <View>
               <AppText style={{ fontSize: 12 }}>Welcome Back!</AppText>
               <AppText size="xxlarge" variant="medium">
-                Ayodele Tunde
+                {user?.fullName}
               </AppText>
             </View>
           </View>
@@ -327,7 +327,7 @@ export default function HomeScreen() {
               }}
             >
               <AppText size="xxlarge" variant="medium">
-                U
+                {getFirstLetter(bankName) || ""}
               </AppText>
             </View>
 

@@ -14,7 +14,7 @@ const AccountVerificationPage = () => {
   const { token } = useAuth();
   const { email, from } = useLocalSearchParams();
   const [otp, setOtp] = useState("");
-  let OTP_TIME = 60;
+  const OTP_TIME = 60;
   const [seconds, setSeconds] = useState(OTP_TIME);
   const { minutes, remainingSeconds } = useCountdown(seconds, setSeconds);
 
@@ -24,12 +24,6 @@ const AccountVerificationPage = () => {
       setSeconds(OTP_TIME);
     }
   }, [otp]);
-
-  // useEffect(() => {
-  //   if (from === "/login") {
-  //     handleResendOtp();
-  //   }
-  // }, []);
 
   const { data } = useQuery({
     queryKey: ["resend otp"],
@@ -45,6 +39,7 @@ const AccountVerificationPage = () => {
         setOtp("");
         return;
       }
+
       if (from === "/forgot-password") {
         router.replace("/reset-password");
         setOtp("");
@@ -56,17 +51,6 @@ const AccountVerificationPage = () => {
         "error",
         extractServerError(error, ERRORS.FAILED_ACCOUNT_VERIFICATION)
       );
-
-      if (from === "/registration" || from === "/login") {
-        router.replace("/bvn-verification");
-        setOtp("");
-        return;
-      }
-      if (from === "/forgot-password") {
-        router.replace("/reset-password");
-        setOtp("");
-        return;
-      }
     },
   });
 
@@ -90,7 +74,7 @@ const AccountVerificationPage = () => {
     } catch (error) {}
   };
 
-  //resend an otp
+  //send or resend an otp
   const handleResendOtp = async () => {
     try {
       await resendAsync({

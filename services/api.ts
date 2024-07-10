@@ -17,7 +17,7 @@ export const authenticatedRequest = (token: string | null) => {
     headers: {
       "ngrok-skip-browser-warning": "any",
       "Content-Type": "application/json",
-      "X-Access-Token": `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
   });
 

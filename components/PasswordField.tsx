@@ -7,10 +7,10 @@ import {
   TextStyle,
   View,
 } from "react-native";
+import { useField } from "formik";
 
 import { Colors, fonts } from "@/constants";
 import { AppText } from "./AppText";
-import { useField } from "formik";
 
 export const PasswordField = ({
   disabled,
@@ -60,7 +60,7 @@ export const PasswordField = ({
         />
         <AppText
           variant="medium"
-          onPress={() => setShowPassword((state) => !state)}
+          onPress={() => setShowPassword(!showPassword)}
         >
           {showPassword ? "Hide" : "Show"}
         </AppText>

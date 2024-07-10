@@ -5,8 +5,8 @@ export type RegistrationType = {
 };
 
 export type LoginType = {
-  email: string;
-  password: string;
+  email: string | undefined;
+  password: string | undefined;
 };
 
 export type LoginResponse = {

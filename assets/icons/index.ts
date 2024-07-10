@@ -53,3 +53,7 @@ export * from "./DashedBorder";
 export * from "./Gift";
 export * from "./Logout";
 export * from "./BigMtn";
+export * from "./SmallFingerprint";
+export * from "./TwoFA";
+export * from "./Password";
+export * from "./Pin";

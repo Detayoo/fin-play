@@ -1,7 +1,13 @@
 import * as React from "react";
 import Svg, { Path } from "react-native-svg";
-export const Hide = ({ color }: { color?: string }) => (
-  <Svg width={24} height={24} fill="none">
+export const Hide = ({
+  color,
+  onPress,
+}: {
+  color?: string;
+  onPress?: () => void;
+}) => (
+  <Svg onPress={onPress} width={24} height={24} fill="none">
     <Path
       stroke={color ?? "#272A27"}
       strokeLinecap="round"

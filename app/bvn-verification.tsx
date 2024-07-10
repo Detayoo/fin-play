@@ -46,7 +46,6 @@ export const AccountVerificationPage = () => {
       router.push("/set-transaction-pin"); // todo: this is subject to change
     },
     onError: (error) => {
-      router.push("/set-transaction-pin");
       showToast("error", extractServerError(error, ERRORS.SOMETHING_HAPPENED));
     },
   });

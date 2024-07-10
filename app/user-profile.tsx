@@ -4,8 +4,17 @@ import { Image } from "expo-image";
 
 import { AppText, BackButton, ListItem, Screen } from "@/components";
 import { Colors } from "@/constants";
+import { useR } from "@/services";
+import { useAuth } from "@/context";
 
 const UserProfilePage = () => {
+  const { token } = useAuth();
+  const { data: userData } = useR({
+    token,
+  });
+
+  const { email, firstName, lastName, tier } = userData?.data || {};
+
   return (
     <Screen>
       <View
@@ -53,8 +62,12 @@ const UserProfilePage = () => {
             Tap to change photo
           </AppText>
           <View style={{ width: "100%", marginTop: 50 }}>
-            <ListItem name="Full Name" value="Ayodele Tunde" hasBottomBorder />
-            <ListItem name="Email" value="tunde@gmail.com" hasBottomBorder />
+            <ListItem
+              name="Full Name"
+              value={firstName + " " + lastName}
+              hasBottomBorder
+            />
+            <ListItem name="Email" value={email} hasBottomBorder />
             <ListItem name="BVN" value="12345678900" hasBottomBorder />
             <ListItem
               name="Date Of Birth"
@@ -63,7 +76,7 @@ const UserProfilePage = () => {
             />
             <ListItem
               name="Current Tier"
-              value="Tier 2"
+              value={`Tier ${tier}`}
               hasBottomBorder
               hasBackgroundColor
             />
