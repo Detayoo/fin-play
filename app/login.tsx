@@ -111,11 +111,11 @@ const LoginPage = () => {
     setEmail(email);
     setPassword(password);
 
-    // await saveUser({ ...values, password, rememberMe }, "my TOKen");
+    await saveUser({ ...values, password, rememberMe }, "my TOKen");
 
-    // await storeToken("storedToken");
-    // router.push("/(tabs)");
-    // return;
+    await storeToken("storedToken");
+    router.push("/(tabs)");
+    return;
 
     try {
       await mutateAsync({
@@ -157,7 +157,7 @@ const LoginPage = () => {
           email: user?.email && user?.rememberMe ? user?.email : "",
           password: "",
         }}
-        validationSchema={loginSchema}
+        // validationSchema={loginSchema}
         onSubmit={handleSubmit}
       >
         {({

@@ -1,27 +1,22 @@
-import { FlatList, Pressable, StyleSheet, View } from "react-native";
-
-import * as Contacts from "expo-contacts";
 import { useEffect, useState } from "react";
+import { StyleSheet } from "react-native";
+import * as Contacts from "expo-contacts";
+
 import { showToast } from "./ToastComponent";
 import { Colors } from "@/constants";
-import { AppText } from "./AppText";
-import { TextField } from "./TextField";
-import { BackIcon } from "@/assets";
-import { Avatar } from "./Avatar";
-import { SelectField } from "./SelectField";
 import { ContactSelect } from "./ContactSelect";
 
 export const PhoneContacts = ({
   showModal,
   setShowModal,
+  setSelectedContact,
 }: {
   showModal: boolean;
   setShowModal: (state: boolean) => void;
+  setSelectedContact: (state: Contacts.Contact) => void;
 }) => {
   const [contacts, setContacts] = useState<Contacts.Contact[] | null>(null);
   const [search, setSearch] = useState("");
-  const [selectedContact, setSelectedContact] = useState(null);
-  console.log("contacts", contacts && contacts[0]);
   const getPhoneContacts = async () => {
     const { status } = await Contacts.requestPermissionsAsync();
     if (status === "granted") {
@@ -68,93 +63,15 @@ export const PhoneContacts = ({
     });
   };
 
-  const handleSelectPhoneNumber = (text: string | undefined) => {
-    let content = text;
-
-    if (content?.includes(" ")) {
-      content = content?.replaceAll(" ", "");
-    }
-    if (content?.includes("-")) {
-      content = content?.replaceAll("-", "");
-    }
-    if (content?.includes("(")) {
-      content = content?.replaceAll("(", "");
-    }
-    if (content?.includes(")")) {
-      content = content?.replaceAll(")", "");
-    }
-  };
-
   return (
-    <>
-      <View style={styles.container}>
-        <View style={styles.headerContainer}>
-          <BackIcon onPress={() => {}} />
-          <AppText style={styles.headerText} variant="medium">
-            Select Contacts
-          </AppText>
-        </View>
-        <View style={styles.searchContainer}>
-          {/* <View style={styles.searchContentContainer}>
-      <SearchIcon />
-      <TextField
-        style={styles.searchInput}
-        value={search}
-        onChangeText={}
-        placeholder="Search"
-      />
-    </View> */}
-        </View>
-        <View style={styles.contentContainer}>
-          <FlatList
-            data={renderFilteredContact()}
-            keyExtractor={(item: any) => item.id}
-            renderItem={({ item }: any) => (
-              <Pressable
-                onPress={() => {
-                  handleSelectPhoneNumber(
-                    item?.phoneNumbers[0]
-                      ? item?.phoneNumbers[0]?.number
-                      : undefined
-                  );
-                  setSearch("");
-                }}
-                style={styles.contactListContainer}
-              >
-                {item?.imageAvailable ? (
-                  <Avatar image={item?.image?.uri} />
-                ) : (
-                  <Avatar text={item?.name} />
-                )}
-
-                <View style={styles.listTextContainer}>
-                  {item?.name ? (
-                    <AppText style={styles.contactName}>{item?.name}</AppText>
-                  ) : null}
-                  {item?.phoneNumbers?.length ? (
-                    <AppText style={styles.contactNumber}>
-                      {item?.phoneNumbers[0]?.number}
-                    </AppText>
-                  ) : null}
-                </View>
-              </Pressable>
-            )}
-            ItemSeparatorComponent={() => <View style={styles.seperator} />}
-            ListEmptyComponent={() => (
-              <View style={styles.emptyContent}>
-                <AppText>NO CONTACT AVAILABLE</AppText>
-              </View>
-            )}
-          />
-        </View>
-      </View>
-      <ContactSelect
-        options={renderFilteredContact()}
-        visible={showModal}
-        setVisible={setShowModal}
-        setSelectedOption={setSelectedContact}
-      />
-    </>
+    <ContactSelect
+      search={search}
+      setSearch={setSearch}
+      options={renderFilteredContact()}
+      visible={showModal}
+      setVisible={setShowModal}
+      setSelectedOption={setSelectedContact}
+    />
   );
 };
 

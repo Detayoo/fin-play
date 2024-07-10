@@ -1,22 +1,34 @@
 import React, { useCallback, useEffect, useMemo, useRef } from "react";
-import { Text, Pressable, StyleSheet, Animated, View } from "react-native";
+import {
+  Text,
+  Pressable,
+  StyleSheet,
+  Animated,
+  View,
+  TextInput,
+} from "react-native";
 import { BottomSheetModal, BottomSheetFlatList } from "@gorhom/bottom-sheet";
 
 import { Colors, fonts } from "@/constants";
 import { AppText } from "./AppText";
+import { Search } from "@/assets";
 
 export const ContactSelect = ({
   visible,
   setVisible,
   options,
   setSelectedOption,
-  snapPoints = ["50%", "75%", "95%"],
+  snapPoints = ["50%", "75%", "80%"],
+  search,
+  setSearch,
 }: {
   visible: boolean;
   setVisible: (state: boolean) => void;
   options: any;
   setSelectedOption: any;
   snapPoints?: string[];
+  search: string;
+  setSearch: (state: string) => void;
 }) => {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -64,13 +76,20 @@ export const ContactSelect = ({
       <Pressable
         style={styles.item}
         onPress={() => {
+          console.log("item", item);
           setSelectedOption(item);
-          //   bottomSheetModalRef.current?.dismiss();
           bottomSheetModalRef.current?.close();
           setVisible(false);
         }}
       >
-        <View>
+        <View
+          style={{
+            flexDirection: "row",
+            gap: 20,
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
           {item?.name ? <AppText>{item?.name}</AppText> : null}
           {item?.phoneNumbers?.length ? (
             <AppText>{item?.phoneNumbers[0]?.number}</AppText>
@@ -103,6 +122,17 @@ export const ContactSelect = ({
         enablePanDownToClose
         style={styles.bottomSheet}
       >
+        <View style={styles.searchContainer}>
+          <View style={styles.searchContentContainer}>
+            <Search />
+            <TextInput
+              style={styles.searchInput}
+              value={search}
+              onChangeText={setSearch}
+              placeholder="Search"
+            />
+          </View>
+        </View>
         <BottomSheetFlatList
           data={options}
           keyExtractor={(item: any, index) => index.toString()}
@@ -159,5 +189,24 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     flexDirection: "row",
     alignItems: "center",
+  },
+
+  searchContainer: {
+    width: "100%",
+    paddingHorizontal: 16,
+  },
+  searchContentContainer: {
+    width: "100%",
+    flexDirection: "row",
+    columnGap: 15,
+    paddingHorizontal: 10,
+    backgroundColor: Colors.inputBorder,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+  searchInput: {
+    flex: 1,
+    height: 40,
+    fontSize: 15,
   },
 });

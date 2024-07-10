@@ -4,6 +4,7 @@ import { router, useLocalSearchParams } from "expo-router";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { Formik } from "formik";
+import { Contact } from "expo-contacts";
 
 import {
   AppText,
@@ -22,6 +23,7 @@ type State = {
   serviceProvider: any;
   options: Options;
   modal: boolean;
+  selectedContact: null | Contact;
 };
 const BuyAirtimePage = () => {
   const { type } = useLocalSearchParams();
@@ -32,9 +34,8 @@ const BuyAirtimePage = () => {
       { id: 1, label: "MTN" },
       { id: 2, label: "GLO" },
     ],
+    selectedContact: null,
   });
-
-  console.log("state", state);
 
   const [showModal, setShowModal] = useState(false);
   const updateState = (payload: any) => {
@@ -74,10 +75,15 @@ const BuyAirtimePage = () => {
               showsVerticalScrollIndicator={false}
             >
               <Formik
+                enableReinitialize
                 initialValues={{
-                  phoneNumber: "",
+                  phoneNumber:
+                    state?.selectedContact?.phoneNumbers[0]?.number?.replace(
+                      /[\s-]/g,
+                      ""
+                    ) || "",
                   amount: "",
-                  serviceProvider: "",
+                  serviceProvider: state?.serviceProvider?.label || "",
                 }}
                 onSubmit={onSubmit}
                 //   validationSchema={validationSchema}
@@ -218,6 +224,11 @@ const BuyAirtimePage = () => {
         />
 
         <PhoneContacts
+          setSelectedContact={(e) => {
+            updateState({
+              selectedContact: e,
+            });
+          }}
           showModal={state.modal}
           setShowModal={(e) =>
             updateState({
