@@ -64,7 +64,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const logout = async () => {
     setIsLoading(true);
     try {
-      await AsyncStorage.multiRemove(["USER", "TOKEN", "BIOMETRICS"]);
+      await AsyncStorage.multiRemove(["USER", "TOKEN"]);
       setUser(null);
       setToken(null);
       // router.push("/login");

@@ -64,6 +64,7 @@ const ConfirmTransactionPIN = () => {
     try {
       await mutateAsync({
         pin,
+        confirmPin,
         token,
       });
     } catch (error) {}

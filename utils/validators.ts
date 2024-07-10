@@ -21,10 +21,10 @@ export const forgotPasswordSchema = Yup.object().shape({
 });
 
 export const resetPasswordSchema = Yup.object().shape({
-  password: Yup.string()
+  newPassword: Yup.string()
     .min(6, "Password must be at least 6 characters")
     .required("Password is required"),
   confirmPassword: Yup.string()
     .required("Confirm Password is required")
-    .oneOf([Yup.ref("password"), ""], "Passwords must match"),
+    .oneOf([Yup.ref("newPassword"), ""], "Passwords must match"),
 });

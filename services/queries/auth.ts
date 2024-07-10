@@ -61,7 +61,7 @@ export const verifyBVNFn = async ({
   bvn: string;
   dob: string;
 }) => {
-  const { data } = await authenticatedRequest(token).patch<BareResponse>(
+  const { data } = await authenticatedRequest(token).post<BareResponse>(
     "/auth/bvn",
     {
       bvn,
@@ -76,29 +76,37 @@ export const resendOTPFn = async ({ token }: { token: TokenType }) => {
   return data;
 };
 
-export const forgotPasswordFn = async ({
-  token,
-  email,
-}: {
-  token: string;
-  email: string;
-}) => {
-  const { data } = await authenticatedRequest(token).post(
-    "/auth/password/forgot",
-    { email }
-  );
+export const forgotPasswordFn = async ({ email }: { email: string }) => {
+  const { data } = await baseRequest.post("/auth/password/forgot", { email });
   return data;
 };
 
 export const setTransactionPinFn = async ({
   token,
   pin,
+  confirmPin,
 }: {
   token: TokenType;
   pin: string;
+  confirmPin: string;
 }) => {
   const { data } = await authenticatedRequest(token).patch<BareResponse>(
-    "/auth/pin"
+    "/auth/pin",
+    { pin, confirmPin }
+  );
+  return data;
+};
+
+export const resetPasswordFn = async ({
+  newPassword,
+  confirmPassword,
+}: {
+  newPassword: string;
+  confirmPassword: string;
+}) => {
+  const { data } = await baseRequest.post<BareResponse>(
+    "/auth/password/reset",
+    { newPassword, confirmPassword }
   );
   return data;
 };

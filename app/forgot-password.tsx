@@ -8,21 +8,37 @@ import {
   AppText,
   PrimaryButton,
   Screen,
+  showToast,
 } from "@/components";
 import { Colors } from "@/constants";
-import { forgotPasswordSchema } from "@/utils";
+import { ERRORS, extractServerError, forgotPasswordSchema } from "@/utils";
+import { useMutation } from "@tanstack/react-query";
+import { forgotPasswordFn } from "@/services";
+import { useAuth } from "@/context";
 
 const ForgotPasswordPage = () => {
-  const handleSubmit = (values: { email: string }) => {
+  const { token } = useAuth();
+  const { isPending, mutateAsync } = useMutation({
+    mutationFn: forgotPasswordFn,
+    onError: (error) => {
+      showToast("error", extractServerError(error, ERRORS.SOMETHING_HAPPENED));
+    },
+  });
+  const handleSubmit = async (values: { email: string }) => {
     console.log("got here");
-    console.log(values);
-    router.push({
-      pathname: "/account-verification",
-      params: {
-        email: values?.email,
-        from: "/forgot-password",
-      },
-    });
+    try {
+      await mutateAsync({
+        email: values.email,
+        // token,
+      });
+      router.push({
+        pathname: "/account-verification",
+        params: {
+          email: values?.email,
+          from: "/forgot-password",
+        },
+      });
+    } catch (error) {}
   };
 
   return (
@@ -39,6 +55,7 @@ const ForgotPasswordPage = () => {
           values,
           errors,
           touched,
+          isValid,
         }) => (
           <AuthLayout showStep={false}>
             <View style={styles.container}>
@@ -73,6 +90,7 @@ const ForgotPasswordPage = () => {
                 />
 
                 <PrimaryButton
+                  disabled={!isValid || isPending}
                   style={{ marginTop: 70 }}
                   onPress={() => handleSubmit()}
                   label="Submit"

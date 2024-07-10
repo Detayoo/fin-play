@@ -1,6 +1,8 @@
 import { StyleSheet, View } from "react-native";
 import { Formik } from "formik";
 import { router } from "expo-router";
+import { isValid } from "date-fns";
+import { useMutation } from "@tanstack/react-query";
 
 import {
   AuthLayout,
@@ -8,24 +10,44 @@ import {
   PasswordField,
   PrimaryButton,
   Screen,
+  showToast,
 } from "@/components";
 import { Colors } from "@/constants";
-import { resetPasswordSchema } from "@/utils";
-import { LoginType } from "@/types";
+import { ERRORS, extractServerError, resetPasswordSchema } from "@/utils";
+import { ResetPasswordPayloadType } from "@/types";
+import { resetPasswordFn } from "@/services";
+import { useAuth } from "@/context";
 
 const ResetPasswordPage = () => {
-  const handleSubmit = (values: LoginType) => {
-    console.log("got here");
-    console.log(values);
-    router.push("/login");
+  const { token } = useAuth();
+  const { mutateAsync, isPending } = useMutation({
+    mutationFn: resetPasswordFn,
+    onSuccess: (data) => {
+      showToast("success", data?.message);
+      setTimeout(() => {
+        router.push("/login");
+      }, 1000);
+    },
+    onError: (error) => {
+      showToast("error", extractServerError(error, ERRORS.SOMETHING_HAPPENED));
+    },
+  });
+  const handleSubmit = async (values: ResetPasswordPayloadType) => {
+    const { confirmPassword, newPassword } = values;
+    try {
+      await mutateAsync({
+        confirmPassword,
+        newPassword,
+        // token,
+      });
+    } catch (error) {}
   };
 
   return (
     <Screen>
       <Formik
-        enableReinitialize
-        initialValues={{ email: "", password: "" }}
-        // validationSchema={resetPasswordSchema}
+        initialValues={{ newPassword: "", confirmPassword: "" }}
+        validationSchema={resetPasswordSchema}
         onSubmit={handleSubmit}
       >
         {({ handleSubmit }) => (
@@ -51,7 +73,7 @@ const ResetPasswordPage = () => {
               </AppText>
               <View style={styles.inputFields}>
                 <PasswordField
-                  name="password"
+                  name="newPassword"
                   label="New Password"
                   placeholder="Enter your password"
                 />
@@ -62,6 +84,7 @@ const ResetPasswordPage = () => {
                 />
 
                 <PrimaryButton
+                  disabled={!isValid || isPending}
                   style={{ marginTop: 100 }}
                   onPress={() => handleSubmit()}
                   label="Submit"

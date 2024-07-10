@@ -2,9 +2,9 @@ import { TouchableOpacity, View } from "react-native";
 import { format } from "date-fns";
 
 import { AppText } from "./AppText";
-import { formatMoney } from "@/utils";
-import { Colors } from "@/constants";
-import { BankOutward, GloOutward } from "@/assets";
+import { formatMoney } from "../utils";
+import { Colors } from "../constants";
+import { BankOutward, GloOutward } from "../assets";
 
 export const TransactionItem = ({
   addBorder = true,

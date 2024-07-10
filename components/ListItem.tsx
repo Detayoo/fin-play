@@ -1,4 +1,4 @@
-import { Pressable, StyleProp, TextStyle, View } from "react-native";
+import { Pressable, View } from "react-native";
 
 import { AppText } from "./AppText";
 import { Colors } from "../constants";

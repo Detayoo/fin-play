@@ -43,7 +43,13 @@
           "faceIDPermission": "Allow UZZY to use Face ID."
         }
       ],
-      ["expo-router"]
+      ["expo-router"],
+      [
+        "expo-contacts",
+        {
+          "contactsPermission": "Allow Uzzy to access your contacts."
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true

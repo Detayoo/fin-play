@@ -32,6 +32,8 @@ const LoginPage = () => {
   const [isUsingBiometrics, setIsUsingBiometrics] = useState(false);
   const [rememberMe, setRememberMe] = useState(user?.rememberMe);
 
+  console.log("userdot", user?.rememberMe);
+
   const clearStorage = async () => {
     await storeToken("");
     // await saveUser(null, "");
@@ -71,9 +73,9 @@ const LoginPage = () => {
         { ...data.data.metadata, password, rememberMe },
         data.data.data.token
       );
-      if (!data.data.metadata.verified) {
-        storeToken(data.data.data.token);
+      if (!data.data.metadata.profile.verified) {
         showToast("error", "Please verify your account to continue");
+        storeToken(data.data.data.token);
         router.push({
           pathname: "/account-verification",
           params: {
@@ -84,9 +86,14 @@ const LoginPage = () => {
         return;
       }
 
-      if (!data.data.metadata.bvnVerified) {
+      if (!data.data.metadata.profile.bvnVerified) {
         showToast("error", "Please link your BVN to continue");
         router.push("/bvn-verification");
+        return;
+      }
+
+      if (!data?.data?.metadata?.wallet.pinSet) {
+        router.push("/set-transaction-pin");
         return;
       }
 
@@ -104,11 +111,11 @@ const LoginPage = () => {
     setEmail(email);
     setPassword(password);
 
-    await saveUser({ ...values, password, rememberMe }, "my TOKen");
+    // await saveUser({ ...values, password, rememberMe }, "my TOKen");
 
-    await storeToken("storedToken");
-    router.push("/(tabs)");
-    return;
+    // await storeToken("storedToken");
+    // router.push("/(tabs)");
+    // return;
 
     try {
       await mutateAsync({
@@ -145,12 +152,12 @@ const LoginPage = () => {
   return (
     <Screen>
       <Formik
-        enableReinitialize={true}
+        enableReinitialize={!!user?.rememberMe}
         initialValues={{
-          email: user?.email || "",
+          email: user?.email && user?.rememberMe ? user?.email : "",
           password: "",
         }}
-        // validationSchema={loginSchema}
+        validationSchema={loginSchema}
         onSubmit={handleSubmit}
       >
         {({

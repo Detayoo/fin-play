@@ -8,6 +8,7 @@ import { Formik } from "formik";
 import {
   AppText,
   BackButton,
+  PhoneContacts,
   PrimaryButton,
   Screen,
   SelectField,
@@ -20,10 +21,12 @@ type Options = { id: number; label: string }[];
 type State = {
   serviceProvider: any;
   options: Options;
+  modal: boolean;
 };
 const BuyAirtimePage = () => {
   const { type } = useLocalSearchParams();
   const [state, setState] = useState<any>({
+    modal: false,
     serviceProvider: null,
     options: [
       { id: 1, label: "MTN" },
@@ -111,11 +114,16 @@ const BuyAirtimePage = () => {
                             errors={errors.phoneNumber}
                             touched={touched.phoneNumber}
                             label="Phone Number"
-                            maxLength={10}
+                            maxLength={11}
                             keyboardType="number-pad"
                           />
                         </View>
                         <Pressable
+                          onPress={() =>
+                            updateState({
+                              modal: true,
+                            })
+                          }
                           style={{ position: "absolute", bottom: 30, right: 0 }}
                         >
                           <Recipient />
@@ -205,6 +213,15 @@ const BuyAirtimePage = () => {
           setSelectedOption={(e: any) =>
             updateState({
               serviceProvider: e,
+            })
+          }
+        />
+
+        <PhoneContacts
+          showModal={state.modal}
+          setShowModal={(e) =>
+            updateState({
+              modal: e,
             })
           }
         />
