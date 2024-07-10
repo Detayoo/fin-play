@@ -27,7 +27,7 @@ interface AuthContextData {
   user: User | null;
   isLoading: boolean;
   logout: () => Promise<void>;
-  saveUser: (user: any, token: string) => Promise<void>;
+  saveUser: (user: any, token: string | null) => Promise<void>;
   biometrics: boolean;
   setBiometrics: React.Dispatch<React.SetStateAction<boolean>>;
   saveBiometrics: (val: boolean) => Promise<void>;
@@ -84,7 +84,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const saveUser = async (user: any, token: string) => {
+  const saveUser = async (user: any, token: any) => {
     try {
       setUser(user);
       setToken(token);

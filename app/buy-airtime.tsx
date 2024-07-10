@@ -27,7 +27,8 @@ type State = {
 };
 const BuyAirtimePage = () => {
   const { type } = useLocalSearchParams();
-  const [state, setState] = useState<any>({
+  const [showModal, setShowModal] = useState(false);
+  const [state, setState] = useState<State>({
     modal: false,
     serviceProvider: null,
     options: [
@@ -37,7 +38,6 @@ const BuyAirtimePage = () => {
     selectedContact: null,
   });
 
-  const [showModal, setShowModal] = useState(false);
   const updateState = (payload: any) => {
     setState((prevState: any) => ({ ...prevState, ...payload }));
   };
@@ -48,6 +48,7 @@ const BuyAirtimePage = () => {
       params: values,
     });
   };
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <BottomSheetModalProvider>
@@ -77,11 +78,12 @@ const BuyAirtimePage = () => {
               <Formik
                 enableReinitialize
                 initialValues={{
-                  phoneNumber:
-                    state?.selectedContact?.phoneNumbers[0]?.number?.replace(
-                      /[\s-]/g,
-                      ""
-                    ) || "",
+                  phoneNumber: state?.selectedContact?.phoneNumbers
+                    ? state?.selectedContact?.phoneNumbers[0]?.number?.replace(
+                        /[\s-]/g,
+                        ""
+                      )
+                    : "",
                   amount: "",
                   serviceProvider: state?.serviceProvider?.label || "",
                 }}

@@ -39,6 +39,7 @@ import { Colors } from "@/constants";
 import { copyToClipboard, formatMoney, getFirstLetter } from "@/utils";
 import { useAuth } from "@/context";
 import { getUserAccountDetailsFn, getUserMainBalanceFn } from "@/services";
+import { Spinner } from "@/components/Spinner";
 
 type StateType = {
   accountDetailsModal: boolean;
@@ -300,93 +301,97 @@ export default function HomeScreen() {
           })
         }
       >
-        <View style={{ paddingTop: 20, height: 300 }}>
-          <AppText size="xxlarge" variant="medium">
-            Add Money
-          </AppText>
-          <AppText color={Colors.faintBlack} style={{ marginTop: 16 }}>
-            Add money easily with your dedicated account number via internet
-            banking
-          </AppText>
+        {userAccountData?.isFetching ? (
+          <Spinner />
+        ) : (
+          <View style={{ paddingTop: 20, height: 300 }}>
+            <AppText size="xxlarge" variant="medium">
+              Add Money
+            </AppText>
+            <AppText color={Colors.faintBlack} style={{ marginTop: 16 }}>
+              Add money easily with your dedicated account number via internet
+              banking
+            </AppText>
 
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              marginTop: 40,
-            }}
-          >
             <View
               style={{
-                backgroundColor: Colors.lightGreen,
-                borderRadius: 50,
-                justifyContent: "center",
-                alignItems: "center",
-                height: 45,
-                width: 45,
-              }}
-            >
-              <AppText size="xxlarge" variant="medium">
-                {getFirstLetter(bankName) || ""}
-              </AppText>
-            </View>
-
-            <View style={{ marginLeft: 10 }}>
-              <AppText size="small">Account Number</AppText>
-              <AppText size="xlarge" variant="medium">
-                {accountNumber}
-              </AppText>
-            </View>
-            <TouchableOpacity
-              onPress={() => copyToClipboard(accountNumber)}
-              style={{
-                marginLeft: "auto",
-                backgroundColor: Colors.lightGreen,
-                borderRadius: 50,
-                paddingVertical: 10,
-                paddingHorizontal: 15,
                 flexDirection: "row",
-                gap: 5,
                 alignItems: "center",
+                marginTop: 40,
               }}
             >
-              <AppText size="small">Copy</AppText>
-              <View style={{ marginTop: 4 }}>
-                <Copy />
+              <View
+                style={{
+                  backgroundColor: Colors.lightGreen,
+                  borderRadius: 50,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  height: 45,
+                  width: 45,
+                }}
+              >
+                <AppText size="xxlarge" variant="medium">
+                  {getFirstLetter(bankName) || ""}
+                </AppText>
               </View>
-            </TouchableOpacity>
-          </View>
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              marginTop: 30,
-            }}
-          >
-            <BigBank />
-            <View style={{ marginLeft: 10 }}>
-              <AppText size="small">Bank Name</AppText>
-              <AppText size="xlarge" variant="medium">
-                {bankName}
-              </AppText>
+
+              <View style={{ marginLeft: 10 }}>
+                <AppText size="small">Account Number</AppText>
+                <AppText size="xlarge" variant="medium">
+                  {accountNumber}
+                </AppText>
+              </View>
+              <TouchableOpacity
+                onPress={() => copyToClipboard(accountNumber)}
+                style={{
+                  marginLeft: "auto",
+                  backgroundColor: Colors.lightGreen,
+                  borderRadius: 50,
+                  paddingVertical: 10,
+                  paddingHorizontal: 15,
+                  flexDirection: "row",
+                  gap: 5,
+                  alignItems: "center",
+                }}
+              >
+                <AppText size="small">Copy</AppText>
+                <View style={{ marginTop: 4 }}>
+                  <Copy />
+                </View>
+              </TouchableOpacity>
+            </View>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                marginTop: 30,
+              }}
+            >
+              <BigBank />
+              <View style={{ marginLeft: 10 }}>
+                <AppText size="small">Bank Name</AppText>
+                <AppText size="xlarge" variant="medium">
+                  {bankName}
+                </AppText>
+              </View>
+            </View>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                marginTop: 30,
+              }}
+            >
+              <BigUser />
+              <View style={{ marginLeft: 10 }}>
+                <AppText size="small">Account Name</AppText>
+                <AppText size="xlarge" variant="medium">
+                  {accountName}
+                </AppText>
+              </View>
             </View>
           </View>
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              marginTop: 30,
-            }}
-          >
-            <BigUser />
-            <View style={{ marginLeft: 10 }}>
-              <AppText size="small">Account Name</AppText>
-              <AppText size="xlarge" variant="medium">
-                {accountName}
-              </AppText>
-            </View>
-          </View>
-        </View>
+        )}
       </ReusableBottomSheet>
     </GestureHandlerRootView>
   );

@@ -20,7 +20,7 @@ export const TextField = ({
   touched: any;
   onChange: any;
   onBlur: any;
-  value: string;
+  value: string | undefined;
   placeholder?: string;
   errors: any;
   disabled?: boolean;
