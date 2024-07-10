@@ -1,13 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import {
   ImageBackground,
   Pressable,
   ScrollView,
   TouchableOpacity,
   View,
+  BackHandler,
 } from "react-native";
 import { Image } from "expo-image";
-import { router } from "expo-router";
+import { router, useNavigation } from "expo-router";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 import { homeStyles as styles } from "@/styles";
@@ -44,6 +45,7 @@ type StateType = {
 
 export default function HomeScreen() {
   const { logout } = useAuth();
+  const navigation = useNavigation();
   const [state, setState] = useState({
     accountDetailsModal: false,
     showAccountBalance: false,
@@ -54,6 +56,15 @@ export default function HomeScreen() {
   const updateState = (payload: Partial<StateType>) => {
     setState({ ...state, ...payload });
   };
+
+  //so that the user will not be able to just swipe from homepage and then go to login
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => true
+    );
+    return () => backHandler.remove();
+  }, []);
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>

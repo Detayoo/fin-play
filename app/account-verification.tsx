@@ -12,7 +12,6 @@ import { useAuth } from "@/context";
 
 const AccountVerificationPage = () => {
   const { token } = useAuth();
-  console.log(token);
   const { email, from } = useLocalSearchParams();
   const [otp, setOtp] = useState("");
   let OTP_TIME = 60;

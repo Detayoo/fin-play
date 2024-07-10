@@ -26,8 +26,6 @@ import { useAuth } from "@/context";
 const LoginPage = () => {
   const { token, saveUser, user, logout } = useAuth();
   const [email, setEmail] = useState("");
-  console.log("userName is here", user);
-  console.log("token is here", token);
 
   const clearStorage = async () => {
     await storeToken("");
@@ -95,7 +93,7 @@ const LoginPage = () => {
   const handleSubmit = async (values: LoginType) => {
     const { email, password } = values;
 
-    router.push("/(tabs)");
+    router.replace("/(tabs)");
     return;
     setEmail(email);
 

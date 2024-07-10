@@ -81,7 +81,10 @@ export default function RootLayout() {
             <Stack.Screen name="buy-airtime" options={options} />
             <Stack.Screen name="review-payment" options={options} />
             {/* </Screen> */}
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen
+              name="(tabs)"
+              options={{ headerShown: false, gestureEnabled: false }}
+            />
           </Stack>
         </QueryClientProvider>
         {/* <View style={{ height: 300 }}>
