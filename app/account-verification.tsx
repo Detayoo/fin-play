@@ -8,6 +8,7 @@ import { AppText, AuthLayout, OtpField, Screen, showToast } from "@/components";
 import { useCountdown } from "@/hooks";
 import { ERRORS, extractServerError, maskEmail } from "@/utils";
 import {
+  forgotPasswordFn,
   resendOTPFn,
   verifyAccountFn,
   verifyForgotPasswordOTPFn,
@@ -15,7 +16,7 @@ import {
 import { useAuth } from "@/context";
 
 const AccountVerificationPage = () => {
-  const { token } = useAuth();
+  const { token, saveUser } = useAuth();
   const { email, from } = useLocalSearchParams();
   const [otp, setOtp] = useState("");
   const OTP_TIME = 60;
@@ -49,12 +50,6 @@ const AccountVerificationPage = () => {
         setOtp("");
         return;
       }
-
-      if (from === "/forgot-password") {
-        router.replace("/reset-password");
-        setOtp("");
-        return;
-      }
     },
     onError: (error) => {
       showToast(
@@ -76,7 +71,8 @@ const AccountVerificationPage = () => {
 
   const { mutateAsync: verifyForgotFlowAsync } = useMutation({
     mutationFn: verifyForgotPasswordOTPFn,
-    onSuccess: () => {
+    onSuccess: (data) => {
+      saveUser(null, data?.data?.token);
       router.push("/reset-password");
     },
     onError: (error) => {
@@ -87,11 +83,25 @@ const AccountVerificationPage = () => {
     },
   });
 
+  const {
+    isPending: isResendingForgotPasswordOTP,
+    mutateAsync: mutateForgotAsync,
+  } = useMutation({
+    mutationFn: forgotPasswordFn,
+    onSuccess: (data) => {
+      showToast("success", data.message);
+    },
+    onError: (error) => {
+      showToast("error", extractServerError(error, ERRORS.SOMETHING_HAPPENED));
+    },
+  });
+
   //while trying to reset password
   const handleForgotPasswordOtpVerification = async () => {
     try {
       await verifyForgotFlowAsync({
         otp,
+        email,
       });
     } catch (error) {}
   };
@@ -105,6 +115,14 @@ const AccountVerificationPage = () => {
   };
 
   //send or resend an otp
+
+  const handleResendResetOtp = async () => {
+    try {
+      await mutateForgotAsync({
+        email,
+      });
+    } catch (error) {}
+  };
   const handleResendOtp = async () => {
     try {
       await resendAsync({
@@ -145,11 +163,17 @@ const AccountVerificationPage = () => {
             <AppText style={styles.expiry} color={Colors.black}>
               Didn&apos;t receive the code:{" "}
               <AppText
-                onPress={handleResendOtp}
+                onPress={
+                  from === "/forgot-password"
+                    ? handleResendResetOtp
+                    : handleResendOtp
+                }
                 style={styles.resendCode}
                 color={Colors.inputFocusBorder}
               >
-                {isResending ? "Resending" : "Resend Code"}
+                {isResending || isResendingForgotPasswordOTP
+                  ? "Resending"
+                  : "Resend Code"}
               </AppText>
             </AppText>
           )}

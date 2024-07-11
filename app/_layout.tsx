@@ -81,6 +81,7 @@ export default function RootLayout() {
             <Stack.Screen name="buy-airtime" options={options} />
             <Stack.Screen name="review-payment" options={options} />
             <Stack.Screen name="security" options={options} />
+            <Stack.Screen name="cashback" options={options} />
             {/* </Screen> */}
             <Stack.Screen
               name="(tabs)"

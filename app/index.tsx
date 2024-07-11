@@ -21,7 +21,7 @@ export const data = [
   },
   {
     title: "Pay all your bills quickly and easily.",
-    image: require("../assets/images/welcome-image.png"),
+    image: require("../assets/images/onboarding-image-2.png"),
     width: "100%",
     height: sizes.WINDOW_HEIGHT * 0.54,
     isImage: true,

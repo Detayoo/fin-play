@@ -8,7 +8,7 @@
     "scheme": "uzzy-v1",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/images/splash-screen.png",
+      "image": "./assets/images/uzzy-splash-screen.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },

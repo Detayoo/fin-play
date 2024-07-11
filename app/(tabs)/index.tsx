@@ -57,6 +57,8 @@ export default function HomeScreen() {
     setState({ ...state, ...payload });
   };
 
+  console.log(user);
+
   //so that the user will not be able to just swipe from homepage and then go to login
   useEffect(() => {
     const backHandler = BackHandler.addEventListener(

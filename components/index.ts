@@ -31,3 +31,4 @@ export * from "./EmptyComponent";
 export * from "./Loading";
 export * from "./PhoneContacts";
 export * from "./ContactSelect";
+export * from "./ChevronDown";

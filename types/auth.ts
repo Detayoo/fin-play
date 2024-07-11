@@ -50,3 +50,10 @@ export type ResetPasswordPayloadType = {
   confirmPassword: string;
   newPassword: string;
 };
+
+export type VerifyAccountForResetType = {
+  message: string;
+  data: {
+    token: string;
+  };
+};

@@ -37,8 +37,8 @@ const ResetPasswordPage = () => {
     try {
       await mutateAsync({
         confirmPassword,
-        newPassword,
-        // token,
+        password: newPassword,
+        token,
       });
     } catch (error) {}
   };

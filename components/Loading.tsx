@@ -12,7 +12,7 @@ interface LoadingProps {
 export const Loading: React.FC<LoadingProps> = ({
   size = "large",
   color = Colors.primary,
-  text = "Please wait..",
+  text = "Loading..",
   textStyle = {},
 }) => {
   return (

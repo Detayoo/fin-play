@@ -70,7 +70,7 @@ const LoginPage = () => {
     mutationFn: loginFn,
     onSuccess: (data) => {
       saveUser(
-        { ...data.data.metadata, password, rememberMe },
+        { ...data.data.metadata?.profile, password, rememberMe },
         data.data.data.token
       );
       if (!data.data.metadata.profile.verified) {

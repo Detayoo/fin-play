@@ -57,3 +57,6 @@ export * from "./SmallFingerprint";
 export * from "./TwoFA";
 export * from "./Password";
 export * from "./Pin";
+export * from "./ChevronRight";
+export * from "./Cashback";
+export * from "./Referrals";

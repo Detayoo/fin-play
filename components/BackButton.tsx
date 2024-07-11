@@ -5,7 +5,13 @@ import { BackIcon } from "@/assets";
 import { Colors } from "@/constants";
 export const BackButton = ({ style }: { style?: TextStyle }) => {
   return (
-    <Pressable onPress={() => router.back()} style={[styles.container, style]}>
+    <Pressable
+      onPress={() => {
+        router.back();
+        console.log("pressed");
+      }}
+      style={[styles.container, style]}
+    >
       <BackIcon />
     </Pressable>
   );
@@ -13,6 +19,7 @@ export const BackButton = ({ style }: { style?: TextStyle }) => {
 
 const styles = StyleSheet.create({
   container: {
+    zIndex:999999,
     width: 50,
     height: 50,
     borderWidth: 1,

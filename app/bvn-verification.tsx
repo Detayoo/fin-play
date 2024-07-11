@@ -54,7 +54,7 @@ export const AccountVerificationPage = () => {
     values: { bvn: string; dob: Date },
     { resetForm }: any
   ) => {
-    const formattedDate = format(values?.dob, "dd/MM/yyyy");
+    const formattedDate = format(values?.dob, "dd/MM/yyyy"); //change to yyyy-MM-dd
     const payload = { bvn: values.bvn, dob: formattedDate, token };
 
     try {

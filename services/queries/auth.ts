@@ -5,6 +5,7 @@ import {
   RegistrationResponse,
   RegistrationType,
   TokenType,
+  VerifyAccountForResetType,
 } from "@/types";
 import { authenticatedRequest, baseRequest } from "../api";
 
@@ -76,15 +77,28 @@ export const resendOTPFn = async ({ token }: { token: TokenType }) => {
   return data;
 };
 
-export const forgotPasswordFn = async ({ email }: { email: string }) => {
-  const { data } = await baseRequest.post("/auth/password/forgot", { email });
+export const forgotPasswordFn = async ({
+  email,
+}: {
+  email: string | undefined | string[];
+}) => {
+  const { data } = await baseRequest.post<BareResponse>(
+    "/auth/password/forgot",
+    { email }
+  );
   return data;
 };
 
-export const verifyForgotPasswordOTPFn = async ({ otp }: { otp: string }) => {
-  //new one
-  const { data } = await baseRequest.patch("/auth/otp/verify", {
+export const verifyForgotPasswordOTPFn = async ({
+  otp,
+  email,
+}: {
+  otp: string;
+  email: string | string[] | undefined;
+}) => {
+  const { data } = await baseRequest.patch<VerifyAccountForResetType>("/auth/otp/verify/reset", {
     otp,
+    email,
   });
   return data;
 };
@@ -106,15 +120,17 @@ export const setTransactionPinFn = async ({
 };
 
 export const resetPasswordFn = async ({
-  newPassword,
+  password,
   confirmPassword,
+  token,
 }: {
-  newPassword: string;
+  password: string;
   confirmPassword: string;
+  token: TokenType;
 }) => {
-  const { data } = await baseRequest.post<BareResponse>(
+  const { data } = await authenticatedRequest(token).patch<BareResponse>(
     "/auth/password/reset",
-    { newPassword, confirmPassword }
+    { password, confirmPassword }
   );
   return data;
 };
