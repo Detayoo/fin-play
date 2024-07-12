@@ -18,12 +18,7 @@ import {
   showToast,
 } from "@/components";
 import { Recipient } from "@/assets";
-import {
-  checkMeterFn,
-  getBettingProvidersFn,
-  getElectricityProvidersFn,
-  getUserBettingDetailsFn,
-} from "@/services";
+import { getBettingProvidersFn, getUserBettingDetailsFn } from "@/services";
 import { useAuth } from "@/context";
 import { bettingSchema, buyElectricitySchema, formatMoney } from "@/utils";
 
@@ -31,10 +26,6 @@ type Options = { id: number; label: string }[];
 type State = {
   serviceProvider: any;
   options: Options;
-  modal: boolean;
-  typeModal: boolean;
-  selectedContact: null | Contact;
-  selectedType: any;
   customerId: string;
   amount: string;
 };
@@ -48,15 +39,11 @@ const BuyBettingPage = () => {
   const { type } = useLocalSearchParams();
   const [showModal, setShowModal] = useState(false);
   const [state, setState] = useState<State>({
-    modal: false,
-    typeModal: false,
     serviceProvider: null,
     options: [
       { id: 1, label: "MTN" },
       { id: 2, label: "GLO" },
     ],
-    selectedContact: null,
-    selectedType: "",
     customerId: "",
     amount: "",
   });
@@ -64,7 +51,7 @@ const BuyBettingPage = () => {
     setState((prevState: any) => ({ ...prevState, ...payload }));
   };
 
-  const handlecustomerIdChange = (
+  const handleCustomerIdChange = (
     value: string,
     setFieldValue: (field: string, value: any) => void
   ) => {
@@ -97,12 +84,13 @@ const BuyBettingPage = () => {
             customerId: state?.customerId,
             provider: state?.serviceProvider,
           }),
-        // enabled: !!(state.serviceProvider?.label && state.selectedType?.label),
+        // enabled: !!(state.serviceProvider?.label && state.customerId,
       },
     ],
   });
 
-  const { minimumAmountPayable, accountName } = userAccountData?.data?.data || {};
+  const { minimumAmountPayable, accountName } =
+    userAccountData?.data?.data || {};
 
   useEffect(() => {
     if (
@@ -117,8 +105,6 @@ const BuyBettingPage = () => {
       return;
     }
   }, [state?.amount, minimumAmountPayable]);
-
-  console.log("useraccountdata", userAccountData?.data?.data?.accountName);
 
   const [providerOptions, setProviderOptions] = useState(
     providersData?.data?.data?.providers?.map(
@@ -136,7 +122,6 @@ const BuyBettingPage = () => {
         params: {
           ...values,
           ...userAccountData?.data?.data,
-
           from: "/buy-betting",
         },
       });
@@ -183,7 +168,6 @@ const BuyBettingPage = () => {
                   values,
                   errors,
                   handleBlur,
-                  handleChange,
                   touched,
                   isValid,
                   setFieldValue,
@@ -208,7 +192,7 @@ const BuyBettingPage = () => {
                       <TextField
                         // onChange={handleChange("customerId")}
                         onChange={(value: string) =>
-                          handlecustomerIdChange(value, setFieldValue)
+                          handleCustomerIdChange(value, setFieldValue)
                         }
                         onBlur={handleBlur("customerId")}
                         value={values.customerId}
@@ -219,19 +203,19 @@ const BuyBettingPage = () => {
                         keyboardType="number-pad"
                       />
 
-                      {!!accountName && <View
-                        style={{
-                          marginTop: -20,
-                          flexDirection: "row",
-                          gap: 10,
-                          alignItems: "center",
-                        }}
-                      >
-                        <Recipient />
-                        <AppText variant="medium">
-                          {accountName}
-                        </AppText>
-                      </View>}
+                      {!!accountName && (
+                        <View
+                          style={{
+                            marginTop: -20,
+                            flexDirection: "row",
+                            gap: 10,
+                            alignItems: "center",
+                          }}
+                        >
+                          <Recipient />
+                          <AppText variant="medium">{accountName}</AppText>
+                        </View>
+                      )}
 
                       <View style={{}}>
                         <TextField
