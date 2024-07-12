@@ -5,7 +5,6 @@ import {  useQueries } from "@tanstack/react-query";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { Formik } from "formik";
-import { Contact } from "expo-contacts";
 
 import {
   AppText,

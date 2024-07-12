@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import { ScrollView, View } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
-import { useMutation, useQueries } from "@tanstack/react-query";
+import { useQueries } from "@tanstack/react-query";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { Formik } from "formik";
-import { Contact } from "expo-contacts";
 
 import {
   AppText,
@@ -20,7 +19,7 @@ import {
 import { Recipient } from "@/assets";
 import { getBettingProvidersFn, getUserBettingDetailsFn } from "@/services";
 import { useAuth } from "@/context";
-import { bettingSchema, buyElectricitySchema, formatMoney } from "@/utils";
+import { bettingSchema } from "@/utils";
 
 type Options = { id: number; label: string }[];
 type State = {

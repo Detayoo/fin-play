@@ -4,7 +4,6 @@ import { router, useLocalSearchParams } from "expo-router";
 import { format } from "date-fns";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import {
-  QueryClient,
   useMutation,
   useQueries,
   useQueryClient,
