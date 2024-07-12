@@ -7,7 +7,7 @@ import {
   BottomSheetModalProvider,
   TouchableOpacity,
 } from "@gorhom/bottom-sheet";
-import { Formik, FieldProps } from "formik";
+import { Formik } from "formik";
 import { Contact } from "expo-contacts";
 
 import {
@@ -19,12 +19,11 @@ import {
   SelectField,
   SelectPlaceholder,
   TextField,
-  showToast,
 } from "@/components";
 import { Recipient } from "@/assets";
-import { getAirtimeProvidersFn, getDataPlansFn } from "@/services";
+import { getDataPlansFn } from "@/services";
 import { useAuth } from "@/context";
-import { buyAirtimeSchema, buyDataSchema } from "@/utils";
+import { buyDataSchema } from "@/utils";
 import { DataPlan } from "@/types";
 
 type Options = { id: number; label: string }[];
@@ -40,6 +39,7 @@ type DataForm = {
   phoneNumber: string | undefined;
   serviceProvider: string;
 };
+
 const BuyDataPage = () => {
   const { token } = useAuth();
   const { type } = useLocalSearchParams();
@@ -58,7 +58,6 @@ const BuyDataPage = () => {
     setState((prevState: any) => ({ ...prevState, ...payload }));
   };
 
-  console.log(state.selectedPlan);
   const { data: providersData } = useQuery({
     queryKey: ["data providers"],
     queryFn: () => getDataPlansFn({ token }),

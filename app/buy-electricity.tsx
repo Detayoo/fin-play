@@ -18,10 +18,7 @@ import {
   showToast,
 } from "@/components";
 import { Recipient } from "@/assets";
-import {
-  checkMeterFn,
-  getElectricityProvidersFn,
-} from "@/services";
+import { checkMeterFn, getElectricityProvidersFn } from "@/services";
 import { useAuth } from "@/context";
 import { buyElectricitySchema, formatMoney } from "@/utils";
 
@@ -31,7 +28,6 @@ type State = {
   options: Options;
   modal: boolean;
   typeModal: boolean;
-  selectedContact: null | Contact;
   selectedType: any;
   meterNumber: string;
   amount: "";
@@ -53,7 +49,6 @@ const BuyElectricityPage = () => {
       { id: 1, label: "MTN" },
       { id: 2, label: "GLO" },
     ],
-    selectedContact: null,
     selectedType: "",
     meterNumber: "",
     amount: "",
@@ -96,12 +91,10 @@ const BuyElectricityPage = () => {
             meter: state?.meterNumber,
             type: state.selectedType?.label,
           }),
-        // enabled: !!(state.serviceProvider?.label && state.selectedType?.label),
+        // enabled: !!(state.serviceProvider?.label && state.selectedType?.label && state?.meterNumber),
       },
     ],
   });
-
-  console.log("useraccountdata", userAccountData?.data?.data?.accountName);
 
   const [providerOptions, setProviderOptions] = useState(
     providersData?.data?.data?.availableDiscos?.map((each, index: number) => ({
@@ -130,7 +123,6 @@ const BuyElectricityPage = () => {
       state.amount &&
       +maximumAmountPayable < +state?.amount
     ) {
-      console.log("got here");
       showToast(
         "error",
         "This amount is greater than the minimum payable amount"
@@ -192,19 +184,10 @@ const BuyElectricityPage = () => {
                   values,
                   errors,
                   handleBlur,
-                  handleChange,
                   touched,
                   isValid,
                   setFieldValue,
                 }) => {
-                  console.log(
-                    !isValid ||
-                      !state.selectedType ||
-                      !state.serviceProvider ||
-                      !userAccountData?.data?.data?.accountName ||
-                      +maximumAmountPayable < +state?.amount ||
-                      +minimumAmountPayable > +state?.amount
-                  );
                   return (
                     <View
                       style={{
