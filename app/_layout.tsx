@@ -84,6 +84,7 @@ export default function RootLayout() {
             <Stack.Screen name="security" options={options} />
             <Stack.Screen name="cashback" options={options} />
             <Stack.Screen name="buy-electricity" options={options} />
+            <Stack.Screen name="buy-betting" options={options} />
             {/* </Screen> */}
             <Stack.Screen
               name="(tabs)"
@@ -91,9 +92,9 @@ export default function RootLayout() {
             />
           </Stack>
         </QueryClientProvider>
-        <View style={{ height: 250 }}>
+        {/* <View style={{ height: 250 }}>
           <NetworkLogger />
-        </View>
+        </View> */}
       </AuthProvider>
 
       {/* </ThemeProvider> */}
