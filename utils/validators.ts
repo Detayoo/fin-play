@@ -28,3 +28,9 @@ export const resetPasswordSchema = Yup.object().shape({
     .required("Confirm Password is required")
     .oneOf([Yup.ref("newPassword"), ""], "Passwords must match"),
 });
+
+export const buyAirtimeSchema = Yup.object().shape({
+  amount: Yup.string().required(),
+  phoneNumber: Yup.string().required().length(11),
+  serviceProvider: Yup.string().required(),
+});

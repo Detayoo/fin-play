@@ -15,8 +15,13 @@ import {
   SelectField,
   SelectPlaceholder,
   TextField,
+  showToast,
 } from "@/components";
 import { Recipient } from "@/assets";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { buyAirtimeFn, getAirtimeProvidersFn } from "@/services";
+import { useAuth } from "@/context";
+import { ERRORS, buyAirtimeSchema, extractServerError } from "@/utils";
 
 type Options = { id: number; label: string }[];
 type State = {
@@ -25,7 +30,14 @@ type State = {
   modal: boolean;
   selectedContact: null | Contact;
 };
+
+type AirtimeForm = {
+  amount: string;
+  serviceProvider: string;
+  phoneNumber: string | undefined;
+};
 const BuyAirtimePage = () => {
+  const { token } = useAuth();
   const { type } = useLocalSearchParams();
   const [showModal, setShowModal] = useState(false);
   const [state, setState] = useState<State>({
@@ -37,16 +49,23 @@ const BuyAirtimePage = () => {
     ],
     selectedContact: null,
   });
-
   const updateState = (payload: any) => {
     setState((prevState: any) => ({ ...prevState, ...payload }));
   };
 
-  const onSubmit = (values: any) => {
-    router.push({
-      pathname: "/review-payment",
-      params: values,
-    });
+  const { data: providersData } = useQuery({
+    queryKey: ["airtime providers"],
+    queryFn: () => getAirtimeProvidersFn({ token }),
+  });
+
+  const onSubmit = async (values: AirtimeForm) => {
+    try {
+      router.push({
+        pathname: "/review-payment",
+        params: { ...values, from: "/buy-airtime" },
+      });
+      return;
+    } catch (error) {}
   };
 
   return (
@@ -88,7 +107,7 @@ const BuyAirtimePage = () => {
                   serviceProvider: state?.serviceProvider?.label || "",
                 }}
                 onSubmit={onSubmit}
-                //   validationSchema={validationSchema}
+                validationSchema={buyAirtimeSchema}
               >
                 {({
                   handleSubmit,
@@ -215,7 +234,10 @@ const BuyAirtimePage = () => {
         </View>
 
         <SelectField
-          options={state.options}
+          options={[
+            { id: 1, label: "MTN" },
+            { id: 2, label: "GLO" },
+          ]}
           visible={showModal}
           setVisible={setShowModal}
           setSelectedOption={(e: any) =>
@@ -223,6 +245,7 @@ const BuyAirtimePage = () => {
               serviceProvider: e,
             })
           }
+          // snapPoints={["30%"]}
         />
 
         <PhoneContacts

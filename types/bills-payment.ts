@@ -7,9 +7,9 @@ export interface IGetProviders extends BareResponse {
 }
 
 export interface IBuyAirtimePayload {
-  phoneNumber: string;
-  networkProvider: string;
-  amount: number;
+  phoneNumber: string | undefined | string[];
+  networkProvider: string | undefined | string[];
+  amount: number | undefined | string[];
 }
 
 export interface IBuyAirtimeResponse extends BareResponse {
@@ -69,15 +69,15 @@ export interface IGetDataProviders extends BareResponse {
 }
 
 export interface IBuyDataPayload {
-  phoneNumber: string;
-  networkProvider: string;
-  tariffId: string;
+  phoneNumber: string | string[] | undefined;
+  networkProvider: string | string[] | undefined;
+  tariffId: string | string[] | undefined;
 }
 
 export interface IBuyDataResponse extends BareResponse {
   data: {
     recipient: string;
-    tarrifName: string;
+    tariffName: string;
     amountPaid: string;
     telco: string;
     status: string;
@@ -132,5 +132,14 @@ export interface IBuyElectricityResponse extends BareResponse {
     currency: string;
     amount: number;
     sessionId: string;
+  };
+}
+
+export interface IGetPointBalance {
+  message: string;
+  data: {
+    balance: number;
+    isCustom: boolean;
+    percentage: string;
   };
 }

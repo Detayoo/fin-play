@@ -3,6 +3,12 @@ import { ScrollView, View } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import { format } from "date-fns";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import {
+  QueryClient,
+  useMutation,
+  useQueries,
+  useQueryClient,
+} from "@tanstack/react-query";
 
 import {
   AppText,
@@ -13,29 +19,108 @@ import {
   ReusableBottomSheet,
   OtpField,
   SwitchComponent,
+  showToast,
 } from "@/components";
 import { Colors } from "@/constants";
 import { BigMtn } from "@/assets";
-import { formatMoney } from "@/utils";
+import { ERRORS, extractServerError, formatMoney } from "@/utils";
+import { buyAirtimeFn, buyDataFn, getPointsBalanceFn } from "@/services";
+import { useAuth } from "@/context";
 
 const ReviewPayment = () => {
+  const { token } = useAuth();
+  const queryClient = useQueryClient();
   const [showModal, setShowModal] = useState(false);
   const [save, setSave] = useState(false);
   const [useCashback, setUseCashback] = useState(false);
   const [pin, setPin] = useState("");
   const {
-    accountNumber,
     amount,
-    narration,
-    bankName,
     phoneNumber,
     serviceProvider,
-    cashback,
-  } = useLocalSearchParams();
-  console.log(useLocalSearchParams());
+    networkProvider,
+    from,
+    tariffId,
+  } = useLocalSearchParams() || {};
 
-  const makePayment = () => {
-    router.push("/payment-receipt");
+  const [pointsData] = useQueries({
+    queries: [
+      {
+        queryKey: ["points balance"],
+        queryFn: () =>
+          getPointsBalanceFn({
+            token,
+          }),
+      },
+    ],
+  });
+
+  const { balance: pointBal } = pointsData?.data?.data || {};
+  const subsidizedAmount = amount && pointBal && +amount - pointBal;
+
+  const { isPending: buyingAirtime, mutateAsync: buyAirtimeAsync } =
+    useMutation({
+      mutationFn: buyAirtimeFn,
+      onSuccess: (data) => {
+        router.push({
+          pathname: "/payment-receipt",
+          params: { ...data?.data, from: "/airtime-payment" },
+        });
+      },
+      onError: (error) => {
+        showToast(
+          "error",
+          extractServerError(error, ERRORS.SOMETHING_HAPPENED)
+        );
+      },
+      onSettled: () => {
+        queryClient.invalidateQueries({
+          queryKey: ["points balance"],
+        });
+      },
+    });
+
+  const { isPending: buyingData, mutateAsync: buyDataAsync } = useMutation({
+    mutationFn: buyDataFn,
+    onSuccess: (data) => {
+      router.push({
+        pathname: "/payment-receipt",
+        params: { ...data?.data, from: "/data-payment" },
+      });
+    },
+    onError: (error) => {
+      showToast("error", extractServerError(error, ERRORS.SOMETHING_HAPPENED));
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["points balance"],
+      });
+    },
+  });
+
+  const makePayment = async () => {
+    try {
+      if (from === "/buy-airtime") {
+        await buyAirtimeAsync({
+          payload: {
+            amount: amount ? +amount : 0,
+            networkProvider: serviceProvider,
+            phoneNumber,
+          },
+          token,
+        });
+      }
+      if (from === "/buy-data") {
+        await buyDataAsync({
+          payload: {
+            tariffId,
+            networkProvider,
+            phoneNumber,
+          },
+          token,
+        });
+      }
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -105,8 +190,15 @@ const ReviewPayment = () => {
               borderTopColor: "#EDEDED",
             }}
           >
-            <ListItem name="Phone Number" value={accountNumber} />
-            <ListItem name="Amount to pay (NGN)" value={amount} />
+            <ListItem name="Phone Number" value={phoneNumber} />
+            <ListItem
+              name="Amount to pay (NGN)"
+              value={
+                useCashback
+                  ? formatMoney(subsidizedAmount || "0")
+                  : formatMoney(amount || "0")
+              }
+            />
             <ListItem name="Network Provider" value={serviceProvider} />
             <ListItem name="Cashback" value="NGN 1.00" />
             <View
@@ -117,10 +209,13 @@ const ReviewPayment = () => {
               }}
             >
               <AppText color={Colors.faintBlack}>Use cashback</AppText>
-              <SwitchComponent
-                state={useCashback}
-                toggleSwitch={() => setUseCashback(!useCashback)}
-              />
+              <View>
+                <SwitchComponent
+                  state={useCashback}
+                  toggleSwitch={() => setUseCashback(!useCashback)}
+                />
+                <AppText>{pointBal || 0}</AppText>
+              </View>
             </View>
             <View
               style={{
@@ -141,6 +236,7 @@ const ReviewPayment = () => {
           onPress={() => setShowModal(true)}
           style={{ marginTop: 50 }}
           label="Send Payment"
+          disabled={buyingAirtime || buyingData}
         />
       </Screen>
       <ReusableBottomSheet

@@ -7,6 +7,7 @@ import {
   IBuyElectricityResponse,
   ICheckMeterResponse,
   IGetElectricityProviders,
+  IGetPointBalance,
   IGetProviders,
   TokenType,
 } from "@/types";
@@ -86,7 +87,7 @@ export const checkMeterFn = async ({
   disco: string;
   type: string;
 }) => {
-  const { data } = await authenticatedRequest(token).post<ICheckMeterResponse>(
+  const { data } = await authenticatedRequest(token).get<ICheckMeterResponse>(
     `/electricity/meter?meter=${meter}&disco=${disco}&vendType=${type}`
   );
 
@@ -104,5 +105,12 @@ export const buyEelectricityFn = async ({
     token
   ).post<IBuyElectricityResponse>("/electricity/vend", payload);
 
+  return data;
+};
+
+export const getPointsBalanceFn = async ({ token }: { token: TokenType }) => {
+  const { data } = await authenticatedRequest(token).get<IGetPointBalance>(
+    "/wallet/rewards/balance"
+  );
   return data;
 };
