@@ -110,9 +110,9 @@ const CashbackPage = () => {
             }}
           >
             <View>
-              <AppText>Bonuses</AppText>
+              <AppText>Daily cashback</AppText>
               <AppText style={{ marginTop: 12 }} size="large" variant="medium" >
-                NGN {formatMoney(rewardsData?.data?.data?.total_bonus || "0")}
+                NGN {formatMoney(rewardsData?.data?.data?.daily_bonus || "0")}
               </AppText>
             </View>
             <View>

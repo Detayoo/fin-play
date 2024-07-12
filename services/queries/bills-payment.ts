@@ -6,6 +6,7 @@ import {
   IBuyElectricityPayload,
   IBuyElectricityResponse,
   ICheckMeterResponse,
+  IGetDataPlans,
   IGetElectricityProviders,
   IGetPointBalance,
   IGetProviders,
@@ -46,6 +47,13 @@ export const getBettingProvidersFn = async ({
 }) => {
   const { data } = await authenticatedRequest(token).get<IGetProviders>(
     "/betting/providers"
+  );
+  return data;
+};
+
+export const getDataPlansFn = async ({ token }: { token: TokenType }) => {
+  const { data } = await authenticatedRequest(token).get<IGetDataPlans>(
+    "/data/plans"
   );
   return data;
 };

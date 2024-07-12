@@ -34,3 +34,7 @@ export const buyAirtimeSchema = Yup.object().shape({
   phoneNumber: Yup.string().required().length(11),
   serviceProvider: Yup.string().required(),
 });
+export const buyDataSchema = Yup.object().shape({
+  phoneNumber: Yup.string().required().length(11),
+  serviceProvider: Yup.string().required(),
+});

@@ -55,16 +55,18 @@ export interface IBuyBettingResponse extends BareResponse {
   };
 }
 
-export interface IGetDataProviders extends BareResponse {
+export interface DataPlan {
+  price: number | number[];
+  tariff_type_id: string | string[];
+  name: string | string[];
+  category: string | string[];
+}
+
+export interface IGetDataPlans extends BareResponse {
   statusCode: number;
   message: string;
   data: {
-    provider: {
-      price: number;
-      tariff_type_id: string;
-      name: string;
-      category: string;
-    }[];
+    provider: DataPlan[];
   };
 }
 

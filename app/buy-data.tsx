@@ -3,7 +3,10 @@ import { Pressable, ScrollView, View } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+import {
+  BottomSheetModalProvider,
+  TouchableOpacity,
+} from "@gorhom/bottom-sheet";
 import { Formik, FieldProps } from "formik";
 import { Contact } from "expo-contacts";
 
@@ -19,9 +22,10 @@ import {
   showToast,
 } from "@/components";
 import { Recipient } from "@/assets";
-import { getAirtimeProvidersFn } from "@/services";
+import { getAirtimeProvidersFn, getDataPlansFn } from "@/services";
 import { useAuth } from "@/context";
-import { buyAirtimeSchema } from "@/utils";
+import { buyAirtimeSchema, buyDataSchema } from "@/utils";
+import { DataPlan } from "@/types";
 
 type Options = { id: number; label: string }[];
 type State = {
@@ -29,14 +33,14 @@ type State = {
   options: Options;
   modal: boolean;
   selectedContact: null | Contact;
+  selectedPlan: DataPlan | null;
 };
 
-type AirtimeForm = {
-  amount: string;
-  serviceProvider: string;
+type DataForm = {
   phoneNumber: string | undefined;
+  serviceProvider: string;
 };
-const BuyAirtimePage = () => {
+const BuyDataPage = () => {
   const { token } = useAuth();
   const { type } = useLocalSearchParams();
   const [showModal, setShowModal] = useState(false);
@@ -48,21 +52,39 @@ const BuyAirtimePage = () => {
       { id: 2, label: "GLO" },
     ],
     selectedContact: null,
+    selectedPlan: null,
   });
   const updateState = (payload: any) => {
     setState((prevState: any) => ({ ...prevState, ...payload }));
   };
 
+  console.log(state.selectedPlan);
   const { data: providersData } = useQuery({
-    queryKey: ["airtime providers"],
-    queryFn: () => getAirtimeProvidersFn({ token }),
+    queryKey: ["data providers"],
+    queryFn: () => getDataPlansFn({ token }),
   });
+  const providersPlans = [
+    {
+      price: 250,
+      tariff_type_id: "DATA-823",
+      name: "Youtube_N250 500MB SocialPlan",
+      category: "GLO",
+    },
+  ];
+  const selectedTariff = providersPlans?.find(
+    (each) => state.selectedPlan?.tariff_type_id === each?.tariff_type_id
+  );
 
-  const onSubmit = async (values: AirtimeForm) => {
+  const onSubmit = async (values: DataForm) => {
     try {
       router.push({
         pathname: "/review-payment",
-        params: { ...values, from: "/buy-airtime" },
+        params: {
+          ...values,
+          amount: selectedTariff?.price,
+          tariffId: selectedTariff?.tariff_type_id,
+          from: "/buy-data",
+        },
       });
       return;
     } catch (error) {}
@@ -103,13 +125,13 @@ const BuyAirtimePage = () => {
                         ""
                       )
                     : "",
-                  amount: "",
                   serviceProvider: state?.serviceProvider?.label || "",
                 }}
                 onSubmit={onSubmit}
-                validationSchema={buyAirtimeSchema}
+                validationSchema={buyDataSchema}
               >
                 {({
+                  isValid,
                   handleSubmit,
                   values,
                   errors,
@@ -166,54 +188,44 @@ const BuyAirtimePage = () => {
                         title="Service Provider"
                       />
 
-                      <View style={{ marginTop: 20 }}>
-                        <TextField
-                          onChange={handleChange("amount")}
-                          onBlur={handleBlur("amount")}
-                          value={values.amount}
-                          placeholder="Enter amount"
-                          errors={errors.amount}
-                          touched={touched.amount}
-                          label="Amount"
-                          maxLength={10}
-                          keyboardType="number-pad"
-                        />
-                      </View>
-                      <AppText size="small" style={{ marginTop: -16 }}>
-                        You will be charged NGN 49.00 for your purchase
-                      </AppText>
-
-                      <AppText style={{ marginTop: 30, marginBottom: 20 }}>
-                        Or select airtime amount
-                      </AppText>
-                      <View style={{ gap: 20 }}>
-                        <View
-                          style={{
-                            flexDirection: "row",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                          }}
-                        >
-                          <AppText>NGN50.00</AppText>
-                          <View style={{ gap: 4 }}>
-                            <AppText size="small">Cashback</AppText>
-                            <AppText>NGN1.00</AppText>
+                      {values.serviceProvider && (
+                        <>
+                          <AppText
+                            variant="medium"
+                            style={{ marginTop: 30, marginBottom: 20 }}
+                          >
+                            Data Bundles
+                          </AppText>
+                          <View style={{ gap: 20 }}>
+                            {providersPlans?.map((each) => {
+                              return (
+                                <TouchableOpacity
+                                  onPress={() =>
+                                    updateState({
+                                      selectedPlan: each,
+                                    })
+                                  }
+                                  style={{
+                                    flexDirection: "row",
+                                    justifyContent: "space-between",
+                                    alignItems: "center",
+                                  }}
+                                >
+                                  <AppText style={{ width: "70%" }}>
+                                    {each.name} valid for 2 days, available at
+                                    NGN
+                                    {each.price}
+                                  </AppText>
+                                  <View style={{ gap: 4, width: "20%" }}>
+                                    <AppText size="small">Cashback</AppText>
+                                    <AppText>NGN1.00</AppText>
+                                  </View>
+                                </TouchableOpacity>
+                              );
+                            })}
                           </View>
-                        </View>
-                        <View
-                          style={{
-                            flexDirection: "row",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                          }}
-                        >
-                          <AppText>NGN100.00</AppText>
-                          <View style={{ gap: 4 }}>
-                            <AppText size="small">Cashback</AppText>
-                            <AppText>NGN2.00</AppText>
-                          </View>
-                        </View>
-                      </View>
+                        </>
+                      )}
                       <PrimaryButton
                         onPress={() => handleSubmit()}
                         label="Proceed to Payment"
@@ -224,6 +236,7 @@ const BuyAirtimePage = () => {
                           right: 0,
                           width: "100%",
                         }}
+                        disabled={!isValid || !selectedTariff}
                       />
                     </View>
                   );
@@ -265,4 +278,4 @@ const BuyAirtimePage = () => {
   );
 };
 
-export default BuyAirtimePage;
+export default BuyDataPage;

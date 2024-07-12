@@ -34,14 +34,8 @@ const ReviewPayment = () => {
   const [save, setSave] = useState(false);
   const [useCashback, setUseCashback] = useState(false);
   const [pin, setPin] = useState("");
-  const {
-    amount,
-    phoneNumber,
-    serviceProvider,
-    networkProvider,
-    from,
-    tariffId,
-  } = useLocalSearchParams() || {};
+  const { amount, phoneNumber, serviceProvider, from, tariffId } =
+    useLocalSearchParams();
 
   const [pointsData] = useQueries({
     queries: [
@@ -55,7 +49,7 @@ const ReviewPayment = () => {
     ],
   });
 
-  const { balance: pointBal } = pointsData?.data?.data || {};
+  const { balance: pointBal = 20 } = pointsData?.data?.data || {};
   const subsidizedAmount = amount && pointBal && +amount - pointBal;
 
   const { isPending: buyingAirtime, mutateAsync: buyAirtimeAsync } =
@@ -113,8 +107,8 @@ const ReviewPayment = () => {
       if (from === "/buy-data") {
         await buyDataAsync({
           payload: {
-            tariffId,
-            networkProvider,
+            tariffId: tariffId,
+            networkProvider: serviceProvider,
             phoneNumber,
           },
           token,
@@ -200,7 +194,7 @@ const ReviewPayment = () => {
               }
             />
             <ListItem name="Network Provider" value={serviceProvider} />
-            <ListItem name="Cashback" value="NGN 1.00" />
+            <ListItem name="Cashback" value={`${pointBal || 0}`} />
             <View
               style={{
                 flexDirection: "row",
@@ -214,7 +208,6 @@ const ReviewPayment = () => {
                   state={useCashback}
                   toggleSwitch={() => setUseCashback(!useCashback)}
                 />
-                <AppText>{pointBal || 0}</AppText>
               </View>
             </View>
             <View
