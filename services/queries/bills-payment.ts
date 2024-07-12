@@ -84,6 +84,49 @@ export const getElectricityProvidersFn = async ({
   return data;
 };
 
+// export const checkMeterFn = async ({
+//   token,
+//   meter,
+//   disco,
+//   type,
+// }: {
+//   token: TokenType;
+//   meter: string;
+//   disco: string;
+//   type: string;
+// }) => {
+//   const { data } = await authenticatedRequest(token).get<ICheckMeterResponse>(
+//     `/electricity/meter?meter=${meter}&disco=${disco}&vendType=${type}`
+//   );
+//   // return data;
+//   try {
+//   } catch (error) {
+//     return {
+//       data: {
+//         accountName: "Tayo adedigba",
+//         address: "Yeah man",
+//         debtRepayment: "",
+//         maximumAmountPayable: 300,
+//         minimumAmountPayable: 500,
+//         meterNumber: 2011111111,
+//         vendType: "PREPAID",
+//       },
+//     };
+//   }
+
+//   // return {
+//   //   data: {
+//   //     accountName: "Tayo adedigba",
+//   //     address: "Yeah man",
+//   //     debtRepayment: "",
+//   //     maximumAmountPayable: 300,
+//   //     minimumAmountPayable: 500,
+//   //     meterNumber: 2011111111,
+//   //     vendType: "PREPAID",
+//   //   },
+//   // };
+// };
+
 export const checkMeterFn = async ({
   token,
   meter,
@@ -95,11 +138,27 @@ export const checkMeterFn = async ({
   disco: string;
   type: string;
 }) => {
-  const { data } = await authenticatedRequest(token).get<ICheckMeterResponse>(
-    `/electricity/meter?meter=${meter}&disco=${disco}&vendType=${type}`
-  );
+  const data: ICheckMeterResponse = {
+    message: "",
+    data: {
+      meterNumber: "string",
+      disco: "string",
+      vendType: "string",
+      accountName: "string",
+      address: "string",
+      minimumAmountPayable: "string",
+      maximumAmountPayable: "string",
+      debtRepayment: 200,
+      outstanding: 100,
+    },
+  };
 
   return data;
+
+  // const { data } = await authenticatedRequest(token).get<ICheckMeterResponse>(
+  //   `/electricity/meter?meter=${meter}&disco=${disco}&vendType=${type}`
+  // );
+  // return { data };
 };
 
 export const buyEelectricityFn = async ({

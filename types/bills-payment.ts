@@ -100,14 +100,14 @@ export interface IGetElectricityProviders extends BareResponse {
 export interface ICheckMeterResponse extends BareResponse {
   data: {
     meterNumber: string;
-    disco: string;
+    disco?: string;
     vendType: string;
-    accountName: string;
-    address: string;
-    minimumAmountPayable: string;
-    maximumAmountPayable: string;
-    debtRepayment: number;
-    outstanding: number;
+    accountName?: string;
+    address?: string;
+    minimumAmountPayable?: string;
+    maximumAmountPayable?: string;
+    debtRepayment?: number;
+    outstanding?: number;
   };
 }
 

@@ -34,8 +34,19 @@ const ReviewPayment = () => {
   const [save, setSave] = useState(false);
   const [useCashback, setUseCashback] = useState(false);
   const [pin, setPin] = useState("");
-  const { amount, phoneNumber, serviceProvider, from, tariffId } =
-    useLocalSearchParams();
+  const {
+    amount,
+    phoneNumber,
+    serviceProvider,
+    from,
+    tariffId,
+    meterNumber,
+    vendType,
+    disco,
+    address,
+    accountName,
+  } = useLocalSearchParams();
+  console.log(useLocalSearchParams());
 
   const [pointsData] = useQueries({
     queries: [
@@ -135,7 +146,7 @@ const ReviewPayment = () => {
         >
           <BackButton />
           <AppText size="xlarge" variant="medium">
-            Payment Summary
+            Review Payment
           </AppText>
           <BackButton
             style={{
@@ -184,7 +195,16 @@ const ReviewPayment = () => {
               borderTopColor: "#EDEDED",
             }}
           >
-            <ListItem name="Phone Number" value={phoneNumber} />
+            {meterNumber && (
+              <ListItem name="Meter Number" value={meterNumber} />
+            )}
+            {disco && <ListItem name="Service Provider" value={disco} />}
+            {accountName && <ListItem name="Meter Name" value={accountName} />}
+            {vendType && <ListItem name="Account Type" value={vendType} />}
+            {address && <ListItem name="Address" value={address} />}
+            {phoneNumber && (
+              <ListItem name="Phone Number" value={phoneNumber} />
+            )}
             <ListItem
               name="Amount to pay (NGN)"
               value={
@@ -193,7 +213,7 @@ const ReviewPayment = () => {
                   : formatMoney(amount || "0")
               }
             />
-            <ListItem name="Network Provider" value={serviceProvider} />
+            {serviceProvider && <ListItem name="Network Provider" value={serviceProvider} />}
             <ListItem name="Cashback" value={`${pointBal || 0}`} />
             <View
               style={{

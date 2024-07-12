@@ -34,7 +34,13 @@ export const buyAirtimeSchema = Yup.object().shape({
   phoneNumber: Yup.string().required().length(11),
   serviceProvider: Yup.string().required(),
 });
+
 export const buyDataSchema = Yup.object().shape({
   phoneNumber: Yup.string().required().length(11),
   serviceProvider: Yup.string().required(),
+});
+
+export const buyElectricitySchema = Yup.object().shape({
+  amount: Yup.string().required(),
+  meterNumber: Yup.string().required(),
 });

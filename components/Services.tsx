@@ -88,6 +88,12 @@ export const Services = () => {
     {
       icon: <Electricity />,
       label: "Electricity",
+      route: {
+        pathname: "/buy-electricity",
+        params: {
+          type: "Electricity",
+        },
+      },
     },
     {
       icon: <Cable />,
