@@ -111,12 +111,6 @@ const LoginPage = () => {
     setEmail(email);
     setPassword(password);
 
-    await saveUser({ ...values, password, rememberMe }, "my TOKen");
-
-    await storeToken("storedToken");
-    router.push("/(tabs)");
-    return;
-
     try {
       await mutateAsync({
         email,

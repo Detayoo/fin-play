@@ -24,19 +24,19 @@ const RewardsPage = () => {
           style={{
             flexDirection: "row",
             alignItems: "center",
-            justifyContent: "space-between",
+            justifyContent: "center",
             paddingHorizontal: 16,
           }}
         >
-          <BackButton />
+          {/* <BackButton /> */}
           <AppText size="xlarge" variant="medium">
             Rewards
           </AppText>
-          <BackButton
+          {/* <BackButton
             style={{
               opacity: 0,
             }}
-          />
+          /> */}
         </View>
         <Image
           source={require("../../assets/images/rewards-image.png")}

@@ -23,7 +23,8 @@ export interface IGetRewards extends BareResponse {
   data: {
     daily_bonus: number;
     total_bonus: number;
-    referral_bonus: number;
+    // referral_bonus: number;
+    expenses: number;
     cashback_transaction: RewardTransactionType[];
   };
 }
