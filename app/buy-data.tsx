@@ -200,11 +200,15 @@ const BuyDataPage = () => {
                             {providersPlans?.map((each) => {
                               return (
                                 <TouchableOpacity
-                                  onPress={() =>
+                                  onPress={() => {
                                     updateState({
                                       selectedPlan: each,
-                                    })
-                                  }
+                                    });
+
+                                    setTimeout(() => {
+                                      handleSubmit();
+                                    }, 200);
+                                  }}
                                   style={{
                                     flexDirection: "row",
                                     justifyContent: "space-between",
