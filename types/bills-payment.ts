@@ -26,9 +26,9 @@ export interface IBuyAirtimeResponse extends BareResponse {
   };
 }
 
-export interface IBettingPayload {
-  provider: string;
-  customerId: string;
+export interface IBuyBettingPayload {
+  provider: string | string[] | undefined;
+  customerId: string | string[] | undefined;
   amount: number;
 }
 

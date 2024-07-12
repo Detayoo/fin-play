@@ -102,6 +102,7 @@ export const Services = () => {
     {
       icon: <Betting />,
       label: "Betting",
+      route: "/buy-betting",
     },
     {
       icon: <Education />,

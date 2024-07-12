@@ -26,6 +26,7 @@ import { BigMtn } from "@/assets";
 import { ERRORS, extractServerError, formatMoney } from "@/utils";
 import {
   buyAirtimeFn,
+  buyBettingPlanFn,
   buyDataFn,
   buyElectricityFn,
   getPointsBalanceFn,
@@ -50,6 +51,8 @@ const ReviewPayment = () => {
     disco,
     address,
     accountName,
+    customerId,
+    provider,
   } = useLocalSearchParams();
   console.log(useLocalSearchParams());
 
@@ -130,6 +133,28 @@ const ReviewPayment = () => {
       },
     });
 
+  const { isPending: buyingBettingPlan, mutateAsync: buyBettingPlanAsync } =
+    useMutation({
+      mutationFn: buyBettingPlanFn,
+      onSuccess: (data) => {
+        router.push({
+          pathname: "/payment-receipt",
+          params: { ...data?.data, from: "/betting-payment" },
+        });
+      },
+      onError: (error) => {
+        showToast(
+          "error",
+          extractServerError(error, ERRORS.SOMETHING_HAPPENED)
+        );
+      },
+      onSettled: () => {
+        queryClient.invalidateQueries({
+          queryKey: ["points balance"],
+        });
+      },
+    });
+
   const makePayment = async () => {
     try {
       if (from === "/buy-airtime") {
@@ -162,7 +187,16 @@ const ReviewPayment = () => {
           },
           token,
         });
-        return;
+      }
+      if (from === "/buy-betting") {
+        await buyBettingPlanAsync({
+          payload: {
+            amount: amount ? +amount : 0,
+            customerId,
+            provider,
+          },
+          token,
+        });
       }
     } catch (error) {}
   };
@@ -237,8 +271,21 @@ const ReviewPayment = () => {
             {meterNumber && (
               <ListItem name="Meter Number" value={meterNumber} />
             )}
+            {provider && <ListItem name="Service Provider" value={provider} />}
             {disco && <ListItem name="Service Provider" value={disco} />}
-            {accountName && <ListItem name="Meter Name" value={accountName} />}
+            {customerId && <ListItem name="Customer ID" value={customerId} />}
+            {accountName && (
+              <ListItem
+                name={
+                  from === "/buy-electricity"
+                    ? "Meter Name"
+                    : from === "/buy-betting"
+                    ? "Customer Name"
+                    : "Account Name"
+                }
+                value={accountName}
+              />
+            )}
             {vendType && <ListItem name="Account Type" value={vendType} />}
             {address && <ListItem name="Address" value={address} />}
             {phoneNumber && (
@@ -290,7 +337,12 @@ const ReviewPayment = () => {
           onPress={() => setShowModal(true)}
           style={{ marginTop: 50 }}
           label="Send Payment"
-          disabled={buyingAirtime || buyingData || buyingElectricity}
+          disabled={
+            buyingAirtime ||
+            buyingData ||
+            buyingElectricity ||
+            buyingBettingPlan
+          }
         />
       </Screen>
       <ReusableBottomSheet

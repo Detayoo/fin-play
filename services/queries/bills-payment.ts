@@ -1,6 +1,8 @@
 import {
   IBuyAirtimePayload,
   IBuyAirtimeResponse,
+  IBuyBettingPayload,
+  IBuyBettingResponse,
   IBuyDataPayload,
   IBuyDataResponse,
   IBuyElectricityPayload,
@@ -10,6 +12,7 @@ import {
   IGetElectricityProviders,
   IGetPointBalance,
   IGetProviders,
+  IValidateBettingAccountResponse,
   TokenType,
 } from "@/types";
 import { authenticatedRequest } from "../api";
@@ -40,6 +43,32 @@ export const buyAirtimeFn = async ({
   return data;
 };
 
+export const getUserBettingDetailsFn = async ({
+  token,
+  provider,
+  customerId,
+}: {
+  token: TokenType;
+  provider: string;
+  customerId: string;
+}) => {
+  const data: IValidateBettingAccountResponse = {
+    message: "",
+    data: {
+      provider: "string",
+      customerId: "string",
+      accountName: "string",
+      minimumAmountPayable: 400,
+    },
+  };
+
+  return data;
+  // const { data } = await authenticatedRequest(token).get<IValidateBettingAccountResponse>(
+  //   `/betting/account?provider=${provider}&customerId=${customerId}`
+  // );
+  // return data;
+};
+
 export const getBettingProvidersFn = async ({
   token,
 }: {
@@ -48,6 +77,21 @@ export const getBettingProvidersFn = async ({
   const { data } = await authenticatedRequest(token).get<IGetProviders>(
     "/betting/providers"
   );
+  return data;
+};
+
+export const buyBettingPlanFn = async ({
+  token,
+  payload,
+}: {
+  token: TokenType;
+  payload: IBuyBettingPayload;
+}) => {
+  const { data } = await authenticatedRequest(token).post<IBuyBettingResponse>(
+    "/betting/vend",
+    payload
+  );
+
   return data;
 };
 

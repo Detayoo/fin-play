@@ -44,3 +44,7 @@ export const buyElectricitySchema = Yup.object().shape({
   amount: Yup.string().required(),
   meterNumber: Yup.string().required(),
 });
+export const bettingSchema = Yup.object().shape({
+  amount: Yup.string().required(),
+  customerId: Yup.string().required(),
+});
