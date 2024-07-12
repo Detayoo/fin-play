@@ -112,9 +112,9 @@ export interface ICheckMeterResponse extends BareResponse {
 }
 
 export interface IBuyElectricityPayload {
-  meter: string;
-  disco: string;
-  vendType: string;
+  meter: string | string[] | undefined;
+  disco: string | string[] | undefined;
+  vendType: string | string[] | undefined;
   amount: number;
 }
 

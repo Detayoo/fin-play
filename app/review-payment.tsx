@@ -24,7 +24,12 @@ import {
 import { Colors } from "@/constants";
 import { BigMtn } from "@/assets";
 import { ERRORS, extractServerError, formatMoney } from "@/utils";
-import { buyAirtimeFn, buyDataFn, getPointsBalanceFn } from "@/services";
+import {
+  buyAirtimeFn,
+  buyDataFn,
+  buyElectricityFn,
+  getPointsBalanceFn,
+} from "@/services";
 import { useAuth } from "@/context";
 
 const ReviewPayment = () => {
@@ -103,6 +108,28 @@ const ReviewPayment = () => {
     },
   });
 
+  const { isPending: buyingElectricity, mutateAsync: buyElectricityAsync } =
+    useMutation({
+      mutationFn: buyElectricityFn,
+      onSuccess: (data) => {
+        router.push({
+          pathname: "/payment-receipt",
+          params: { ...data?.data, from: "/electricity-payment" },
+        });
+      },
+      onError: (error) => {
+        showToast(
+          "error",
+          extractServerError(error, ERRORS.SOMETHING_HAPPENED)
+        );
+      },
+      onSettled: () => {
+        queryClient.invalidateQueries({
+          queryKey: ["points balance"],
+        });
+      },
+    });
+
   const makePayment = async () => {
     try {
       if (from === "/buy-airtime") {
@@ -124,6 +151,18 @@ const ReviewPayment = () => {
           },
           token,
         });
+      }
+      if (from === "/buy-electricity") {
+        await buyElectricityAsync({
+          payload: {
+            amount: amount ? +amount : 0,
+            disco,
+            meter: meterNumber,
+            vendType,
+          },
+          token,
+        });
+        return;
       }
     } catch (error) {}
   };
@@ -213,7 +252,9 @@ const ReviewPayment = () => {
                   : formatMoney(amount || "0")
               }
             />
-            {serviceProvider && <ListItem name="Network Provider" value={serviceProvider} />}
+            {serviceProvider && (
+              <ListItem name="Network Provider" value={serviceProvider} />
+            )}
             <ListItem name="Cashback" value={`${pointBal || 0}`} />
             <View
               style={{
@@ -249,7 +290,7 @@ const ReviewPayment = () => {
           onPress={() => setShowModal(true)}
           style={{ marginTop: 50 }}
           label="Send Payment"
-          disabled={buyingAirtime || buyingData}
+          disabled={buyingAirtime || buyingData || buyingElectricity}
         />
       </Screen>
       <ReusableBottomSheet

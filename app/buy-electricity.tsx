@@ -19,7 +19,6 @@ import {
 } from "@/components";
 import { Recipient } from "@/assets";
 import {
-  buyEelectricityFn,
   checkMeterFn,
   getElectricityProvidersFn,
 } from "@/services";
@@ -276,16 +275,18 @@ const BuyElectricityPage = () => {
                           keyboardType="number-pad"
                         />
                       </View>
-                      <View>
-                        <AppText>
-                          Minimum Payable Amount - NGN
-                          {formatMoney(minimumAmountPayable)}
-                        </AppText>
-                        <AppText>
-                          Maximum Payable Amount - NGN{" "}
-                          {formatMoney(maximumAmountPayable)}
-                        </AppText>
-                      </View>
+                      {minimumAmountPayable && maximumAmountPayable && (
+                        <View>
+                          <AppText>
+                            Minimum Payable Amount - NGN
+                            {formatMoney(minimumAmountPayable)}
+                          </AppText>
+                          <AppText>
+                            Maximum Payable Amount - NGN{" "}
+                            {formatMoney(maximumAmountPayable)}
+                          </AppText>
+                        </View>
+                      )}
 
                       <PrimaryButton
                         disabled={

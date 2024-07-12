@@ -96,10 +96,13 @@ export const verifyForgotPasswordOTPFn = async ({
   otp: string;
   email: string | string[] | undefined;
 }) => {
-  const { data } = await baseRequest.patch<VerifyAccountForResetType>("/auth/otp/verify/reset", {
-    otp,
-    email,
-  });
+  const { data } = await baseRequest.patch<VerifyAccountForResetType>(
+    "/auth/otp/verify/reset",
+    {
+      otp,
+      email,
+    }
+  );
   return data;
 };
 

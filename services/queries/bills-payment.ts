@@ -161,7 +161,7 @@ export const checkMeterFn = async ({
   // return { data };
 };
 
-export const buyEelectricityFn = async ({
+export const buyElectricityFn = async ({
   token,
   payload,
 }: {

@@ -20,7 +20,7 @@ export type LoginResponse = {
       id: string;
       email: string;
       fullName: string;
-      bvnVerified: string;
+      bvnVerified: boolean;
       verified: boolean;
       deactivated: boolean;
       is2FAEnabled: boolean;
