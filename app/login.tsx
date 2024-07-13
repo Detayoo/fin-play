@@ -32,16 +32,13 @@ const LoginPage = () => {
   const [isUsingBiometrics, setIsUsingBiometrics] = useState(false);
   const [rememberMe, setRememberMe] = useState(user?.rememberMe);
 
-  console.log("userdot", user?.rememberMe);
-
-  const clearStorage = async () => {
+  const clearStorageOfToken = async () => {
     await storeToken("");
-    // await saveUser(null, "");
   };
 
   useEffect(() => {
-    clearStorage();
-  }, []); //todo: to be removed
+    clearStorageOfToken(); //clear out token for anytime i come to the login page
+  }, []);
 
   const { isBiometricSupported, isBiometricType } = useBiometrics();
 
@@ -60,7 +57,6 @@ const LoginPage = () => {
         handleSubmit({ email: user?.email, password: user?.password });
       }
     } catch (error) {
-      console.log(error);
     } finally {
       setIsUsingBiometrics(false);
     }
@@ -121,9 +117,7 @@ const LoginPage = () => {
         email,
         password: user?.rememberMe ? user?.password : values.password,
       });
-    } catch (error) {
-      console.log("error", error);
-    }
+    } catch (error) {}
 
     return;
   };
