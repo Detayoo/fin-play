@@ -21,13 +21,14 @@ import { registerFn } from "@/services";
 import { useAuth } from "@/context";
 
 const RegistrationPage = () => {
+  const [password, setPassword] = useState("");
   const { saveUser } = useAuth();
   const [email, setEmail] = useState("");
   const { mutateAsync, isPending } = useMutation({
     mutationFn: registerFn,
     onSuccess: (data) => {
       console.log("token is now", data?.data?.token);
-      saveUser({}, data?.data?.token);
+      saveUser({ ...data?.metadata?.profile, password }, data?.data?.token);
       router.push({
         pathname: "/account-verification",
         params: {
@@ -42,7 +43,8 @@ const RegistrationPage = () => {
   });
   const handleSubmit = async (values: RegistrationType, { resetForm }: any) => {
     const { email, fullName, password } = values;
-    setEmail(values.email);
+    setEmail(email);
+    setPassword(password);
     try {
       await mutateAsync({
         email,

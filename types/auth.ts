@@ -39,6 +39,22 @@ export type RegistrationResponse = {
   data: {
     token: string;
   };
+  metadata: {
+    profile: {
+      id: string;
+      email: string;
+      fullName: string;
+      bvnVerified: boolean;
+      verified: boolean;
+      deactivated: boolean;
+      is2FAEnabled: boolean;
+    };
+    wallet: {
+      id: string;
+      tier: number;
+      pinSet: boolean;
+    };
+  };
 };
 
 export interface IResetPassword {
