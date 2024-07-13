@@ -9,13 +9,7 @@ import {
 } from "@/types";
 import { authenticatedRequest, baseRequest } from "../api";
 
-export const loginFn = async ({
-  email,
-  password,
-}: {
-  email: string | undefined;
-  password: string | undefined;
-}) => {
+export const loginFn = async ({ email, password }: LoginType) => {
   const { data } = await baseRequest.post<LoginResponse>("/auth/login", {
     email,
     password,
