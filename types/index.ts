@@ -3,6 +3,7 @@ export * from "./dashboard";
 export * from "./settings";
 export * from "./transfers";
 export * from "./bills-payment";
+export * from "./transactions";
 
 export type BareResponse = {
   message: string;
