@@ -10,6 +10,7 @@ export interface IBuyAirtimePayload {
   phoneNumber: string | undefined | string[];
   networkProvider: string | undefined | string[];
   amount: number | undefined | string[];
+  usePoint: boolean;
 }
 
 export interface IBuyAirtimeResponse extends BareResponse {
@@ -140,8 +141,6 @@ export interface IBuyElectricityResponse extends BareResponse {
 export interface IGetPointBalance {
   message: string;
   data: {
-    balance: number;
-    isCustom: boolean;
-    percentage: string;
+    availablePoint: number;
   };
 }

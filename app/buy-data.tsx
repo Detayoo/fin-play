@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Pressable, ScrollView, View } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
-import { useQuery } from "@tanstack/react-query";
+import { useQueries } from "@tanstack/react-query";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import {
   BottomSheetModalProvider,
@@ -21,7 +21,7 @@ import {
   TextField,
 } from "@/components";
 import { Recipient } from "@/assets";
-import { getDataPlansFn } from "@/services";
+import { getAirtimeProvidersFn, getDataPlansFn } from "@/services";
 import { useAuth } from "@/context";
 import { buyDataSchema } from "@/utils";
 import { DataPlan } from "@/types";
@@ -44,13 +44,28 @@ const BuyDataPage = () => {
   const { token } = useAuth();
   const { type } = useLocalSearchParams();
   const [showModal, setShowModal] = useState(false);
+
+  const [dataPlans, providersData] = useQueries({
+    queries: [
+      {
+        queryKey: ["data plans"],
+        queryFn: () => getDataPlansFn({ token }),
+      },
+      {
+        queryKey: ["data providers"],
+        queryFn: () => getAirtimeProvidersFn({ token }),
+      },
+    ],
+  });
+
   const [state, setState] = useState<State>({
     modal: false,
     serviceProvider: null,
-    options: [
-      { id: 1, label: "MTN" },
-      { id: 2, label: "GLO" },
-    ],
+    options:
+      providersData?.data?.data?.providers?.map((each, index) => ({
+        id: index + 1,
+        label: each,
+      })) || [],
     selectedContact: null,
     selectedPlan: null,
   });
@@ -58,10 +73,6 @@ const BuyDataPage = () => {
     setState((prevState: any) => ({ ...prevState, ...payload }));
   };
 
-  const { data: providersData } = useQuery({
-    queryKey: ["data providers"],
-    queryFn: () => getDataPlansFn({ token }),
-  });
   const providersPlans = [
     {
       price: 250,
@@ -70,7 +81,8 @@ const BuyDataPage = () => {
       category: "GLO",
     },
   ];
-  const selectedTariff = providersPlans?.find(
+
+  const selectedTariff = dataPlans?.data?.data?.provider?.find(
     (each) => state.selectedPlan?.tariff_type_id === each?.tariff_type_id
   );
 
@@ -196,36 +208,39 @@ const BuyDataPage = () => {
                             Data Bundles
                           </AppText>
                           <View style={{ gap: 20 }}>
-                            {providersPlans?.map((each) => {
-                              return (
-                                <TouchableOpacity
-                                  onPress={() => {
-                                    updateState({
-                                      selectedPlan: each,
-                                    });
+                            {dataPlans?.data?.data?.provider?.map(
+                              (each, index) => {
+                                return (
+                                  <TouchableOpacity
+                                    key={index}
+                                    onPress={() => {
+                                      updateState({
+                                        selectedPlan: each,
+                                      });
 
-                                    setTimeout(() => {
-                                      handleSubmit();
-                                    }, 200);
-                                  }}
-                                  style={{
-                                    flexDirection: "row",
-                                    justifyContent: "space-between",
-                                    alignItems: "center",
-                                  }}
-                                >
-                                  <AppText style={{ width: "70%" }}>
-                                    {each.name} valid for 2 days, available at
-                                    NGN
-                                    {each.price}
-                                  </AppText>
-                                  <View style={{ gap: 4, width: "20%" }}>
-                                    <AppText size="small">Cashback</AppText>
-                                    <AppText>NGN1.00</AppText>
-                                  </View>
-                                </TouchableOpacity>
-                              );
-                            })}
+                                      setTimeout(() => {
+                                        handleSubmit();
+                                      }, 200);
+                                    }}
+                                    style={{
+                                      flexDirection: "row",
+                                      justifyContent: "space-between",
+                                      alignItems: "center",
+                                    }}
+                                  >
+                                    <AppText style={{ width: "70%" }}>
+                                      {each.name} valid for 2 days, available at
+                                      NGN
+                                      {each.price}
+                                    </AppText>
+                                    <View style={{ gap: 4, width: "20%" }}>
+                                      <AppText size="small">Cashback</AppText>
+                                      <AppText>NGN1.00</AppText>
+                                    </View>
+                                  </TouchableOpacity>
+                                );
+                              }
+                            )}
                           </View>
                         </>
                       )}

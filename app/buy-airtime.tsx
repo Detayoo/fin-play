@@ -4,7 +4,7 @@ import { router, useLocalSearchParams } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
-import { Formik, FieldProps } from "formik";
+import { Formik } from "formik";
 import { Contact } from "expo-contacts";
 
 import {
@@ -40,23 +40,25 @@ const BuyAirtimePage = () => {
   const { token } = useAuth();
   const { type } = useLocalSearchParams();
   const [showModal, setShowModal] = useState(false);
-  const [state, setState] = useState<State>({
-    modal: false,
-    serviceProvider: null,
-    options: [
-      { id: 1, label: "MTN" },
-      { id: 2, label: "GLO" },
-    ],
-    selectedContact: null,
-  });
-  const updateState = (payload: any) => {
-    setState((prevState: any) => ({ ...prevState, ...payload }));
-  };
 
   const { data: providersData } = useQuery({
     queryKey: ["airtime providers"],
     queryFn: () => getAirtimeProvidersFn({ token }),
   });
+
+  const [state, setState] = useState<State>({
+    modal: false,
+    serviceProvider: null,
+    options:
+      providersData?.data?.providers?.map((each, index) => ({
+        id: index + 1,
+        label: each,
+      })) || [],
+    selectedContact: null,
+  });
+  const updateState = (payload: any) => {
+    setState((prevState: any) => ({ ...prevState, ...payload }));
+  };
 
   const onSubmit = async (values: AirtimeForm) => {
     try {
@@ -116,6 +118,7 @@ const BuyAirtimePage = () => {
                   handleBlur,
                   handleChange,
                   touched,
+                  setFieldValue,
                 }) => {
                   return (
                     <View
@@ -179,15 +182,16 @@ const BuyAirtimePage = () => {
                           keyboardType="number-pad"
                         />
                       </View>
-                      <AppText size="small" style={{ marginTop: -16 }}>
+                      {/* <AppText size="small" style={{ marginTop: -16 }}>
                         You will be charged NGN 49.00 for your purchase
-                      </AppText>
+                      </AppText> */}
 
                       <AppText style={{ marginTop: 30, marginBottom: 20 }}>
                         Or select airtime amount
                       </AppText>
                       <View style={{ gap: 20 }}>
-                        <View
+                        <Pressable
+                          onPress={() => setFieldValue("amount", "50")}
                           style={{
                             flexDirection: "row",
                             justifyContent: "space-between",
@@ -199,7 +203,7 @@ const BuyAirtimePage = () => {
                             <AppText size="small">Cashback</AppText>
                             <AppText>NGN1.00</AppText>
                           </View>
-                        </View>
+                        </Pressable>
                         <View
                           style={{
                             flexDirection: "row",
@@ -234,10 +238,7 @@ const BuyAirtimePage = () => {
         </View>
 
         <SelectField
-          options={[
-            { id: 1, label: "MTN" },
-            { id: 2, label: "GLO" },
-          ]}
+          options={state.options}
           visible={showModal}
           setVisible={setShowModal}
           setSelectedOption={(e: any) => {

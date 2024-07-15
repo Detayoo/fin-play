@@ -5,6 +5,8 @@ import { Colors, fonts } from "@/constants";
 import { Hide, Search, Show } from "@/assets";
 import { AppText } from "./AppText";
 import { formatMoney } from "@/utils";
+import { useAuth } from "@/context";
+import { useBalance } from "@/hooks";
 export const TextField = ({
   touched,
   onChange,
@@ -30,6 +32,10 @@ export const TextField = ({
 }) => {
   const [focused, setFocused] = useState(false);
   const [show, setShow] = useState(false);
+  const { token } = useAuth();
+  const { data: mainBalance } = useBalance({
+    token,
+  });
 
   const handleBlur = (e: any) => {
     setFocused(false);
@@ -61,7 +67,8 @@ export const TextField = ({
             }}
           >
             <AppText size="small">
-              Bal. {show ? formatMoney("5000") : "*****"}
+              Bal.{" "}
+              {show ? formatMoney(mainBalance?.data?.balance || 0) : "*****"}
             </AppText>
             {show ? (
               <Hide onPress={() => setShow(!show)} />

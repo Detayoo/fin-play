@@ -225,3 +225,10 @@ export const getPointsBalanceFn = async ({ token }: { token: TokenType }) => {
   );
   return data;
 };
+
+export const get = async ({ token }: { token: TokenType }) => {
+  const { data } = await authenticatedRequest(token).get<IGetPointBalance>(
+    "/wallet/rewards"
+  );
+  return data;
+};

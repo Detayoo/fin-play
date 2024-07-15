@@ -21,7 +21,7 @@ const list = [
     amount: "4500",
   },
   {
-    icon: <Bank />,
+    icon: <Airtime />,
     name: "Uzzy to Uzzy",
     amount: "4500",
   },

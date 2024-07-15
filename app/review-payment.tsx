@@ -3,11 +3,7 @@ import { ScrollView, View } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import { format } from "date-fns";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import {
-  useMutation,
-  useQueries,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { useMutation, useQueries, useQueryClient } from "@tanstack/react-query";
 
 import {
   AppText,
@@ -67,7 +63,7 @@ const ReviewPayment = () => {
     ],
   });
 
-  const { balance: pointBal = 20 } = pointsData?.data?.data || {};
+  const { availablePoint: pointBal = 20 } = pointsData?.data?.data || {};
   const subsidizedAmount = amount && pointBal && +amount - pointBal;
 
   const { isPending: buyingAirtime, mutateAsync: buyAirtimeAsync } =
@@ -162,6 +158,7 @@ const ReviewPayment = () => {
             amount: amount ? +amount : 0,
             networkProvider: serviceProvider,
             phoneNumber,
+            usePoint: useCashback,
           },
           token,
         });
