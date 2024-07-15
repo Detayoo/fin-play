@@ -10,17 +10,43 @@ import { router } from "expo-router";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 
-import { AppText, BackButton, Screen, TransactionItem } from "@/components";
+import {
+  AppText,
+  BackButton,
+  Expenses,
+  Income,
+  Screen,
+  TransactionFilterModal,
+  TransactionItem,
+} from "@/components";
 import { Colors } from "@/constants";
-import { Filter, SmallChevron } from "@/assets";
+import {
+  ActiveHome,
+  ActiveStats,
+  Filter,
+  InactiveTransactions,
+  SmallChevron,
+  Stats,
+  Transactions,
+} from "@/assets";
 import { useAuth } from "@/context";
 import { getAllTransactionsFn } from "@/services";
 import { useRefreshByUser, useRefreshOnFocus } from "@/hooks";
+import {
+  GestureHandlerRootView,
+  TouchableOpacity,
+} from "react-native-gesture-handler";
 
 type TransactionFilter = {
   duration: string;
   status: string;
   type: string;
+};
+
+type StateType = {
+  activeTab: string;
+  statsTab: string[];
+  showFilter: boolean;
 };
 
 const TransactionsHistoryPage = () => {
@@ -31,11 +57,40 @@ const TransactionsHistoryPage = () => {
     return currentDate.getTime() - numberOfDays * 24 * 60 * 60 * 1000;
   };
 
+  const [state, setState] = useState({
+    activeTab: "All Transactions",
+    statsTab: ["expenses", "income"],
+    showFilter: false,
+  });
+
+  const mainTabs = [
+    {
+      name: "All Transactions",
+      icon: <InactiveTransactions />,
+      activeIcon: <Transactions />,
+    },
+    {
+      name: "Transaction Statistics",
+      icon: <Stats />,
+      activeIcon: <ActiveStats />,
+    },
+  ];
+
+  const [statsActiveTab, setStatsActiveTab] = useState("expenses");
+
   const [filterObj, setFilterObj] = useState({
     duration: "",
     status: "",
     type: "",
+    range: {
+      start: "",
+      end: "",
+    },
   });
+
+  const updateState = (payload: Partial<StateType>) => {
+    setState((previousState) => ({ ...previousState, ...payload }));
+  };
 
   const updateFilter = (payload: Partial<TransactionFilter>) => {
     setFilterObj((previousState) => ({ ...previousState, ...payload }));
@@ -49,7 +104,7 @@ const TransactionsHistoryPage = () => {
       return dayFromNow(30);
     }
 
-    return filterObj?.duration;
+    return filterObj?.range?.start;
   };
   const getEndDate = () => {
     if (
@@ -59,8 +114,10 @@ const TransactionsHistoryPage = () => {
       return currentDate;
     }
 
-    return filterObj?.duration;
+    return filterObj?.range?.end;
   };
+
+  console.log('filteroBJ', filterObj)
 
   const transactionsData = useInfiniteQuery({
     queryKey: ["all transactions", JSON.stringify(filterObj)],
@@ -107,192 +164,320 @@ const TransactionsHistoryPage = () => {
     transactionsData.refetch
   );
 
-  console.log("flatlist data", flatListData);
   return (
-    <Screen>
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <BackButton />
-        <AppText size="xlarge" variant="medium">
-          Transaction History
-        </AppText>
-        <BackButton
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <Screen>
+        <View
           style={{
-            opacity: 0,
-          }}
-        />
-      </View>
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-          width: "100%",
-          paddingTop: 20,
-        }}
-      >
-        <AppText style={{ color: Colors.inputFocusBorder }}>Download</AppText>
-        <Pressable
-          style={{
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 4,
             flexDirection: "row",
-            backgroundColor: "#90AD041A",
-            paddingHorizontal: 12,
-            paddingVertical: 7,
-            borderRadius: 10,
+            alignItems: "center",
+            justifyContent: "space-between",
           }}
         >
-          <Filter />
-          <AppText>Filter by</AppText>
-
-          <SmallChevron />
-        </Pressable>
-      </View>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{
-          width: "100%",
-        }}
-      >
-        <View style={{ marginTop: 20 }}>
-          <FlatList
-            style={{}}
-            showsVerticalScrollIndicator={false}
-            data={flatListData}
-            renderItem={({ item }) => <View></View>}
-            onEndReached={loadMore}
-            onEndReachedThreshold={0.1}
-            keyExtractor={(item) => item.id}
-            ListFooterComponent={
-              transactionsData.isFetchingNextPage ? (
-                <AppText>LOADING MORE..</AppText>
-              ) : null
-            }
-            refreshControl={
-              <RefreshControl
-                onRefresh={refetchByUser}
-                refreshing={isRefetchingByUser}
-              />
-            }
-          />
-          <TransactionItem
-            onPress={() =>
-              router.push({
-                pathname: "/payment-receipt",
-                params: {},
-              })
-            }
-            status="GLO"
-          />
-          <TransactionItem
-            onPress={() =>
-              router.push({
-                pathname: "/payment-receipt",
-                params: {},
-              })
-            }
-            status="DEBIT"
-          />
-          <TransactionItem
-            onPress={() =>
-              router.push({
-                pathname: "/payment-receipt",
-                params: {},
-              })
-            }
-            status="GLO"
-          />
-          <TransactionItem
-            onPress={() =>
-              router.push({
-                pathname: "/payment-receipt",
-                params: {},
-              })
-            }
-            status="DEBIT"
-          />
-          <TransactionItem
-            onPress={() =>
-              router.push({
-                pathname: "/payment-receipt",
-                params: {},
-              })
-            }
-            status="GLO"
-          />
-          <TransactionItem
-            onPress={() =>
-              router.push({
-                pathname: "/payment-receipt",
-                params: {},
-              })
-            }
-            status="DEBIT"
-          />
-          <TransactionItem
-            onPress={() =>
-              router.push({
-                pathname: "/payment-receipt",
-                params: {},
-              })
-            }
-            status="GLO"
-          />
-          <TransactionItem
-            onPress={() =>
-              router.push({
-                pathname: "/payment-receipt",
-                params: {},
-              })
-            }
-            status="DEBIT"
-          />
-          <TransactionItem
-            onPress={() =>
-              router.push({
-                pathname: "/payment-receipt",
-                params: {},
-              })
-            }
-            status="GLO"
-          />
-          <TransactionItem
-            onPress={() =>
-              router.push({
-                pathname: "/payment-receipt",
-                params: {},
-              })
-            }
-            status="DEBIT"
-          />
-          <TransactionItem
-            onPress={() =>
-              router.push({
-                pathname: "/payment-receipt",
-                params: {},
-              })
-            }
-            status="GLO"
-          />
-          <TransactionItem
-            onPress={() =>
-              router.push({
-                pathname: "/payment-receipt",
-                params: {},
-              })
-            }
-            status="DEBIT"
+          <BackButton />
+          <AppText size="xlarge" variant="medium">
+            Transactions History
+          </AppText>
+          <BackButton
+            style={{
+              opacity: 0,
+            }}
           />
         </View>
-      </ScrollView>
-    </Screen>
+
+        {state.activeTab === "Transaction Statistics" && (
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+              width: "100%",
+              paddingTop: 20,
+            }}
+          >
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                width: "100%",
+                marginBottom: 30,
+                borderBottomWidth: 1,
+                borderBottomColor: "#F4F4F4",
+              }}
+            >
+              {state.statsTab.map((tab) => {
+                return (
+                  <Pressable
+                    onPress={() => {
+                      setStatsActiveTab(tab);
+                    }}
+                    style={{
+                      borderBottomColor:
+                        statsActiveTab === tab
+                          ? Colors.boldGreen
+                          : "transparent",
+                      borderBottomWidth: 3,
+                      paddingBottom: 15,
+                    }}
+                  >
+                    <AppText
+                      style={{
+                        fontSize: 15,
+                        // paddingHorizontal: 30,
+                        width: 124,
+                        textAlign: "center",
+                        textTransform: "capitalize",
+                      }}
+                      color={
+                        statsActiveTab === tab ? Colors.boldGreen : Colors.black
+                      }
+                      variant={statsActiveTab === tab ? "medium" : "normal"}
+                    >
+                      {tab}
+                    </AppText>
+                  </Pressable>
+                );
+              })}
+            </View>
+          </View>
+        )}
+        {state.activeTab === "All Transactions" ? (
+          <>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                width: "100%",
+                paddingTop: 20,
+              }}
+            >
+              <AppText style={{ color: Colors.inputFocusBorder }}>
+                Download
+              </AppText>
+              <Pressable
+                onPress={() =>
+                  updateState({
+                    showFilter: true,
+                  })
+                }
+                style={{
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: 4,
+                  flexDirection: "row",
+                  backgroundColor: "#90AD041A",
+                  paddingHorizontal: 12,
+                  paddingVertical: 7,
+                  borderRadius: 10,
+                }}
+              >
+                <Filter />
+                <AppText>Filter by</AppText>
+
+                <SmallChevron />
+              </Pressable>
+            </View>
+            <ScrollView
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{
+                width: "100%",
+              }}
+            >
+              <View style={{ marginTop: 20 }}>
+                <FlatList
+                  style={{}}
+                  showsVerticalScrollIndicator={false}
+                  data={flatListData}
+                  renderItem={({ item }) => <View></View>}
+                  onEndReached={loadMore}
+                  onEndReachedThreshold={0.1}
+                  keyExtractor={(item) => item.id}
+                  ListFooterComponent={
+                    transactionsData.isFetchingNextPage ? (
+                      <AppText>LOADING MORE..</AppText>
+                    ) : null
+                  }
+                  refreshControl={
+                    <RefreshControl
+                      onRefresh={refetchByUser}
+                      refreshing={isRefetchingByUser}
+                      title="Fetching Transactions"
+                    />
+                  }
+                />
+                <TransactionItem
+                  onPress={() =>
+                    router.push({
+                      pathname: "/payment-receipt",
+                      params: {},
+                    })
+                  }
+                  status="GLO"
+                />
+                <TransactionItem
+                  onPress={() =>
+                    router.push({
+                      pathname: "/payment-receipt",
+                      params: {},
+                    })
+                  }
+                  status="DEBIT"
+                />
+                <TransactionItem
+                  onPress={() =>
+                    router.push({
+                      pathname: "/payment-receipt",
+                      params: {},
+                    })
+                  }
+                  status="GLO"
+                />
+                <TransactionItem
+                  onPress={() =>
+                    router.push({
+                      pathname: "/payment-receipt",
+                      params: {},
+                    })
+                  }
+                  status="DEBIT"
+                />
+                <TransactionItem
+                  onPress={() =>
+                    router.push({
+                      pathname: "/payment-receipt",
+                      params: {},
+                    })
+                  }
+                  status="GLO"
+                />
+                <TransactionItem
+                  onPress={() =>
+                    router.push({
+                      pathname: "/payment-receipt",
+                      params: {},
+                    })
+                  }
+                  status="DEBIT"
+                />
+                <TransactionItem
+                  onPress={() =>
+                    router.push({
+                      pathname: "/payment-receipt",
+                      params: {},
+                    })
+                  }
+                  status="GLO"
+                />
+                <TransactionItem
+                  onPress={() =>
+                    router.push({
+                      pathname: "/payment-receipt",
+                      params: {},
+                    })
+                  }
+                  status="DEBIT"
+                />
+                <TransactionItem
+                  onPress={() =>
+                    router.push({
+                      pathname: "/payment-receipt",
+                      params: {},
+                    })
+                  }
+                  status="GLO"
+                />
+                <TransactionItem
+                  onPress={() =>
+                    router.push({
+                      pathname: "/payment-receipt",
+                      params: {},
+                    })
+                  }
+                  status="DEBIT"
+                />
+                <TransactionItem
+                  onPress={() =>
+                    router.push({
+                      pathname: "/payment-receipt",
+                      params: {},
+                    })
+                  }
+                  status="GLO"
+                />
+                <TransactionItem
+                  onPress={() =>
+                    router.push({
+                      pathname: "/payment-receipt",
+                      params: {},
+                    })
+                  }
+                  status="DEBIT"
+                />
+              </View>
+            </ScrollView>
+          </>
+        ) : (
+          <Expenses />
+        )}
+        <View
+          style={{
+            height: 60,
+            backgroundColor: Colors.white,
+            flexDirection: "row",
+            alignItems: "center",
+            borderTopWidth: 1,
+            borderTopColor: "#ABABBA40",
+            width: "100%",
+          }}
+        >
+          {mainTabs?.map((tab) => {
+            return (
+              <Pressable
+                key={tab.name}
+                onPress={() =>
+                  updateState({
+                    activeTab: tab?.name,
+                  })
+                }
+                style={{
+                  width: "50%",
+                  height: "100%",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  gap: 10,
+                  paddingTop: 17,
+                }}
+              >
+                {state.activeTab === tab.name ? tab.activeIcon : tab.icon}
+                <AppText
+                  color={
+                    state.activeTab === tab.name
+                      ? Colors.boldGreen
+                      : Colors.faintBlack
+                  }
+                  size="small"
+                  variant={state.activeTab === tab.name ? "medium" : "normal"}
+                >
+                  {tab.name}
+                </AppText>
+              </Pressable>
+            );
+          })}
+        </View>
+      </Screen>
+      <TransactionFilterModal
+        filterObj={filterObj}
+        setFilterObj={setFilterObj}
+        showModal={state.showFilter}
+        setShowModal={(e) =>
+          updateState({
+            showFilter: e,
+          })
+        }
+      />
+    </GestureHandlerRootView>
   );
 };
 

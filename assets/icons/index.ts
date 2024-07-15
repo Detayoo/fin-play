@@ -60,3 +60,8 @@ export * from "./Pin";
 export * from "./ChevronRight";
 export * from "./Cashback";
 export * from "./Referrals";
+export * from "./Transactions";
+export * from "./InactiveTransactions";
+export * from "./Stats";
+export * from "./ActiveStats";
+export * from "./UzzyTransfer";
