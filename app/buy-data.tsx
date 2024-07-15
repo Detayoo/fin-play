@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Pressable, ScrollView, View } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import { useQueries } from "@tanstack/react-query";
@@ -13,6 +13,7 @@ import { Contact } from "expo-contacts";
 import {
   AppText,
   BackButton,
+  Loading,
   PhoneContacts,
   PrimaryButton,
   Screen,
@@ -25,6 +26,7 @@ import { getAirtimeProvidersFn, getDataPlansFn } from "@/services";
 import { useAuth } from "@/context";
 import { buyDataSchema } from "@/utils";
 import { DataPlan } from "@/types";
+import { Colors } from "@/constants";
 
 type Options = { id: number; label: string }[];
 type State = {
@@ -73,17 +75,27 @@ const BuyDataPage = () => {
     setState((prevState: any) => ({ ...prevState, ...payload }));
   };
 
-  const providersPlans = [
-    {
-      price: 250,
-      tariff_type_id: "DATA-823",
-      name: "Youtube_N250 500MB SocialPlan",
-      category: "GLO",
-    },
-  ];
+  useEffect(() => {
+    if (providersData?.data?.data?.providers) {
+      updateState({
+        options: providersData?.data?.data?.providers?.map((each, index) => ({
+          id: index + 1,
+          label: each,
+        })),
+      });
+    }
+  }, [providersData?.data?.data?.providers]);
 
-  const selectedTariff = dataPlans?.data?.data?.provider?.find(
-    (each) => state.selectedPlan?.tariff_type_id === each?.tariff_type_id
+  const selectedTariff =
+    dataPlans?.data?.data?.dataplans && state?.serviceProvider
+      ? dataPlans?.data?.data?.dataplans[state?.serviceProvider?.label]?.find(
+          (each) => state.selectedPlan?.tariff_type_id === each?.tariff_type_id
+        )
+      : null;
+
+  console.log(
+    "NEW",
+    dataPlans?.data?.data?.dataplans[state?.serviceProvider?.label]
   );
 
   const onSubmit = async (values: DataForm) => {
@@ -199,7 +211,7 @@ const BuyDataPage = () => {
                         title="Service Provider"
                       />
 
-                      {values.serviceProvider && (
+                      {state.serviceProvider && !dataPlans?.isFetching && (
                         <>
                           <AppText
                             variant="medium"
@@ -207,55 +219,72 @@ const BuyDataPage = () => {
                           >
                             Data Bundles
                           </AppText>
-                          <View style={{ gap: 20 }}>
-                            {dataPlans?.data?.data?.provider?.map(
-                              (each, index) => {
-                                return (
-                                  <TouchableOpacity
-                                    key={index}
-                                    onPress={() => {
-                                      updateState({
-                                        selectedPlan: each,
-                                      });
+                          <ScrollView style={{ gap: 20 }}>
+                            <View style={{ flex: 1 }}>
+                              {dataPlans.isLoading && <Loading />}
+                            </View>
+                            {dataPlans?.data?.data?.dataplans[
+                              state.serviceProvider?.label
+                            ]?.map((each, index) => {
+                              return (
+                                <TouchableOpacity
+                                  key={index}
+                                  onPress={() => {
+                                    updateState({
+                                      selectedPlan: each,
+                                    });
+                                    // handleSubmit();
 
-                                      setTimeout(() => {
-                                        handleSubmit();
-                                      }, 200);
-                                    }}
-                                    style={{
-                                      flexDirection: "row",
-                                      justifyContent: "space-between",
-                                      alignItems: "center",
-                                    }}
-                                  >
-                                    <AppText style={{ width: "70%" }}>
-                                      {each.name} valid for 2 days, available at
-                                      NGN
-                                      {each.price}
-                                    </AppText>
-                                    <View style={{ gap: 4, width: "20%" }}>
-                                      <AppText size="small">Cashback</AppText>
-                                      <AppText>NGN1.00</AppText>
-                                    </View>
-                                  </TouchableOpacity>
-                                );
-                              }
-                            )}
-                          </View>
+                                    setTimeout(() => {
+                                      handleSubmit();
+                                    }, 200);
+                                  }}
+                                  style={{
+                                    flexDirection: "row",
+                                    justifyContent: "space-between",
+                                    alignItems: "center",
+                                    marginBottom: 20,
+                                    backgroundColor:
+                                      state.selectedPlan === each
+                                        ? Colors.lightGreen
+                                        : "transparent",
+                                    paddingVertical: 10,
+                                    paddingHorizontal: 10,
+                                    borderRadius: 10,
+                                  }}
+                                >
+                                  <AppText style={{ width: "100%" }}>
+                                    {each.name} - {each.validity} , available at
+                                    NGN
+                                    {each.price}
+                                  </AppText>
+                                  {/* <View style={{ gap: 4, width: "20%" }}>
+                                    <AppText size="small">Cashback</AppText>
+                                    <AppText>NGN1.00</AppText>
+                                  </View> */}
+                                </TouchableOpacity>
+                              );
+                            })}
+                          </ScrollView>
                         </>
                       )}
-                      <PrimaryButton
-                        onPress={() => handleSubmit()}
-                        label="Proceed to Payment"
+                      <View
                         style={{
-                          marginTop: 20,
                           position: "absolute",
                           bottom: 0,
                           right: 0,
                           width: "100%",
                         }}
-                        disabled={!isValid || !selectedTariff}
-                      />
+                      >
+                        <PrimaryButton
+                          onPress={() => handleSubmit()}
+                          label="Proceed to Payment"
+                          style={{
+                            marginTop: 20,
+                          }}
+                          disabled={!isValid || !selectedTariff}
+                        />
+                      </View>
                     </View>
                   );
                 }}
@@ -265,10 +294,7 @@ const BuyDataPage = () => {
         </View>
 
         <SelectField
-          options={[
-            { id: 1, label: "MTN" },
-            { id: 2, label: "GLO" },
-          ]}
+          options={state.options}
           visible={showModal}
           setVisible={setShowModal}
           setSelectedOption={(e: any) => {

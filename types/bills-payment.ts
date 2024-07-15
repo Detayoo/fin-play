@@ -11,19 +11,21 @@ export interface IBuyAirtimePayload {
   networkProvider: string | undefined | string[];
   amount: number | undefined | string[];
   usePoint: boolean;
+  pin: string;
 }
 
 export interface IBuyAirtimeResponse extends BareResponse {
   data: {
-    recipient: string;
-    amountPaid: string;
-    telco: string;
-    status: string;
-    paidAt: string;
-    reference: string;
-    currency: string;
-    amount: number;
-    sessionId: string;
+    transaction: {
+      recipient: string;
+      paidAt: string;
+      id: string;
+      amountPaid: string;
+      status: string;
+      reference: string;
+      telco: string;
+      telcoReference: string;
+    };
   };
 }
 
@@ -31,6 +33,7 @@ export interface IBuyBettingPayload {
   provider: string | string[] | undefined;
   customerId: string | string[] | undefined;
   amount: number;
+  pin: string;
 }
 
 export interface IValidateBettingAccountResponse extends BareResponse {
@@ -61,13 +64,16 @@ export interface DataPlan {
   tariff_type_id: string | string[];
   name: string | string[];
   category: string | string[];
+  validity: string;
 }
 
 export interface IGetDataPlans extends BareResponse {
   statusCode: number;
   message: string;
   data: {
-    provider: DataPlan[];
+    dataplans: {
+      [x: string]: DataPlan[];
+    };
   };
 }
 
@@ -75,20 +81,22 @@ export interface IBuyDataPayload {
   phoneNumber: string | string[] | undefined;
   networkProvider: string | string[] | undefined;
   tariffId: string | string[] | undefined;
+  pin: string;
+  amount: string;
 }
 
 export interface IBuyDataResponse extends BareResponse {
   data: {
-    recipient: string;
-    tariffName: string;
-    amountPaid: string;
-    telco: string;
-    status: string;
-    paidAt: string;
-    reference: string;
-    currency: string;
-    amount: number;
-    sessionId: string;
+    transaction: {
+      recipient: string;
+      paidAt: string;
+      id: string;
+      amountPaid: string;
+      status: string;
+      reference: string;
+      telco: string;
+      telcoReference: string;
+    };
   };
 }
 
@@ -117,6 +125,7 @@ export interface IBuyElectricityPayload {
   disco: string | string[] | undefined;
   vendType: string | string[] | undefined;
   amount: number;
+  pin: string;
 }
 
 export interface IBuyElectricityResponse extends BareResponse {

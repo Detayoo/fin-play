@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Pressable, ScrollView, View } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
@@ -49,16 +49,30 @@ const BuyAirtimePage = () => {
   const [state, setState] = useState<State>({
     modal: false,
     serviceProvider: null,
-    options:
-      providersData?.data?.providers?.map((each, index) => ({
-        id: index + 1,
-        label: each,
-      })) || [],
+    options: providersData?.data?.providers?.length
+      ? providersData?.data?.providers?.map((each, index) => ({
+          id: index + 1,
+          label: each,
+        }))
+      : [],
     selectedContact: null,
   });
   const updateState = (payload: any) => {
     setState((prevState: any) => ({ ...prevState, ...payload }));
   };
+
+  console.log(state.options);
+
+  useEffect(() => {
+    if (providersData?.data?.providers) {
+      updateState({
+        options: providersData?.data?.providers?.map((each, index) => ({
+          id: index + 1,
+          label: each,
+        })),
+      });
+    }
+  }, [providersData?.data?.providers]);
 
   const onSubmit = async (values: AirtimeForm) => {
     try {

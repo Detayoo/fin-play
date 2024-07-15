@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ScrollView, TouchableOpacity, View } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
-import { format } from "date-fns";
+import { format, parse, parseISO } from "date-fns";
 
 import {
   AppText,
@@ -23,9 +23,24 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 const PaymentReceipt = () => {
   const [showModal, setShowModal] = useState(false);
-  const { accountName, accountNumber, amount, narration } =
-    useLocalSearchParams();
+  const {
+    accountName,
+    accountNumber,
+    amountPaid,
+    narration,
+    recipient,
+    paidAt,
+    telcoReference,
+    telco,
+    reference,
+    status,
+    fee,
+    id,
+    sessionId,
+  } = useLocalSearchParams();
   console.log(useLocalSearchParams());
+
+  console.log(paidAt, "TIME VAL");
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Screen>
@@ -66,13 +81,21 @@ const PaymentReceipt = () => {
           {/* <PaymentRecipient /> */}
           <BigBank />
           <AppText style={{ marginTop: 14 }} size="xlarge" variant="medium">
-            NGN {formatMoney("0")}
+            NGN {formatMoney(amountPaid || 0)}
           </AppText>
           <AppText style={{ marginTop: 10 }} color={Colors.inputFocusBorder}>
-            Transfer Successful
+            Transfer{" "}
+            {status?.toString()?.toLocaleLowerCase() === "success"
+              ? "Successful"
+              : status}
           </AppText>
           <AppText style={{ marginTop: 10, marginBottom: 30 }}>
-            {format(new Date(), "MMMM dd, yyyy hh:mma")}
+            {paidAt
+              ? format(
+                  parse(`${paidAt}`, "dd/MM/yyyy HH:mm:ss", new Date()),
+                  "MMMM dd, yyyy hh:mma"
+                )
+              : null}
           </AppText>
 
           <View
@@ -84,28 +107,36 @@ const PaymentReceipt = () => {
               paddingTop: 20,
             }}
           >
-            <ListItem
-              name="Recipient's Details"
-              value={accountName || "Adedigba Peter Adetayo"}
-              value2={"Uzzy Bank | 01234567890"}
-            />
-            <ListItem
-              name="Sender's Details"
-              value={accountNumber || "Starboy"}
-              value2={"Uzzy Bank | 01234567890"}
-            />
-            <ListItem name="Narration" value={narration} />
-            <ListItem name="Fee" value="NGN 0.00" />
-            <ListItem
-              name="Transaction ID"
-              value="axhjdajjj1215613653"
-              canCopy
-            />
-            <ListItem
-              name="Session ID"
-              value="5dhsSHSIU3SJey2747299472 hIY7s3"
-              canCopy
-            />
+            {accountName && (
+              <ListItem
+                name="Recipient's Details"
+                value={accountName || "Adedigba Peter Adetayo"}
+                value2={"Uzzy Bank | 01234567890"}
+              />
+            )}
+            {accountNumber && (
+              <ListItem
+                name="Sender's Details"
+                value={accountNumber || "Starboy"}
+                value2={"Uzzy Bank | 01234567890"}
+              />
+            )}
+            {recipient && <ListItem name="Recipient" value={recipient} />}
+            {telco && <ListItem name="TELCO" value={telco} />}
+            {telcoReference && (
+              <ListItem name="Telco Reference" value={telcoReference} canCopy />
+            )}
+            {reference && (
+              <ListItem name="Telco Reference" value={reference} canCopy />
+            )}
+            {narration && <ListItem name="Narration" value={narration} />}
+            {fee && (
+              <ListItem name="Fee" value={`"NGN${formatMoney(fee || 0)}" `} />
+            )}
+            {id && <ListItem name="Transaction ID" value={id} canCopy />}
+            {sessionId && (
+              <ListItem name="Session ID" value={sessionId} canCopy />
+            )}
           </View>
         </ScrollView>
         <PrimaryButton

@@ -29,7 +29,7 @@ export const registerFn = async ({
       email,
       fullName,
       password,
-      phone: "8169971162",
+      phone: "8169971160",
     }
   );
   return data;

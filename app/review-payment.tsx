@@ -66,16 +66,22 @@ const ReviewPayment = () => {
   const { availablePoint: pointBal = 20 } = pointsData?.data?.data || {};
   const subsidizedAmount = amount && pointBal && +amount - pointBal;
 
+  console.log("poiuntball", pointBal);
+  console.log("amt", subsidizedAmount);
+
   const { isPending: buyingAirtime, mutateAsync: buyAirtimeAsync } =
     useMutation({
       mutationFn: buyAirtimeFn,
       onSuccess: (data) => {
-        router.push({
+        // return;
+
+        router.replace({
           pathname: "/payment-receipt",
-          params: { ...data?.data, from: "/airtime-payment" },
+          params: { ...data?.data?.transaction, from: "/airtime-payment" },
         });
       },
       onError: (error) => {
+        console.log("rror", error);
         showToast(
           "error",
           extractServerError(error, ERRORS.SOMETHING_HAPPENED)
@@ -91,9 +97,9 @@ const ReviewPayment = () => {
   const { isPending: buyingData, mutateAsync: buyDataAsync } = useMutation({
     mutationFn: buyDataFn,
     onSuccess: (data) => {
-      router.push({
+      router.replace({
         pathname: "/payment-receipt",
-        params: { ...data?.data, from: "/data-payment" },
+        params: { ...data?.data?.transaction, from: "/data-payment" },
       });
     },
     onError: (error) => {
@@ -110,7 +116,7 @@ const ReviewPayment = () => {
     useMutation({
       mutationFn: buyElectricityFn,
       onSuccess: (data) => {
-        router.push({
+        router.replace({
           pathname: "/payment-receipt",
           params: { ...data?.data, from: "/electricity-payment" },
         });
@@ -132,7 +138,7 @@ const ReviewPayment = () => {
     useMutation({
       mutationFn: buyBettingPlanFn,
       onSuccess: (data) => {
-        router.push({
+        router.replace({
           pathname: "/payment-receipt",
           params: { ...data?.data, from: "/betting-payment" },
         });
@@ -159,6 +165,7 @@ const ReviewPayment = () => {
             networkProvider: serviceProvider,
             phoneNumber,
             usePoint: useCashback,
+            pin,
           },
           token,
         });
@@ -166,9 +173,11 @@ const ReviewPayment = () => {
       if (from === "/buy-data") {
         await buyDataAsync({
           payload: {
+            amount: `${amount}`,
             tariffId: tariffId,
             networkProvider: serviceProvider,
             phoneNumber,
+            pin,
           },
           token,
         });
@@ -180,6 +189,7 @@ const ReviewPayment = () => {
             disco,
             meter: meterNumber,
             vendType,
+            pin,
           },
           token,
         });
@@ -190,6 +200,7 @@ const ReviewPayment = () => {
             amount: amount ? +amount : 0,
             customerId,
             provider,
+            pin,
           },
           token,
         });
