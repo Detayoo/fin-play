@@ -64,7 +64,7 @@ const ProfilePage = () => {
             SETTINGS
           </AppText>
           <View style={{ marginTop: 10 }}>
-            {SETTINGS_ROUTES.map((setting, index) => {
+            {SETTINGS_ROUTES?.map((setting, index) => {
               return (
                 <Pressable
                   onPress={() => handleNavigation(setting.route)}
@@ -85,7 +85,7 @@ const ProfilePage = () => {
                       paddingVertical: 20,
                     }}
                   >
-                    {setting.icon}
+                    {/* {setting.icon} */}
                     <AppText variant="medium">{setting.label}</AppText>
                   </View>
 
@@ -127,7 +127,7 @@ const ProfilePage = () => {
             MORE
           </AppText>
           <View style={{ marginTop: 10 }}>
-            {MORE_ROUTES.map((setting, index) => {
+            {MORE_ROUTES?.map((setting, index) => {
               return (
                 <Pressable
                   onPress={() => handleNavigation(setting.route)}
@@ -148,7 +148,7 @@ const ProfilePage = () => {
                       paddingVertical: 20,
                     }}
                   >
-                    {setting.icon}
+                    {/* {setting.icon} */}
                     <AppText
                       variant="medium"
                       color={
