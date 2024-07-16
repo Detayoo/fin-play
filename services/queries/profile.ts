@@ -51,3 +51,21 @@ export const upgradeAccountFn = async ({
 
   return data;
 };
+
+export const uploadProfilePhotoFn = async ({
+  token,
+  photo,
+}: {
+  token: TokenType;
+  photo: FormData;
+}) => {
+  const { data } = await authenticatedRequest(token).put(
+    "/profile/photo",
+    photo,
+    {
+      headers: { "Content-Type": "multipart/form-data" },
+    }
+  );
+
+  return data;
+};
