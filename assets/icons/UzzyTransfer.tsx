@@ -1,8 +1,7 @@
-import * as React from "react";
 import { View } from "react-native";
 
-import { AppText } from "@/components";
-import { Colors } from "@/constants";
+import { AppText } from "../../components";
+import { Colors } from "../../constants";
 export const Uzzy = () => {
   return (
     <View

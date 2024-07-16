@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { KeyboardAvoidingView, Platform, ScrollView, View } from "react-native";
+import { KeyboardAvoidingView, Platform, View } from "react-native";
 import { Formik } from "formik";
 
-import { Key } from "@/assets";
-import { Colors } from "@/constants";
-import { copyToClipboard } from "@/utils";
+import { Key } from "../assets";
+import { Colors } from "../constants";
+import { copyToClipboard } from "../utils";
 import { AppText } from "./AppText";
 import { ReusableBottomSheet } from "./BottomSheetModal";
 import { PrimaryButton } from "./PrimaryButton";

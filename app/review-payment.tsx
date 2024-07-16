@@ -63,11 +63,8 @@ const ReviewPayment = () => {
     ],
   });
 
-  const { availablePoint: pointBal = 20 } = pointsData?.data?.data || {};
-  const subsidizedAmount = amount && pointBal && +amount - pointBal;
-
-  console.log("poiuntball", pointBal);
-  console.log("amt", subsidizedAmount);
+  const { availablePoint: pointBal = 10 } = pointsData?.data?.data || {};
+  const subsidizedAmount = (amount ? +amount : 0) - (pointBal ?? 0);
 
   const { isPending: buyingAirtime, mutateAsync: buyAirtimeAsync } =
     useMutation({

@@ -3,8 +3,8 @@ import { Image, Pressable, StyleSheet, View } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 
 import { AppText } from "./AppText";
-import { Upload } from "@/assets";
-import { Colors, fonts } from "@/constants";
+import { Upload } from "../assets";
+import { Colors, fonts } from "../constants";
 
 export const UploadField = ({
   media,

@@ -123,7 +123,7 @@ const BuyAirtimePage = () => {
                   serviceProvider: state?.serviceProvider?.label || "",
                 }}
                 onSubmit={onSubmit}
-                validationSchema={buyAirtimeSchema}
+                // validationSchema={buyAirtimeSchema}
               >
                 {({
                   handleSubmit,
