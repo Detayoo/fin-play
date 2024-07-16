@@ -28,3 +28,9 @@ export interface IGetRewards extends BareResponse {
     cashback_transaction: RewardTransactionType[];
   };
 }
+
+export interface IUpgradeAccount {
+  nin: string;
+  pod: string;
+  image: string;
+}

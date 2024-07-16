@@ -1,6 +1,7 @@
 import { ScrollView, View } from "react-native";
 import { router } from "expo-router";
 import { Formik } from "formik";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import {
   AppText,
@@ -8,14 +9,45 @@ import {
   PrimaryButton,
   Screen,
   TextField,
+  showToast,
 } from "@/components";
 import { Colors } from "@/constants";
-import { ninValidationSchema } from "@/utils";
+import { ERRORS, extractServerError, ninValidationSchema } from "@/utils";
+import { upgradeAccountFn } from "@/services";
+import { useAuth } from "@/context";
 
 const EnterNin = () => {
-  const onSubmit = async (values: { nin: string }, { resetForm }: any) => {
-    router.replace("/initiate-upgrade");
+  const { token } = useAuth();
+  const queryClient = useQueryClient();
+
+  const { mutateAsync, isPending } = useMutation({
+    mutationFn: upgradeAccountFn,
+    onSuccess: (data) => {
+      showToast("success", data?.message);
+      queryClient.invalidateQueries({
+        queryKey: ["user profile"],
+      });
+
+      setTimeout(() => {
+        router.replace("/initiate-upgrade");
+      }, 1000);
+    },
+    onError: (error) => {
+      showToast("error", extractServerError(error, ERRORS.SOMETHING_HAPPENED));
+    },
+  });
+  const onSubmit = async ({ nin }: { nin: string }, { resetForm }: any) => {
+    const formData = new FormData();
+    formData.append("nin", nin);
+    try {
+      await mutateAsync({
+        token,
+        tier: "2",
+        payload: formData,
+      });
+    } catch (error) {}
   };
+
   return (
     <Screen>
       <View
@@ -65,6 +97,7 @@ const EnterNin = () => {
                   keyboardType="number-pad"
                 />
                 <PrimaryButton
+                  disabled={isPending}
                   onPress={() => handleSubmit()}
                   label="Submit"
                   style={{
