@@ -1,5 +1,6 @@
 import { ScrollView, View } from "react-native";
 import { useQueries } from "@tanstack/react-query";
+import { router } from "expo-router";
 
 import {
   AppText,
@@ -12,7 +13,6 @@ import { useAuth } from "@/context";
 import { getRewardsFn } from "@/services";
 import { Colors } from "@/constants";
 import { formatMoney } from "@/utils";
-import { router } from "expo-router";
 
 const CashbackPage = () => {
   const { token } = useAuth();

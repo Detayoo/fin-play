@@ -1,4 +1,5 @@
 import { ScrollView, View, StyleSheet } from "react-native";
+import { router } from "expo-router";
 
 import {
   AppText,
@@ -8,7 +9,7 @@ import {
   Screen,
 } from "@/components";
 import { Colors } from "@/constants";
-import { BigGift, Copy, DashedBorder, Gift } from "@/assets";
+import { BigGift, Gift } from "@/assets";
 import { copyToClipboard, formatMoney } from "@/utils";
 
 const ReferralsPage = () => {
@@ -262,6 +263,7 @@ const ReferralsPage = () => {
               variant="medium"
               color={Colors.inputFocusBorder}
               style={{ fontSize: 13 }}
+              onPress={() => router.push("/invites-list")}
             >
               View all
             </AppText>
