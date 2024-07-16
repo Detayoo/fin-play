@@ -16,7 +16,7 @@ import { ERRORS, extractServerError } from "@/utils";
 import { useAuth } from "@/context";
 
 const ConfirmTransactionPIN = () => {
-  const { token, saveUser } = useAuth();
+  const { token, saveUser, user } = useAuth();
   const [stage, setStage] = useState(1);
   const [pin, setPin] = useState("");
   const [confirmPin, setConfirmPin] = useState("");
@@ -45,7 +45,7 @@ const ConfirmTransactionPIN = () => {
   const { mutateAsync } = useMutation({
     mutationFn: setTransactionPinFn,
     onSuccess: (data) => {
-      saveUser((prev: any) => ({ ...prev, pin }), token);
+      saveUser({ ...user, pin }, token);
 
       showToast("success", data?.message);
       router.push("/(tabs)");
