@@ -91,7 +91,9 @@ const TierThreeUpgrade = () => {
             }}
           >
             <BackButton />
-            <AppText variant="medium">Upgrade to Tier 3</AppText>
+            <AppText variant="medium" size="large">
+              Upgrade to Tier 3
+            </AppText>
             <BackButton style={{ opacity: 0 }} />
           </View>
           <ScrollView
