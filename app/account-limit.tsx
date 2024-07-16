@@ -4,6 +4,7 @@ import { AppText, BackButton, PrimaryButton, Screen } from "@/components";
 import { Colors } from "@/constants";
 import { copyToClipboard, formatMoney, naira } from "@/utils";
 import { BigBank, BigUser, Copy, DashedBorder } from "@/assets";
+import { router } from "expo-router";
 
 const TIERS = [
   {
@@ -224,7 +225,10 @@ const AccountLimitPage = () => {
             );
           })}
         </View>
-        <PrimaryButton label="Upgrade Tier" />
+        <PrimaryButton
+          onPress={() => router.push("/initiate-upgrade")}
+          label="Upgrade Tier"
+        />
       </ScrollView>
     </Screen>
   );

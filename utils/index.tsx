@@ -20,26 +20,26 @@ export const SETTINGS_ROUTES = [
     label: "User Profile",
     route: "/user-profile",
   },
-  // {
-  //   icon: <AccountLimit />,
-  //   label: "Account Limit",
-  //   route: "/account-limit",
-  // },
-  // {
-  //   icon: <UpgradeTier />,
-  //   label: "Upgrade Tier",
-  //   route: "/upgrade-tier",
-  // },
-  // {
-  //   icon: <AccountLimit />,
-  //   label: "Preferences",
-  //   route: "/preferences",
-  // },
-  // {
-  //   icon: <AccountLimit />,
-  //   label: "Security",
-  //   route: "/security",
-  // },
+  {
+    icon: <AccountLimit />,
+    label: "Account Limit",
+    route: "/account-limit",
+  },
+  {
+    icon: <UpgradeTier />,
+    label: "Upgrade Tier",
+    route: "/initiate-upgrade",
+  },
+  {
+    icon: <AccountLimit />,
+    label: "Preferences",
+    route: "/preferences",
+  },
+  {
+    icon: <AccountLimit />,
+    label: "Security",
+    route: "/security",
+  },
 ];
 
 export const MORE_ROUTES = [

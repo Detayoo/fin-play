@@ -12,6 +12,7 @@ import { useAuth } from "@/context";
 import { getRewardsFn } from "@/services";
 import { Colors } from "@/constants";
 import { formatMoney } from "@/utils";
+import { router } from "expo-router";
 
 const CashbackPage = () => {
   const { token } = useAuth();
@@ -82,6 +83,7 @@ const CashbackPage = () => {
               style={{ backgroundColor: Colors.boldGreen, height: 32 }}
               label="How to use"
               labelStyle={{ color: Colors.black }}
+              onPress={() => router.push("/how-to-use-cashbacks")}
             />
           </View>
           <View
@@ -111,7 +113,7 @@ const CashbackPage = () => {
           >
             <View>
               <AppText>Daily cashback</AppText>
-              <AppText style={{ marginTop: 12 }} size="large" variant="medium" >
+              <AppText style={{ marginTop: 12 }} size="large" variant="medium">
                 NGN {formatMoney(rewardsData?.data?.data?.daily_bonus || "0")}
               </AppText>
             </View>
