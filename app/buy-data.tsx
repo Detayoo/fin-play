@@ -104,6 +104,7 @@ const BuyDataPage = () => {
         pathname: "/review-payment",
         params: {
           ...values,
+          ...selectedTariff,
           amount: selectedTariff?.price,
           tariffId: selectedTariff?.tariff_type_id,
           from: "/buy-data",

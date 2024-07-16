@@ -14,6 +14,7 @@ export const ListItem = ({
   hasBackgroundColor,
   size,
   maxWidth,
+  valueColor,
 }: {
   name: string;
   value: string | string[] | undefined;
@@ -23,6 +24,7 @@ export const ListItem = ({
   hasBackgroundColor?: boolean;
   size?: "normal" | "xsmall" | "small" | "large" | "xlarge" | "xxlarge";
   maxWidth?: any;
+  valueColor?: string;
 }) => {
   return (
     <View
@@ -57,7 +59,11 @@ export const ListItem = ({
             borderRadius: hasBackgroundColor ? 100 : 0,
           }}
         >
-          <AppText style={{ textAlign: "right" }} variant="medium">
+          <AppText
+            color={valueColor}
+            style={{ textAlign: "right" }}
+            variant="medium"
+          >
             {value}
           </AppText>
           {!!canCopy && (

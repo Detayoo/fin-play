@@ -48,6 +48,9 @@ const ReviewPayment = () => {
     accountName,
     customerId,
     provider,
+    name: planName,
+    validity: planValidity,
+    price: planPrice,
   } = useLocalSearchParams();
   console.log(useLocalSearchParams());
 
@@ -277,6 +280,7 @@ const ReviewPayment = () => {
             )}
             {provider && <ListItem name="Service Provider" value={provider} />}
             {disco && <ListItem name="Service Provider" value={disco} />}
+
             {customerId && <ListItem name="Customer ID" value={customerId} />}
             {accountName && (
               <ListItem
@@ -306,7 +310,17 @@ const ReviewPayment = () => {
             {serviceProvider && (
               <ListItem name="Network Provider" value={serviceProvider} />
             )}
-            <ListItem name="Cashback" value={`${pointBal || 0}`} />
+            {planName && planValidity && planPrice && (
+              <ListItem
+                name="Data Plan"
+                value={`${planName} ${planValidity}, available at NGN${planPrice}`}
+              />
+            )}
+            <ListItem
+              name="Cashback"
+              value="+0"
+              valueColor={Colors.inputFocusBorder}
+            />
             <View
               style={{
                 flexDirection: "row",
@@ -322,6 +336,12 @@ const ReviewPayment = () => {
                 />
               </View>
             </View>
+
+            <ListItem
+              name="Available Reward Point"
+              value={`${pointBal || 0}`}
+              valueColor={Colors.inputFocusBorder}
+            />
             <View
               style={{
                 flexDirection: "row",
