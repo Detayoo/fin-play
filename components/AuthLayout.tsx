@@ -16,10 +16,12 @@ export const AuthLayout = ({
   children,
   currentStep = 1,
   showStep = true,
+  headerText,
 }: {
   children: React.ReactNode;
   currentStep?: number;
   showStep?: boolean;
+  headerText?: string;
 }) => {
   return (
     <>
@@ -34,6 +36,10 @@ export const AuthLayout = ({
             </AppText>
           </View>
         )}
+        <AppText variant="medium" size="large">
+          {headerText}
+        </AppText>
+        <BackButton style={{ opacity: 0 }} />
       </View>
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : undefined}

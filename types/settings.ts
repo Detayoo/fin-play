@@ -34,3 +34,15 @@ export interface IUpgradeAccount {
   pod: string;
   image: string;
 }
+
+export type ChangePasswordPayloadType = {
+  oldPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+};
+
+export type ChangePinPayloadType = {
+  oldPin: string;
+  newPin: string;
+  confirmPin: string;
+};

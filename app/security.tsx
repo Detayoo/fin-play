@@ -1,27 +1,20 @@
 import { useState } from "react";
 import { Pressable, ScrollView, View } from "react-native";
 
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { router } from "expo-router";
+
 import {
   AppText,
   BackButton,
   Screen,
   SwitchComponent,
-  ToastComponent,
   TwoFASetup,
 } from "@/components";
-import {
-  FaceId,
-  Password,
-  Pin,
-  PushNotification,
-  SmallFingerprint,
-  TwoFA,
-  UpgradeTier,
-} from "@/assets";
+import { Password, Pin, SmallFingerprint, TwoFA, UpgradeTier } from "@/assets";
 import { useBiometrics } from "@/hooks";
 import { ChevronDown } from "@/components/ChevronDown";
 import { useAuth } from "@/context";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 type Notifications = {
   faceId: boolean;
@@ -66,6 +59,7 @@ const SecurityPage = () => {
         </View>
         <ScrollView contentContainerStyle={{ paddingTop: 20, width: "100%" }}>
           <Pressable
+            onPress={() => router.push("/change-password")}
             style={{
               flexDirection: "row",
               justifyContent: "space-between",
@@ -88,6 +82,7 @@ const SecurityPage = () => {
             <ChevronDown style={{ transform: [{ rotate: "280deg" }] }} />
           </Pressable>
           <Pressable
+            onPress={() => router.push("/change-pin")}
             style={{
               flexDirection: "row",
               justifyContent: "space-between",

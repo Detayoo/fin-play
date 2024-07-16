@@ -69,3 +69,35 @@ export const uploadProfilePhotoFn = async ({
 
   return data;
 };
+
+export const changePasswordFn = async ({
+  oldPassword,
+  newPassword,
+  token,
+}: {
+  oldPassword: string;
+  newPassword: string;
+  token: TokenType;
+}) => {
+  const { data } = await authenticatedRequest(token).patch<BareResponse>(
+    "/auth/password/change",
+    { oldPassword, newPassword }
+  );
+  return data;
+};
+
+export const changePinFn = async ({
+  oldPin,
+  newPin,
+  token,
+}: {
+  oldPin: string;
+  newPin: string;
+  token: TokenType;
+}) => {
+  const { data } = await authenticatedRequest(token).patch<BareResponse>(
+    "/settings/pin",
+    { oldPin, newPin }
+  );
+  return data;
+};

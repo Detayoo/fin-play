@@ -53,7 +53,28 @@ export const bettingSchema = Yup.object().shape({
 export const ninValidationSchema = Yup.object().shape({
   nin: Yup.string().required().length(11),
 });
+
 export const tierThreeSchema = Yup.object().shape({
   address: Yup.string().required(),
   city: Yup.string().required(),
+});
+
+export const changePasswordSchema = Yup.object().shape({
+  oldPassword: Yup.string()
+    .min(6, "Old Password must be at least 6 characters")
+    .required("Old Password is required"),
+  newPassword: Yup.string()
+    .min(6, "New Password must be at least 6 characters")
+    .required("New Password is required"),
+  confirmPassword: Yup.string()
+    .required("Confirm Password is required")
+    .oneOf([Yup.ref("newPassword"), ""], "Passwords must match"),
+});
+
+export const changePinSchema = Yup.object().shape({
+  oldPin: Yup.string().length(4).required("Old pin is required"),
+  newPin: Yup.string().length(4).required("Pin is required"),
+  confirmPin: Yup.string()
+    .required("Confirm Pin is required")
+    .oneOf([Yup.ref("newPin"), ""], "Pins must match"),
 });

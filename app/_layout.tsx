@@ -112,6 +112,9 @@ export default function RootLayout() {
             <Stack.Screen name="tier-three-upgrade" options={options} />
             <Stack.Screen name="how-to-use-cashbacks" options={options} />
             <Stack.Screen name="invites-list" options={options} />
+            <Stack.Screen name="change-password" options={options} />
+            <Stack.Screen name="change-pin" options={options} />
+            <Stack.Screen name="forgot-pin" options={options} />
             {/* </Screen> */}
             <Stack.Screen
               name="(tabs)"
