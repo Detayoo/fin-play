@@ -142,6 +142,7 @@ export const TransactionFilterModal = ({
           {categories.map((category) => {
             return (
               <Pressable
+                key={category.label}
                 onPress={() =>
                   updateSelectedState({
                     category: category.label,
@@ -182,6 +183,7 @@ export const TransactionFilterModal = ({
           {statuses.map((status) => {
             return (
               <Pressable
+                key={status.label}
                 onPress={() =>
                   updateSelectedState({
                     status: status.label,
@@ -223,6 +225,7 @@ export const TransactionFilterModal = ({
           {duration.map((dur) => {
             return (
               <Pressable
+              key={dur}
                 onPress={() =>
                   updateSelectedState({
                     duration: dur,

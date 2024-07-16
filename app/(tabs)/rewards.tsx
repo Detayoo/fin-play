@@ -78,7 +78,10 @@ const RewardsPage = () => {
               </View>
               <ChevronRight style={{ alignSelf: "center" }} />
             </Pressable>
-            <Pressable style={{ flexDirection: "row", gap: 20 }}>
+            <Pressable
+              onPress={() => router.push("/referrals")}
+              style={{ flexDirection: "row", gap: 20 }}
+            >
               <Referrals />
               <View style={{ gap: 5, flex: 1 }}>
                 <AppText style={{ fontSize: 15 }} variant="medium">

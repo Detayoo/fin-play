@@ -1,6 +1,7 @@
 import { ScrollView, View } from "react-native";
 import { useQueries } from "@tanstack/react-query";
 import { router } from "expo-router";
+import { format } from "date-fns";
 
 import {
   AppText,
@@ -122,6 +123,69 @@ const CashbackPage = () => {
               <AppText style={{ marginTop: 12 }} size="large" variant="medium">
                 NGN {formatMoney(rewardsData?.data?.data?.expenses || "0")}
               </AppText>
+            </View>
+          </View>
+          <View style={{ marginTop: 20 }}>
+            <AppText style={{ marginBottom: 30 }} variant="medium">
+              June, 2024
+            </AppText>
+            <View style={{ gap: 20 }}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <View style={{ gap: 2 }}>
+                  <AppText>MTN Airtime</AppText>
+                  <AppText style={{ fontSize: 10 }} color={Colors.faintBlack}>
+                    {format(
+                      (new Date(), "dd/MM/yyyy HH:mm:ss", new Date()),
+                      "MMMM dd, yyyy hh:mma"
+                    )}
+                  </AppText>
+                </View>
+                <View style={{ gap: 2 }}>
+                  <AppText style={{ textAlign: "right" }} variant="medium">
+                    +400
+                  </AppText>
+                  <AppText style={{ fontSize: 10 }} color={Colors.faintBlack}>
+                    Balance before:{" "}
+                    <AppText style={{ fontSize: 10 }} variant="medium">
+                      20
+                    </AppText>
+                  </AppText>
+                </View>
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <View style={{ gap: 2 }}>
+                  <AppText>MTN Airtime</AppText>
+                  <AppText style={{ fontSize: 10 }} color={Colors.faintBlack}>
+                    {format(
+                      (new Date(), "dd/MM/yyyy HH:mm:ss", new Date()),
+                      "MMMM dd, yyyy hh:mma"
+                    )}
+                  </AppText>
+                </View>
+                <View style={{ gap: 2 }}>
+                  <AppText style={{ textAlign: "right" }} variant="medium">
+                    +400
+                  </AppText>
+                  <AppText style={{ fontSize: 10 }} color={Colors.faintBlack}>
+                    Balance before:{" "}
+                    <AppText style={{ fontSize: 10 }} variant="medium">
+                      20
+                    </AppText>
+                  </AppText>
+                </View>
+              </View>
             </View>
           </View>
         </ScrollView>

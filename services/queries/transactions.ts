@@ -18,14 +18,7 @@ export const getAllTransactionsFn = async ({
   perPage: number;
   currentPage: number;
 }) => {
-  let params = {
-    startDate: "",
-    endDate: "",
-    status: "",
-    transactionType: "",
-    perPage,
-    currentPage,
-  };
+  let params: any = {};
 
   if (startDate) {
     params.startDate = startDate;

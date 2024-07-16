@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   FlatList,
   Pressable,
@@ -9,19 +9,18 @@ import {
 import { router } from "expo-router";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 import {
   AppText,
   BackButton,
   Expenses,
-  Income,
   Screen,
   TransactionFilterModal,
   TransactionItem,
 } from "@/components";
 import { Colors } from "@/constants";
 import {
-  ActiveHome,
   ActiveStats,
   Filter,
   InactiveTransactions,
@@ -32,10 +31,6 @@ import {
 import { useAuth } from "@/context";
 import { getAllTransactionsFn } from "@/services";
 import { useRefreshByUser, useRefreshOnFocus } from "@/hooks";
-import {
-  GestureHandlerRootView,
-  TouchableOpacity,
-} from "react-native-gesture-handler";
 
 type TransactionFilter = {
   duration: string;
@@ -96,29 +91,6 @@ const TransactionsHistoryPage = () => {
     setFilterObj((previousState) => ({ ...previousState, ...payload }));
   };
 
-  const getStartDate = () => {
-    if (filterObj?.duration === "Last 7 days") {
-      return dayFromNow(7);
-    }
-    if (filterObj?.duration === "Last 30 days") {
-      return dayFromNow(30);
-    }
-
-    return filterObj?.range?.start;
-  };
-  const getEndDate = () => {
-    if (
-      filterObj?.duration === "Last 7 days" ||
-      filterObj?.duration === "Last 30 days"
-    ) {
-      return currentDate;
-    }
-
-    return filterObj?.range?.end;
-  };
-
-  console.log('filteroBJ', filterObj)
-
   const transactionsData = useInfiniteQuery({
     queryKey: ["all transactions", JSON.stringify(filterObj)],
     queryFn: ({ pageParam: currentPage }) =>
@@ -126,14 +98,23 @@ const TransactionsHistoryPage = () => {
         token,
         perPage: 50,
         currentPage: currentPage,
-        status: filterObj?.status,
-        transactionType: filterObj?.type,
-        startDate: filterObj?.duration
-          ? format(new Date(getStartDate()), "yyyy-MM-dd")
-          : null,
-        endDate: filterObj?.duration
-          ? format(new Date(getEndDate()), "yyyy-MM-dd")
-          : null,
+        status: filterObj?.status ?? null,
+        transactionType: filterObj?.type ?? null,
+        startDate:
+          filterObj?.duration === "Last 7 Days"
+            ? format(new Date(dayFromNow(7)), "yyyy-MM-dd")
+            : filterObj?.duration === "Last 30 Days"
+            ? format(new Date(dayFromNow(30)), "yyyy-MM-dd")
+            : filterObj.duration === "Custom"
+            ? format(new Date(filterObj.range.start), "yyyy-MM-dd")
+            : null,
+        endDate:
+          filterObj?.duration === "Last 7 Days" ||
+          filterObj.duration === "Last 30 Days"
+            ? format(new Date(currentDate), "yyyy-MM-dd")
+            : filterObj.duration === "Custom"
+            ? format(new Date(filterObj.range.end), "yyyy-MM-dd")
+            : null,
       }),
     enabled: !!token,
     initialPageParam: 1,
@@ -206,9 +187,10 @@ const TransactionsHistoryPage = () => {
                 borderBottomColor: "#F4F4F4",
               }}
             >
-              {state.statsTab.map((tab) => {
+              {state.statsTab.map((tab, index) => {
                 return (
                   <Pressable
+                    key={index}
                     onPress={() => {
                       setStatsActiveTab(tab);
                     }}
@@ -279,144 +261,55 @@ const TransactionsHistoryPage = () => {
                 <SmallChevron />
               </Pressable>
             </View>
-            <ScrollView
+            {/* <ScrollView
               showsVerticalScrollIndicator={false}
               contentContainerStyle={{
                 width: "100%",
               }}
-            >
-              <View style={{ marginTop: 20 }}>
-                <FlatList
-                  style={{}}
-                  showsVerticalScrollIndicator={false}
-                  data={flatListData}
-                  renderItem={({ item }) => <View></View>}
-                  onEndReached={loadMore}
-                  onEndReachedThreshold={0.1}
-                  keyExtractor={(item) => item.id}
-                  ListFooterComponent={
-                    transactionsData.isFetchingNextPage ? (
-                      <AppText>LOADING MORE..</AppText>
-                    ) : null
-                  }
-                  refreshControl={
-                    <RefreshControl
-                      onRefresh={refetchByUser}
-                      refreshing={isRefetchingByUser}
-                      title="Fetching Transactions"
-                    />
-                  }
-                />
-                <TransactionItem
-                  onPress={() =>
-                    router.push({
-                      pathname: "/payment-receipt",
-                      params: {},
-                    })
-                  }
-                  status="GLO"
-                />
-                <TransactionItem
-                  onPress={() =>
-                    router.push({
-                      pathname: "/payment-receipt",
-                      params: {},
-                    })
-                  }
-                  status="DEBIT"
-                />
-                <TransactionItem
-                  onPress={() =>
-                    router.push({
-                      pathname: "/payment-receipt",
-                      params: {},
-                    })
-                  }
-                  status="GLO"
-                />
-                <TransactionItem
-                  onPress={() =>
-                    router.push({
-                      pathname: "/payment-receipt",
-                      params: {},
-                    })
-                  }
-                  status="DEBIT"
-                />
-                <TransactionItem
-                  onPress={() =>
-                    router.push({
-                      pathname: "/payment-receipt",
-                      params: {},
-                    })
-                  }
-                  status="GLO"
-                />
-                <TransactionItem
-                  onPress={() =>
-                    router.push({
-                      pathname: "/payment-receipt",
-                      params: {},
-                    })
-                  }
-                  status="DEBIT"
-                />
-                <TransactionItem
-                  onPress={() =>
-                    router.push({
-                      pathname: "/payment-receipt",
-                      params: {},
-                    })
-                  }
-                  status="GLO"
-                />
-                <TransactionItem
-                  onPress={() =>
-                    router.push({
-                      pathname: "/payment-receipt",
-                      params: {},
-                    })
-                  }
-                  status="DEBIT"
-                />
-                <TransactionItem
-                  onPress={() =>
-                    router.push({
-                      pathname: "/payment-receipt",
-                      params: {},
-                    })
-                  }
-                  status="GLO"
-                />
-                <TransactionItem
-                  onPress={() =>
-                    router.push({
-                      pathname: "/payment-receipt",
-                      params: {},
-                    })
-                  }
-                  status="DEBIT"
-                />
-                <TransactionItem
-                  onPress={() =>
-                    router.push({
-                      pathname: "/payment-receipt",
-                      params: {},
-                    })
-                  }
-                  status="GLO"
-                />
-                <TransactionItem
-                  onPress={() =>
-                    router.push({
-                      pathname: "/payment-receipt",
-                      params: {},
-                    })
-                  }
-                  status="DEBIT"
-                />
-              </View>
-            </ScrollView>
+            > */}
+            <View style={{ marginTop: 20 }}>
+              <FlatList
+                style={{}}
+                showsVerticalScrollIndicator={false}
+                data={flatListData}
+                renderItem={({ item }) => (
+                  <TransactionItem
+                    onPress={() =>
+                      router.push({
+                        pathname: "/payment-receipt",
+                        params: {},
+                      })
+                    }
+                    status="GLO"
+                  />
+                )}
+                onEndReached={loadMore}
+                onEndReachedThreshold={0.1}
+                keyExtractor={(item) => item.id}
+                ListFooterComponent={
+                  transactionsData.isFetchingNextPage ? (
+                    <AppText>LOADING MORE..</AppText>
+                  ) : null
+                }
+                refreshControl={
+                  <RefreshControl
+                    onRefresh={refetchByUser}
+                    refreshing={isRefetchingByUser}
+                    title="Fetching Transactions"
+                  />
+                }
+              />
+              <TransactionItem
+                onPress={() =>
+                  router.push({
+                    pathname: "/payment-receipt",
+                    params: {},
+                  })
+                }
+                status="GLO"
+              />
+            </View>
+            {/* </ScrollView> */}
           </>
         ) : (
           <Expenses />
@@ -430,6 +323,7 @@ const TransactionsHistoryPage = () => {
             borderTopWidth: 1,
             borderTopColor: "#ABABBA40",
             width: "100%",
+            marginTop: "auto",
           }}
         >
           {mainTabs?.map((tab) => {
