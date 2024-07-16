@@ -52,12 +52,15 @@ const styles = StyleSheet.create({
     top: 60,
     left: 0,
     right: 0,
-    zIndex: 9999,
+    zIndex: 9999999,
+
     elevation: 9999,
+    backgroundColor: "red",
   },
   toast: {
     width: "95%",
-    zIndex: 10000,
+    zIndex: 9999999999,
+
     elevation: 10000,
   },
   successToast: {

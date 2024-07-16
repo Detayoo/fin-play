@@ -128,26 +128,6 @@ export const Services = () => {
       icon: <Electricity />,
       label: "Electricity",
     },
-    {
-      icon: <Cable />,
-      label: "Cable",
-    },
-    {
-      icon: <Betting />,
-      label: "Betting",
-    },
-    {
-      icon: <Education />,
-      label: "Education",
-    },
-    {
-      icon: <Smile />,
-      label: "Smile Internet",
-    },
-    {
-      icon: <Water />,
-      label: "Water",
-    },
   ];
 
   const pages = [];

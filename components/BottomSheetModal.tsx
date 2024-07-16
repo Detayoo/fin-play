@@ -61,7 +61,6 @@ export const ReusableBottomSheet = ({
         style={styles.bottomSheet}
         handleIndicatorStyle={styles.handleIndicator}
         // keyboardBehavior='interactive'
-        
       >
         <View style={styles.contentContainer}>{children}</View>
       </BottomSheet>
@@ -81,6 +80,7 @@ const styles = StyleSheet.create({
   bottomSheet: {
     zIndex: 1,
     borderRadius: 1000,
+    backgroundColor: "blue",
   },
   handleIndicator: {
     backgroundColor: "#DDDDDD",

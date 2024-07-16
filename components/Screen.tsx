@@ -20,23 +20,25 @@ export const Screen = ({
 }) => {
   const pathName = usePathname();
   return (
-    <View style={{ backgroundColor: "#fff", flex: 1 }}>
+    <>
       <ToastComponent />
-      <SafeAreaView style={[styles.safeArea, style]}>
-        <GestureHandlerRootView style={{ flex: 1 }}>
-          <View
-            style={{
-              flex: 1,
-              paddingVertical: 16,
-              paddingHorizontal: pathName === "/" ? 0 : 16,
-              backgroundColor: "#fff",
-            }}
-          >
-            {children}
-          </View>
-        </GestureHandlerRootView>
-      </SafeAreaView>
-    </View>
+      <View style={{ backgroundColor: "#fff", flex: 1 }}>
+        <SafeAreaView style={[styles.safeArea, style]}>
+          <GestureHandlerRootView style={{ flex: 1 }}>
+            <View
+              style={{
+                flex: 1,
+                paddingVertical: 16,
+                paddingHorizontal: pathName === "/" ? 0 : 16,
+                backgroundColor: "#fff",
+              }}
+            >
+              {children}
+            </View>
+          </GestureHandlerRootView>
+        </SafeAreaView>
+      </View>
+    </>
   );
 };
 

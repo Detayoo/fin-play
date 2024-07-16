@@ -69,3 +69,4 @@ export * from "./UpgradeAction";
 export * from "./CheckMark";
 export * from "./Upload";
 export * from "./BigGift";
+export * from "./Key";

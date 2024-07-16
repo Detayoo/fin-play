@@ -36,3 +36,4 @@ export * from "./Expenses";
 export * from "./Income";
 export * from "./TransactionFilterModal";
 export * from "./UploadField";
+export * from "./TwoFASetupModal";
