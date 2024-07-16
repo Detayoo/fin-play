@@ -53,3 +53,7 @@ export const bettingSchema = Yup.object().shape({
 export const ninValidationSchema = Yup.object().shape({
   nin: Yup.string().required().length(11),
 });
+export const tierThreeSchema = Yup.object().shape({
+  address: Yup.string().required(),
+  city: Yup.string().required(),
+});

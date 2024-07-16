@@ -176,7 +176,7 @@ const InitialUpgradePage = () => {
                 </AppText>
               </AppText>
 
-              {tier && tier < 3 && (
+              {/* {tier && tier < 3 && ( */}
                 <PrimaryButton
                   onPress={() => {
                     router.push({
@@ -200,7 +200,7 @@ const InitialUpgradePage = () => {
                     </View>
                   }
                 />
-              )}
+              {/* )} */}
             </View>
           </View>
         </ScrollView>

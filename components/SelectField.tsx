@@ -171,17 +171,19 @@ export const SelectPlaceholder = ({
   onSelect,
   label,
   title,
+  useImage= false
 }: {
   onSelect: () => void;
   label: string | null;
   title: string;
+  useImage?: boolean
 }) => {
   return (
     <View style={{}}>
       <AppText variant="medium">{title}</AppText>
       <TouchableOpacity onPress={onSelect} style={styles.input}>
         <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
-          {label && <GTBank />}
+          {label && useImage && <GTBank />}
           <AppText>{label || "Select"}</AppText>
         </View>
         <ChevronDown />
