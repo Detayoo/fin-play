@@ -68,3 +68,4 @@ export * from "./UzzyTransfer";
 export * from "./UpgradeAction";
 export * from "./CheckMark";
 export * from "./Upload";
+export * from "./BigGift";
