@@ -12,7 +12,7 @@ import { AppText } from "./AppText";
 
 interface ButtonProps {
   disabled?: boolean;
-  label?: string;
+  label?: any;
   loading?: boolean;
   labelStyle?: StyleProp<TextStyle>;
   variant?: "primary" | "outline" | "default";

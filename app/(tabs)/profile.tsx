@@ -54,11 +54,12 @@ const ProfilePage = () => {
             Upgrade your account
           </AppText>
           <PrimaryButton
+            onPress={() => router.push("/initiate-upgrade")}
             label="Upgrade"
             style={{ marginTop: 25, width: "100%" }}
           />
         </View>
-        <View>
+        {/* <View>
           <AppText style={{ marginTop: 30 }} size="large" variant="medium">
             SETTINGS
           </AppText>
@@ -164,7 +165,7 @@ const ProfilePage = () => {
               );
             })}
           </View>
-        </View>
+        </View> */}
       </ScrollView>
     </DashboardLayout>
   );

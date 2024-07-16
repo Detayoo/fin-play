@@ -65,3 +65,5 @@ export * from "./InactiveTransactions";
 export * from "./Stats";
 export * from "./ActiveStats";
 export * from "./UzzyTransfer";
+export * from "./UpgradeAction";
+export * from "./CheckMark";
