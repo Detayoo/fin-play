@@ -38,13 +38,13 @@ import {
   UserHead,
 } from "@/assets";
 import { Colors } from "@/constants";
-import { copyToClipboard, formatMoney, getFirstLetter } from "@/utils";
-import { useAuth } from "@/context";
 import {
-  getAllTransactionsFn,
-  getUserAccountDetailsFn,
-  getUserMainBalanceFn,
-} from "@/services";
+  copyToClipboard,
+  formatMoney,
+  getMultiWordFirstLetters,
+} from "@/utils";
+import { useAuth } from "@/context";
+import { getAllTransactionsFn, getUserAccountDetailsFn } from "@/services";
 import { Spinner } from "@/components/Spinner";
 
 type StateType = {
@@ -364,14 +364,14 @@ export default function HomeScreen() {
                   width: 45,
                 }}
               >
-                <AppText size="xxlarge" variant="medium">
-                  {getFirstLetter(bankName) || ""}
+                <AppText size="xlarge" variant="medium">
+                  {getMultiWordFirstLetters(bankName) || ""}
                 </AppText>
               </View>
 
               <View style={{ marginLeft: 10 }}>
                 <AppText size="small">Account Number</AppText>
-                <AppText size="xlarge" variant="medium">
+                <AppText size="large" variant="medium">
                   {accountNumber}
                 </AppText>
               </View>
@@ -404,7 +404,7 @@ export default function HomeScreen() {
               <BigBank />
               <View style={{ marginLeft: 10 }}>
                 <AppText size="small">Bank Name</AppText>
-                <AppText size="xlarge" variant="medium">
+                <AppText size="large" variant="medium">
                   {bankName}
                 </AppText>
               </View>
@@ -419,7 +419,7 @@ export default function HomeScreen() {
               <BigUser />
               <View style={{ marginLeft: 10 }}>
                 <AppText size="small">Account Name</AppText>
-                <AppText size="xlarge" variant="medium">
+                <AppText size="large" variant="medium">
                   {accountName}
                 </AppText>
               </View>

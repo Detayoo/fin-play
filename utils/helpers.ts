@@ -37,7 +37,7 @@ export const getFirstLetter = (str: string | undefined) => {
   return str.trim().charAt(0).toUpperCase();
 };
 
-export const getMultiWordFirstLetters = (str: string) => {
+export const getMultiWordFirstLetters = (str: string | undefined) => {
   if (!str || typeof str !== "string") {
     return "";
   }
