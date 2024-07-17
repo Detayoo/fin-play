@@ -1,9 +1,8 @@
-# fin-play# Welcome to your Expo app 👋
-
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+# hello, you# Welcome to finplay 👋
 
 ## Get started
-
+what's finplay? it is a typical nigerian fintech app, packed with loads of features. why not try it out and see for yourself?
+<!-- 
 1. Install dependencies
 
    ```bash
@@ -47,4 +46,4 @@ To learn more about developing your project with Expo, look at the following res
 Join our community of developers creating universal apps.
 
 - [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions. -->
