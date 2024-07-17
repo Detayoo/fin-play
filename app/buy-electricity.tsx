@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { ScrollView, View } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
-import {  useQueries } from "@tanstack/react-query";
+import { useQueries } from "@tanstack/react-query";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { Formik } from "formik";
@@ -9,6 +9,7 @@ import { Formik } from "formik";
 import {
   AppText,
   BackButton,
+  Loading,
   PrimaryButton,
   Screen,
   SelectField,
@@ -52,6 +53,36 @@ const BuyElectricityPage = () => {
     meterNumber: "",
     amount: "",
   });
+
+  const [providersData, userAccountData] = useQueries({
+    queries: [
+      {
+        queryKey: ["electricity providers"],
+        queryFn: () => getElectricityProvidersFn({ token }),
+      },
+      {
+        queryKey: [
+          "user electricity details",
+          state?.meterNumber,
+          state.selectedType,
+          state.serviceProvider,
+        ],
+        queryFn: () =>
+          checkMeterFn({
+            token,
+            disco: state.serviceProvider?.label,
+            meter: state?.meterNumber,
+            type: state.selectedType?.label,
+          }),
+        enabled: !!(
+          state.serviceProvider?.label &&
+          state.selectedType?.label &&
+          state?.meterNumber?.length === 11
+        ),
+      },
+    ],
+  });
+
   const updateState = (payload: any) => {
     setState((prevState: any) => ({ ...prevState, ...payload }));
   };
@@ -75,35 +106,22 @@ const BuyElectricityPage = () => {
     setFieldValue("amount", value);
   };
 
-  const [providersData, userAccountData] = useQueries({
-    queries: [
-      {
-        queryKey: ["electricity providers"],
-        queryFn: () => getElectricityProvidersFn({ token }),
-      },
-      {
-        queryKey: ["user electricity details"],
-        queryFn: () =>
-          checkMeterFn({
-            token,
-            disco: state.serviceProvider?.label,
-            meter: state?.meterNumber,
-            type: state.selectedType?.label,
-          }),
-        // enabled: !!(state.serviceProvider?.label && state.selectedType?.label && state?.meterNumber),
-      },
-    ],
-  });
+  const [providerOptions, setProviderOptions] = useState<any>([]);
 
-  const [providerOptions, setProviderOptions] = useState(
-    providersData?.data?.data?.availableDiscos?.map((each, index: number) => ({
-      id: index + 1,
-      label: each,
-    }))
-  );
-
-  const { minimumAmountPayable = 200, maximumAmountPayable = 500 } =
-    userAccountData?.data?.data || {};
+  useEffect(() => {
+    if (providersData?.data?.data?.availableDiscos) {
+      setProviderOptions(
+        providersData?.data?.data?.availableDiscos?.map(
+          (each, index: number) => ({
+            id: index + 1,
+            label: each,
+          })
+        )
+      );
+    }
+  }, [providersData?.data?.data?.availableDiscos]);
+  const { minimumAmountPayable, maximumAmountPayable } =
+    userAccountData?.data?.data?.data || {};
 
   useEffect(() => {
     if (
@@ -135,7 +153,7 @@ const BuyElectricityPage = () => {
         pathname: "/review-payment",
         params: {
           ...values,
-          ...userAccountData?.data?.data,
+          ...userAccountData?.data?.data?.data,
 
           from: "/buy-electricity",
         },
@@ -205,7 +223,7 @@ const BuyElectricityPage = () => {
                       />
                       <SelectPlaceholder
                         label={
-                          state.selectedType?.label ?? "Select an account tpye"
+                          state.selectedType?.label ?? "Select an account type"
                         }
                         onSelect={() =>
                           updateState({
@@ -216,7 +234,6 @@ const BuyElectricityPage = () => {
                       />
 
                       <TextField
-                        // onChange={handleChange("meterNumber")}
                         onChange={(value: string) =>
                           handleMeterNumberChange(value, setFieldValue)
                         }
@@ -227,23 +244,32 @@ const BuyElectricityPage = () => {
                         touched={touched.meterNumber}
                         label="Meter Number"
                         keyboardType="number-pad"
+                        length={11}
                       />
-
-                      <View
-                        style={{
-                          marginTop: -20,
-                          flexDirection: "row",
-                          gap: 10,
-                          alignItems: "center",
-                        }}
-                      >
-                        <Recipient />
-                        <AppText variant="medium">
-                          {userAccountData?.data?.data?.accountName}
+                      {userAccountData.isFetching && (
+                        <AppText style={{ marginTop: -20 }}>
+                          Fetching Meter Details..
                         </AppText>
-                      </View>
+                      )}
 
-                      <View style={{}}>
+                      {state?.meterNumber?.length === 11 &&
+                        userAccountData?.data?.data?.data?.accountName && (
+                          <View
+                            style={{
+                              marginTop: -20,
+                              flexDirection: "row",
+                              gap: 10,
+                              alignItems: "center",
+                            }}
+                          >
+                            <Recipient />
+                            <AppText variant="medium">
+                              {userAccountData?.data?.data?.data?.accountName}
+                            </AppText>
+                          </View>
+                        )}
+
+                      <View style={{ marginTop: -10 }}>
                         <TextField
                           onChange={(value: string) =>
                             handleAmountChange(value, setFieldValue)
@@ -272,16 +298,22 @@ const BuyElectricityPage = () => {
 
                       <PrimaryButton
                         disabled={
-                          !isValid ||
-                          !state.selectedType ||
-                          !state.serviceProvider ||
-                          !userAccountData?.data?.data?.accountName ||
-                          +maximumAmountPayable < +state?.amount ||
-                          +minimumAmountPayable > +state?.amount
+                          !!(
+                            !isValid ||
+                            !state.selectedType ||
+                            !state.serviceProvider ||
+                            !userAccountData?.data?.data?.data?.accountName ||
+                            (maximumAmountPayable &&
+                              +maximumAmountPayable < +state?.amount) ||
+                            (minimumAmountPayable &&
+                              +minimumAmountPayable > +state?.amount)
+                          )
                         }
                         onPress={
-                          +maximumAmountPayable < +state?.amount ||
-                          +minimumAmountPayable > +state?.amount
+                          (maximumAmountPayable &&
+                            +maximumAmountPayable < +state?.amount) ||
+                          (minimumAmountPayable &&
+                            +minimumAmountPayable > +state?.amount)
                             ? () => {}
                             : () => handleSubmit()
                         }
@@ -320,10 +352,7 @@ const BuyElectricityPage = () => {
           }}
         />
         <SelectField
-          options={[
-            { id: 1, label: "IKEJA" },
-            { id: 2, label: "IBEDC" },
-          ]}
+          options={providerOptions}
           visible={showModal}
           setVisible={setShowModal}
           setSelectedOption={(e: any) => {

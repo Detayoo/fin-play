@@ -124,7 +124,7 @@ export const getElectricityProvidersFn = async ({
 }) => {
   const { data } = await authenticatedRequest(
     token
-  ).get<IGetElectricityProviders>("/betting/providers");
+  ).get<IGetElectricityProviders>("/electricity/discos");
   return data;
 };
 
@@ -182,27 +182,27 @@ export const checkMeterFn = async ({
   disco: string;
   type: string;
 }) => {
-  const data: ICheckMeterResponse = {
-    message: "",
-    data: {
-      meterNumber: "string",
-      disco: "string",
-      vendType: "string",
-      accountName: "string",
-      address: "string",
-      minimumAmountPayable: "string",
-      maximumAmountPayable: "string",
-      debtRepayment: 200,
-      outstanding: 100,
-    },
-  };
+  // const data: ICheckMeterResponse = {
+  //   message: "",
+  //   data: {
+  //     meterNumber: "string",
+  //     disco: "string",
+  //     vendType: "string",
+  //     accountName: "string",
+  //     address: "string",
+  //     minimumAmountPayable: "string",
+  //     maximumAmountPayable: "string",
+  //     debtRepayment: 200,
+  //     outstanding: 100,
+  //   },
+  // };
 
-  return data;
+  // return data;
 
-  // const { data } = await authenticatedRequest(token).get<ICheckMeterResponse>(
-  //   `/electricity/meter?meter=${meter}&disco=${disco}&vendType=${type}`
-  // );
-  // return { data };
+  const { data } = await authenticatedRequest(token).get<ICheckMeterResponse>(
+    `/electricity/meter?meter=${meter}&disco=${disco}&vendType=${type}`
+  );
+  return { data };
 };
 
 export const buyElectricityFn = async ({

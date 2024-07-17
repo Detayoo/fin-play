@@ -126,14 +126,14 @@ const UserProfilePage = () => {
               style={{ width: 50, height: 50 }}
             />
           ) : null}
-          <AppText
+          {/* <AppText
             onPress={pickImage}
             style={{ marginTop: 20 }}
             color={Colors.inputFocusBorder}
             variant="medium"
           >
             Tap to change photo
-          </AppText>
+          </AppText> */}
 
           <View style={{ width: "100%", marginTop: 50 }}>
             <ListItem
