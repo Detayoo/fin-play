@@ -1,4 +1,5 @@
 import { Platform, ScrollView, StyleSheet, View } from "react-native";
+import { router } from "expo-router";
 
 import {
   AppText,
@@ -11,7 +12,6 @@ import { Colors, fonts } from "@/constants";
 import { UpgradeAction } from "@/assets";
 import { useR } from "@/services";
 import { useAuth } from "@/context";
-import { router } from "expo-router";
 
 const CurrentTier = () => {
   return (
@@ -177,30 +177,30 @@ const InitialUpgradePage = () => {
               </AppText>
 
               {tier && tier < 3 && (
-              <PrimaryButton
-                onPress={() => {
-                  router.push({
-                    pathname: "/tier-details",
-                    params: {
-                      tier: "3",
-                    },
-                  });
-                }}
-                style={styles.upgradeBtn}
-                label={
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      alignItems: "center",
-                      columnGap: 10,
-                    }}
-                  >
-                    <UpgradeAction />
-                    <AppText color={Colors.white}>Upgrade to Tier 3</AppText>
-                  </View>
-                }
-              />
-              )} 
+                <PrimaryButton
+                  onPress={() => {
+                    router.push({
+                      pathname: "/tier-details",
+                      params: {
+                        tier: "3",
+                      },
+                    });
+                  }}
+                  style={styles.upgradeBtn}
+                  label={
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        columnGap: 10,
+                      }}
+                    >
+                      <UpgradeAction />
+                      <AppText color={Colors.white}>Upgrade to Tier 3</AppText>
+                    </View>
+                  }
+                />
+              )}
             </View>
           </View>
         </ScrollView>

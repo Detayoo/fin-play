@@ -12,7 +12,7 @@ import {
 } from "@/components";
 import { Colors } from "@/constants";
 import { BigGift, Gift } from "@/assets";
-import { copyToClipboard, formatMoney } from "@/utils";
+import { formatMoney } from "@/utils";
 
 const ReferralsPage = () => {
   return (
