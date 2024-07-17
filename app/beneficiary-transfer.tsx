@@ -96,7 +96,6 @@ const BeneficiaryTransfer = () => {
             handleChange,
             touched,
           }) => {
-            console.log(values);
             return (
               <View
                 style={{

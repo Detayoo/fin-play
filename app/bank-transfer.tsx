@@ -113,8 +113,6 @@ const BankTransfer = () => {
     setFieldValue("accountNumber", value);
   };
 
-  console.log("seelctdna", selectedBank);
-
   const handleResolution = async () => {
     try {
       await mutateAsync({
@@ -135,8 +133,6 @@ const BankTransfer = () => {
       });
     }
   }, [state.accountNumber]);
-
-  console.log(state, "state");
 
   const onSubmit = async (values: FormField) => {
     try {

@@ -27,7 +27,6 @@ const RegistrationPage = () => {
   const { mutateAsync, isPending } = useMutation({
     mutationFn: registerFn,
     onSuccess: (data) => {
-      console.log("token is now", data?.data?.token);
       saveUser({ ...data?.metadata?.profile, password }, data?.data?.token);
       router.push({
         pathname: "/account-verification",

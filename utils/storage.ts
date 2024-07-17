@@ -20,9 +20,9 @@ export const getToken = async () => {
 export const storeToken = async (token: string) => {
   try {
     await AsyncStorage.setItem("TOKEN", token);
-    console.log("Token stored successfully");
+    // console.log("Token stored successfully");
   } catch (error) {
-    console.error("Error storing token:", error);
+    // console.error("Error storing token:", error);
   }
 };
 
@@ -36,7 +36,7 @@ export const getUser = async (): Promise<User | null> => {
       return null;
     }
   } catch (error) {
-    console.log("Error getting User:", error);
+    // console.log("Error getting User:", error);
     return null;
   }
 };

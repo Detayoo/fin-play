@@ -62,7 +62,6 @@ const PaymentReceipt = () => {
   } = useLocalSearchParams();
   console.log(useLocalSearchParams());
 
-  console.log(paidAt, "TIME VAL");
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Screen>

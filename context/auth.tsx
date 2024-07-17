@@ -91,7 +91,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       await AsyncStorage.setItem("USER", JSON.stringify(user));
       await AsyncStorage.setItem("TOKEN", token);
     } catch (error) {
-      console.log("error saving user", user);
+      // console.log("error saving user", user);
     }
   };
 

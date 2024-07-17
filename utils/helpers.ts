@@ -51,7 +51,6 @@ export const getMultiWordFirstLetters = (str: string | undefined) => {
 export const copyToClipboard = async (text: any) => {
   try {
     await Clipboard.setStringAsync(text);
-    console.log("yay");
   } catch (error) {
     showToast("error", "Could not copy, please try again");
   }

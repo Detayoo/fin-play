@@ -93,10 +93,6 @@ const BuyDataPage = () => {
         )
       : null;
 
-  console.log(
-    "NEW",
-    dataPlans?.data?.data?.dataplans[state?.serviceProvider?.label]
-  );
 
   const onSubmit = async (values: DataForm) => {
     try {

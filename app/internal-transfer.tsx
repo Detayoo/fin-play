@@ -136,7 +136,6 @@ const InternalTransfer = () => {
             isValid,
             setFieldValue,
           }) => {
-            console.log(values);
             return (
               <View style={{ marginTop: 20 }}>
                 <TextField

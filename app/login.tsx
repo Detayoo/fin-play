@@ -128,8 +128,6 @@ const LoginPage = () => {
     saveBiometrics(false);
   };
 
-  console.log("user is", user);
-
   const renderBiometric = () => {
     if (isBiometricType === 1) {
       return <Fingerprint />;
