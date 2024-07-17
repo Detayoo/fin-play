@@ -6,7 +6,6 @@ import * as ImagePicker from "expo-image-picker";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { AppText, BackButton, ListItem, Screen, showToast } from "@/components";
-import { Colors } from "@/constants";
 import { uploadProfilePhotoFn, useR } from "@/services";
 import { useAuth } from "@/context";
 import { ERRORS, extractServerError } from "@/utils";

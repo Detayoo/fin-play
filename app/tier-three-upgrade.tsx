@@ -17,13 +17,7 @@ import {
   UploadField,
   showToast,
 } from "@/components";
-import { Colors } from "@/constants";
-import {
-  ERRORS,
-  extractServerError,
-  ninValidationSchema,
-  tierThreeSchema,
-} from "@/utils";
+import { ERRORS, extractServerError, tierThreeSchema } from "@/utils";
 import { upgradeAccountFn } from "@/services";
 import { useAuth } from "@/context";
 import { UTILITY_TYPE, states } from "@/data";

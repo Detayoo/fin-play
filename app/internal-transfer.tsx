@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Formik } from "formik";
 import { ScrollView, View } from "react-native";
 import { router } from "expo-router";
+import { useMutation } from "@tanstack/react-query";
 
 import { Empty, Recipient } from "@/assets";
 import {
@@ -13,7 +14,6 @@ import {
   showToast,
 } from "@/components";
 import { Colors } from "@/constants";
-import { useMutation } from "@tanstack/react-query";
 import { resolveInternalTransferFn } from "@/services";
 import { ERRORS, extractServerError, internalTransferSchema } from "@/utils";
 import { useAuth } from "@/context";

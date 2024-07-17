@@ -3,7 +3,7 @@ import { Image } from "expo-image";
 import { router } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { AppText, BackButton, DashboardLayout } from "@/components";
+import { AppText, DashboardLayout } from "@/components";
 import { Colors, sizes } from "@/constants";
 import { ChevronRight, Referrals, Cashback } from "@/assets";
 

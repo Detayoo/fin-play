@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Image, View, StyleSheet } from "react-native";
+import { router } from "expo-router";
 import Carousel from "react-native-reanimated-carousel";
 import {
   useSharedValue,
@@ -9,7 +10,6 @@ import {
 
 import { Colors, sizes } from "@/constants";
 import { AppText, Dot, PrimaryButton, Screen } from "@/components";
-import { router } from "expo-router";
 
 export const data = [
   {

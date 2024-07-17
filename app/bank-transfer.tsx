@@ -4,6 +4,7 @@ import { ScrollView, TouchableOpacity, View } from "react-native";
 import { router } from "expo-router";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+import { useMutation } from "@tanstack/react-query";
 
 import { Empty, Recipient } from "@/assets";
 import {
@@ -20,7 +21,6 @@ import {
 import { Colors } from "@/constants";
 import { resolveTransferToBankFn } from "@/services";
 import { ERRORS, bankTransferSchema, extractServerError } from "@/utils";
-import { useMutation } from "@tanstack/react-query";
 import { useAuth } from "@/context";
 
 type FormField = {

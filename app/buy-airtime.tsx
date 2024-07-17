@@ -60,8 +60,6 @@ const BuyAirtimePage = () => {
     setState((prevState: any) => ({ ...prevState, ...payload }));
   };
 
-  console.log(state.options);
-
   useEffect(() => {
     if (providersData?.data?.providers) {
       updateState({
