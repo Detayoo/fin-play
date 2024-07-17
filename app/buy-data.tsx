@@ -144,10 +144,9 @@ const BuyDataPage = () => {
                 enableReinitialize
                 initialValues={{
                   phoneNumber: state?.selectedContact?.phoneNumbers
-                    ? state?.selectedContact?.phoneNumbers[0]?.number?.replace(
-                        /[\s-]/g,
-                        ""
-                      )
+                    ? state?.selectedContact?.phoneNumbers[0]?.number
+                        ?.replace(/^(\+?234)/, "0")
+                        ?.replace(/[\s-]/g, "")
                     : "",
                   serviceProvider: state?.serviceProvider?.label || "",
                 }}
