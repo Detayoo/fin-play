@@ -19,7 +19,7 @@ import {
 } from "@/components";
 import { Colors } from "@/constants";
 import { BigMtn } from "@/assets";
-import { ERRORS, extractServerError, formatMoney } from "@/utils";
+import { ERRORS, extractServerError, formatMoney, formatNumber } from "@/utils";
 import {
   buyAirtimeFn,
   buyBettingPlanFn,
@@ -53,7 +53,6 @@ const ReviewPayment = () => {
     validity: planValidity,
     price: planPrice,
   } = useLocalSearchParams();
-  console.log(useLocalSearchParams());
 
   const [pointsData] = useQueries({
     queries: [
@@ -82,7 +81,6 @@ const ReviewPayment = () => {
         });
       },
       onError: (error) => {
-        console.log("rror", error);
         showToast(
           "error",
           extractServerError(error, ERRORS.SOMETHING_HAPPENED)
@@ -217,6 +215,10 @@ const ReviewPayment = () => {
     }
   }, [pin]);
 
+  useEffect(() => {
+    if (!showModal) setPin("");
+  }, [showModal]);
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Screen>
@@ -342,7 +344,7 @@ const ReviewPayment = () => {
 
             <ListItem
               name="Available Reward Point"
-              value={`${pointBal || 0}`}
+              value={`${formatNumber(pointBal?.toFixed(2) || 0)}`}
               valueColor={Colors.inputFocusBorder}
             />
             <View

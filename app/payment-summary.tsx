@@ -29,6 +29,7 @@ const PaymentSummary = () => {
   const [showModal, setShowModal] = useState(false);
   const [save, setSave] = useState(false);
   const [pin, setPin] = useState("");
+
   const {
     accountName,
     accountNumber,
@@ -133,6 +134,11 @@ const PaymentSummary = () => {
       makePayment();
     }
   }, [pin]);
+
+  useEffect(() => {
+    if (!showModal) setPin("");
+  }, [showModal]);
+
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>

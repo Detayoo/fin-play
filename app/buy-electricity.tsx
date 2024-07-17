@@ -121,31 +121,31 @@ const BuyElectricityPage = () => {
     }
   }, [providersData?.data?.data?.availableDiscos]);
   const { minimumAmountPayable, maximumAmountPayable } =
-    userAccountData?.data?.data?.data || {};
+    userAccountData?.data?.data?.data?.meterDetails || {};
 
-  useEffect(() => {
-    if (
-      minimumAmountPayable &&
-      state.amount &&
-      +minimumAmountPayable > +state?.amount
-    ) {
-      showToast(
-        "error",
-        "This amount is lesser than the minimum payable amount"
-      );
-      return;
-    }
-    if (
-      maximumAmountPayable &&
-      state.amount &&
-      +maximumAmountPayable < +state?.amount
-    ) {
-      showToast(
-        "error",
-        "This amount is greater than the minimum payable amount"
-      );
-    }
-  }, [state?.amount, minimumAmountPayable, maximumAmountPayable]);
+  // useEffect(() => {
+  //   if (
+  //     minimumAmountPayable &&
+  //     state.amount &&
+  //     +minimumAmountPayable > +state?.amount
+  //   ) {
+  //     showToast(
+  //       "error",
+  //       "This amount is lesser than the minimum payable amount"
+  //     );
+  //     return;
+  //   }
+  //   if (
+  //     maximumAmountPayable &&
+  //     state.amount &&
+  //     +maximumAmountPayable < +state?.amount
+  //   ) {
+  //     showToast(
+  //       "error",
+  //       "This amount is greater than the minimum payable amount"
+  //     );
+  //   }
+  // }, [state?.amount, minimumAmountPayable, maximumAmountPayable]);
 
   const onSubmit = async (values: ElectricityForm) => {
     try {
@@ -153,7 +153,7 @@ const BuyElectricityPage = () => {
         pathname: "/review-payment",
         params: {
           ...values,
-          ...userAccountData?.data?.data?.data,
+          ...userAccountData?.data?.data?.data?.meterDetails,
 
           from: "/buy-electricity",
         },
@@ -221,111 +221,120 @@ const BuyElectricityPage = () => {
                         onSelect={() => setShowModal(true)}
                         title="Select Service Provider"
                       />
-                      <SelectPlaceholder
-                        label={
-                          state.selectedType?.label ?? "Select an account type"
-                        }
-                        onSelect={() =>
-                          updateState({
-                            typeModal: true,
-                          })
-                        }
-                        title="Select Account Type"
-                      />
+                      {state.serviceProvider?.label && (
+                        <>
+                          <SelectPlaceholder
+                            label={
+                              state.selectedType?.label ??
+                              "Select an account type"
+                            }
+                            onSelect={() =>
+                              updateState({
+                                typeModal: true,
+                              })
+                            }
+                            title="Select Account Type"
+                          />
 
-                      <TextField
-                        onChange={(value: string) =>
-                          handleMeterNumberChange(value, setFieldValue)
-                        }
-                        onBlur={handleBlur("meterNumber")}
-                        value={values.meterNumber}
-                        placeholder="Enter meter number"
-                        errors={errors.meterNumber}
-                        touched={touched.meterNumber}
-                        label="Meter Number"
-                        keyboardType="number-pad"
-                        length={11}
-                      />
-                      {userAccountData.isFetching && (
-                        <AppText style={{ marginTop: -20 }}>
-                          Fetching Meter Details..
-                        </AppText>
-                      )}
-
-                      {state?.meterNumber?.length === 11 &&
-                        userAccountData?.data?.data?.data?.accountName && (
-                          <View
-                            style={{
-                              marginTop: -20,
-                              flexDirection: "row",
-                              gap: 10,
-                              alignItems: "center",
-                            }}
-                          >
-                            <Recipient />
-                            <AppText variant="medium">
-                              {userAccountData?.data?.data?.data?.accountName}
+                          <TextField
+                            onChange={(value: string) =>
+                              handleMeterNumberChange(value, setFieldValue)
+                            }
+                            onBlur={handleBlur("meterNumber")}
+                            value={values.meterNumber}
+                            placeholder="Enter meter number"
+                            errors={errors.meterNumber}
+                            touched={touched.meterNumber}
+                            label="Meter Number"
+                            keyboardType="number-pad"
+                            length={11}
+                          />
+                          {userAccountData.isFetching && (
+                            <AppText style={{ marginTop: -30 }}>
+                              Fetching Meter Details..
                             </AppText>
+                          )}
+
+                          {state?.meterNumber?.length === 11 &&
+                            userAccountData?.data?.data?.data?.meterDetails?.accountName && (
+                              <View
+                                style={{
+                                  marginTop: -30,
+                                  flexDirection: "row",
+                                  gap: 10,
+                                  alignItems: "center",
+                                }}
+                              >
+                                <Recipient />
+                                <AppText variant="medium">
+                                  {
+                                    userAccountData?.data?.data?.data
+                                      ?.meterDetails?.accountName
+                                  }
+                                </AppText>
+                              </View>
+                            )}
+
+                          <View style={{ marginTop: -10 }}>
+                            <TextField
+                              onChange={(value: string) =>
+                                handleAmountChange(value, setFieldValue)
+                              }
+                              onBlur={handleBlur("amount")}
+                              value={values.amount}
+                              placeholder="Enter amount"
+                              errors={errors.amount}
+                              touched={touched.amount}
+                              label="Amount"
+                              keyboardType="number-pad"
+                            />
                           </View>
-                        )}
+                          {minimumAmountPayable && maximumAmountPayable && (
+                            <View>
+                              <AppText>
+                                Minimum Payable Amount - NGN
+                                {formatMoney(minimumAmountPayable)}
+                              </AppText>
+                              <AppText>
+                                Maximum Payable Amount - NGN{" "}
+                                {formatMoney(maximumAmountPayable)}
+                              </AppText>
+                            </View>
+                          )}
 
-                      <View style={{ marginTop: -10 }}>
-                        <TextField
-                          onChange={(value: string) =>
-                            handleAmountChange(value, setFieldValue)
-                          }
-                          onBlur={handleBlur("amount")}
-                          value={values.amount}
-                          placeholder="Enter amount"
-                          errors={errors.amount}
-                          touched={touched.amount}
-                          label="Amount"
-                          keyboardType="number-pad"
-                        />
-                      </View>
-                      {minimumAmountPayable && maximumAmountPayable && (
-                        <View>
-                          <AppText>
-                            Minimum Payable Amount - NGN
-                            {formatMoney(minimumAmountPayable)}
-                          </AppText>
-                          <AppText>
-                            Maximum Payable Amount - NGN{" "}
-                            {formatMoney(maximumAmountPayable)}
-                          </AppText>
-                        </View>
+                          <PrimaryButton
+                            disabled={
+                              !!(
+                                !isValid ||
+                                !state.selectedType ||
+                                !state.serviceProvider ||
+                                !userAccountData?.data?.data?.data
+                                  ?.meterDetails?.accountName ||
+                                (maximumAmountPayable &&
+                                  +maximumAmountPayable < +state?.amount) ||
+                                (minimumAmountPayable &&
+                                  +minimumAmountPayable > +state?.amount)
+                              )
+                            }
+                            onPress={
+                              (maximumAmountPayable &&
+                                +maximumAmountPayable < +state?.amount) ||
+                              (minimumAmountPayable &&
+                                +minimumAmountPayable > +state?.amount)
+                                ? () => {}
+                                : () => handleSubmit()
+                            }
+                            label="Proceed to Payment"
+                            style={{
+                              marginTop: 20,
+                              position: "absolute",
+                              bottom: 0,
+                              right: 0,
+                              width: "100%",
+                            }}
+                          />
+                        </>
                       )}
-
-                      <PrimaryButton
-                        disabled={
-                          !!(
-                            !isValid ||
-                            !state.selectedType ||
-                            !state.serviceProvider ||
-                            !userAccountData?.data?.data?.data?.accountName ||
-                            (maximumAmountPayable &&
-                              +maximumAmountPayable < +state?.amount) ||
-                            (minimumAmountPayable &&
-                              +minimumAmountPayable > +state?.amount)
-                          )
-                        }
-                        onPress={
-                          (maximumAmountPayable &&
-                            +maximumAmountPayable < +state?.amount) ||
-                          (minimumAmountPayable &&
-                            +minimumAmountPayable > +state?.amount)
-                            ? () => {}
-                            : () => handleSubmit()
-                        }
-                        label="Proceed to Payment"
-                        style={{
-                          marginTop: 20,
-                          position: "absolute",
-                          bottom: 0,
-                          right: 0,
-                          width: "100%",
-                        }}
-                      />
                     </View>
                   );
                 }}
