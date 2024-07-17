@@ -46,3 +46,13 @@ export type ChangePinPayloadType = {
   newPin: string;
   confirmPin: string;
 };
+
+export interface IGetTiers extends BareResponse {
+  data: {
+    kyc_level: {
+      name: string;
+      daily_trans_limit: string;
+      max_balance: string;
+    }[];
+  };
+}

@@ -3,6 +3,7 @@ import { Pressable, ScrollView, View } from "react-native";
 
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { router } from "expo-router";
+import * as LocalAuthentication from "expo-local-authentication";
 
 import {
   AppText,
@@ -37,6 +38,23 @@ const SecurityPage = () => {
 
   const updateState = (payload: Partial<Notifications>) => {
     setState((prevState) => ({ ...prevState, ...payload }));
+  };
+
+  const toggleBiometrics = async () => {
+    try {
+      const authentication = await LocalAuthentication.authenticateAsync({
+        promptMessage: "Enable Login with Biometrics",
+      });
+
+      if (authentication.success) {
+        saveBiometrics(!state.fingerprint);
+        saveBiometrics(!state.faceId);
+        updateState({
+          faceId: !state?.faceId,
+          fingerprint: !state.fingerprint,
+        });
+      }
+    } catch (error) {}
   };
 
   return (
@@ -160,12 +178,7 @@ const SecurityPage = () => {
                 </View>
                 <SwitchComponent
                   state={state.faceId}
-                  toggleSwitch={() => {
-                    updateState({
-                      faceId: !state.faceId,
-                    });
-                    saveBiometrics(!state.faceId);
-                  }}
+                  toggleSwitch={toggleBiometrics}
                 />
               </Pressable>
             </View>
@@ -201,14 +214,7 @@ const SecurityPage = () => {
                 </View>
                 <SwitchComponent
                   state={state.fingerprint}
-                  toggleSwitch={() => {
-                    updateState({
-                      fingerprint: !state.fingerprint,
-                    });
-
-                    //CHECK IF IT'S THE USER AND THEN SAVE THIS
-                    saveBiometrics(!state.fingerprint);
-                  }}
+                  toggleSwitch={toggleBiometrics}
                 />
               </Pressable>
             </View>
@@ -253,7 +259,7 @@ const SecurityPage = () => {
               />
             </Pressable>
           </View>
-          <View
+          {/* <View
             style={{
               flexDirection: "row",
               justifyContent: "space-between",
@@ -298,7 +304,7 @@ const SecurityPage = () => {
                 }}
               />
             </Pressable>
-          </View>
+          </View> */}
         </ScrollView>
       </Screen>
       <TwoFASetup

@@ -38,6 +38,7 @@ const ChangePasswordPage = () => {
         oldPassword,
         newPassword,
         token,
+        confirmPassword,
       });
     } catch (error) {}
   };

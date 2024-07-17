@@ -32,11 +32,12 @@ const ChangePinPage = () => {
     },
   });
   const handleSubmit = async (values: ChangePinPayloadType) => {
-    const { newPin, oldPin } = values;
+    const { newPin, oldPin, confirmPin } = values;
     try {
       await mutateAsync({
         oldPin,
         newPin,
+        confirmPin,
         token,
       });
     } catch (error) {}
@@ -54,7 +55,7 @@ const ChangePinPage = () => {
         onSubmit={handleSubmit}
       >
         {({ handleSubmit }) => (
-          <AuthLayout showStep={false} headerText="Change Password">
+          <AuthLayout showStep={false} headerText="Change Pin">
             <View style={styles.container}>
               <View style={styles.inputFields}>
                 <PasswordField

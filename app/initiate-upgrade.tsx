@@ -119,31 +119,31 @@ const InitialUpgradePage = () => {
                 </AppText>
               </AppText>
 
-              {/* {tier === 1 && ( */}
-              <PrimaryButton
-                onPress={() => {
-                  router.push({
-                    pathname: "/tier-details",
-                    params: {
-                      tier: "2",
-                    },
-                  });
-                }}
-                style={styles.upgradeBtn}
-                label={
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      alignItems: "center",
-                      columnGap: 10,
-                    }}
-                  >
-                    <UpgradeAction />
-                    <AppText color={Colors.white}>Upgrade to Tier 2</AppText>
-                  </View>
-                }
-              />
-              {/* )} */}
+              {tier === 1 && (
+                <PrimaryButton
+                  onPress={() => {
+                    router.push({
+                      pathname: "/tier-details",
+                      params: {
+                        tier: "2",
+                      },
+                    });
+                  }}
+                  style={styles.upgradeBtn}
+                  label={
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        columnGap: 10,
+                      }}
+                    >
+                      <UpgradeAction />
+                      <AppText color={Colors.white}>Upgrade to Tier 2</AppText>
+                    </View>
+                  }
+                />
+              )}
             </View>
           </View>
           <View style={[styles.container, { marginBottom: 70 }]}>
@@ -176,31 +176,31 @@ const InitialUpgradePage = () => {
                 </AppText>
               </AppText>
 
-              {/* {tier && tier < 3 && ( */}
-                <PrimaryButton
-                  onPress={() => {
-                    router.push({
-                      pathname: "/tier-details",
-                      params: {
-                        tier: "3",
-                      },
-                    });
-                  }}
-                  style={styles.upgradeBtn}
-                  label={
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        alignItems: "center",
-                        columnGap: 10,
-                      }}
-                    >
-                      <UpgradeAction />
-                      <AppText color={Colors.white}>Upgrade to Tier 3</AppText>
-                    </View>
-                  }
-                />
-              {/* )} */}
+              {tier && tier < 3 && (
+              <PrimaryButton
+                onPress={() => {
+                  router.push({
+                    pathname: "/tier-details",
+                    params: {
+                      tier: "3",
+                    },
+                  });
+                }}
+                style={styles.upgradeBtn}
+                label={
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      columnGap: 10,
+                    }}
+                  >
+                    <UpgradeAction />
+                    <AppText color={Colors.white}>Upgrade to Tier 3</AppText>
+                  </View>
+                }
+              />
+              )} 
             </View>
           </View>
         </ScrollView>

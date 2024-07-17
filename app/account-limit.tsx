@@ -1,35 +1,44 @@
 import { ScrollView, TouchableOpacity, View } from "react-native";
-
-import { AppText, BackButton, PrimaryButton, Screen } from "@/components";
-import { Colors } from "@/constants";
-import { copyToClipboard, formatMoney, naira } from "@/utils";
-import { BigBank, BigUser, Copy, DashedBorder } from "@/assets";
+import { useQueries } from "@tanstack/react-query";
 import { router } from "expo-router";
 
-const TIERS = [
-  {
-    tier: 1,
-    name: "Daily Transaction Limit",
-    dailyTransactionLimit: "50000",
-    maxAccountBalance: "300000",
-  },
-  {
-    tier: 2,
-    name: "Daily Transaction Limit",
-    dailyTransactionLimit: "200000",
-    maxAccountBalance: "500000",
-  },
-  {
-    tier: 3,
-    name: "Daily Transaction Limit",
-    dailyTransactionLimit: "5000000",
-    maxAccountBalance: "UNLIMITED",
-  },
-];
-
-const accountNumber = "1234567890";
+import {
+  AppText,
+  BackButton,
+  Loading,
+  PrimaryButton,
+  Screen,
+} from "@/components";
+import { Colors } from "@/constants";
+import { copyToClipboard, formatMoney, getFirstLetter, naira } from "@/utils";
+import { BigBank, BigUser, Copy, DashedBorder } from "@/assets";
+import { getTiersFn, getUserAccountDetailsFn } from "@/services";
+import { useAuth } from "@/context";
 
 const AccountLimitPage = () => {
+  const { token } = useAuth();
+
+  const [tiersData, userAccountData] = useQueries({
+    queries: [
+      {
+        queryKey: ["tiers"],
+        queryFn: () =>
+          getTiersFn({
+            token,
+          }),
+      },
+      {
+        queryKey: ["user account details"],
+        queryFn: () => getUserAccountDetailsFn({ token }),
+      },
+    ],
+  });
+
+  const { accountName, accountNumber, bankName } =
+    userAccountData?.data?.data || {};
+
+  const isLoading = userAccountData?.isFetching || tiersData?.isFetching;
+
   return (
     <Screen>
       <View
@@ -49,187 +58,206 @@ const AccountLimitPage = () => {
           }}
         />
       </View>
-      <ScrollView
-        contentContainerStyle={{ paddingTop: 20 }}
-        showsVerticalScrollIndicator={false}
-      >
-        <View style={{ marginBottom: 30 }}>
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              paddingBottom: 20,
-            }}
-          >
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <ScrollView
+          contentContainerStyle={{ paddingTop: 20 }}
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={{ marginBottom: 30 }}>
             <View
               style={{
-                backgroundColor: Colors.lightGreen,
-                borderRadius: 50,
-                justifyContent: "center",
-                alignItems: "center",
-                height: 45,
-                width: 45,
-              }}
-            >
-              <AppText size="xxlarge" variant="medium">
-                U
-              </AppText>
-            </View>
-
-            <View style={{ marginLeft: 10 }}>
-              <AppText size="small">Account Number</AppText>
-              <AppText size="xlarge" variant="medium" style={{ marginTop: 4 }}>
-                {accountNumber}
-              </AppText>
-            </View>
-            <TouchableOpacity
-              onPress={() => copyToClipboard(accountNumber)}
-              style={{
-                marginLeft: "auto",
-                backgroundColor: Colors.lightGreen,
-                borderRadius: 50,
-                paddingVertical: 10,
-                paddingHorizontal: 15,
                 flexDirection: "row",
-                gap: 5,
                 alignItems: "center",
+                paddingBottom: 20,
               }}
             >
-              <AppText size="small">Copy</AppText>
-              <View style={{ marginTop: 4 }}>
-                <Copy />
-              </View>
-            </TouchableOpacity>
-          </View>
-          <DashedBorder />
-
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              paddingVertical: 20,
-            }}
-          >
-            <BigBank />
-            <View style={{ marginLeft: 10 }}>
-              <AppText size="small">Bank Name</AppText>
-              <AppText size="xlarge" variant="medium" style={{ marginTop: 4 }}>
-                Uzzy App
-              </AppText>
-            </View>
-          </View>
-          <DashedBorder />
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              paddingVertical: 20,
-            }}
-          >
-            <BigUser />
-            <View style={{ marginLeft: 10 }}>
-              <AppText size="small">Account Name</AppText>
-              <AppText size="xlarge" variant="medium" style={{ marginTop: 4 }}>
-                AYODELE TUNDE SAMUEL
-              </AppText>
-            </View>
-          </View>
-          <DashedBorder />
-
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              paddingVertical: 20,
-            }}
-          >
-            <BigBank />
-            <View style={{ marginLeft: 10 }}>
-              <AppText size="small">Bank Verification Number</AppText>
-              <AppText size="xlarge" variant="medium" style={{ marginTop: 4 }}>
-                12345**12162
-              </AppText>
-            </View>
-          </View>
-          <DashedBorder />
-        </View>
-        <View style={{ marginTop: 10, marginBottom: 40, gap: 20 }}>
-          {TIERS?.map((each) => {
-            const { tier, dailyTransactionLimit, maxAccountBalance, name } =
-              each;
-            return (
               <View
-                key={tier}
                 style={{
-                  backgroundColor: Colors.white,
-                  borderRadius: 10,
-                  borderWidth: 1,
-                  borderColor: "#ABABAB1A",
-                  overflow: "hidden",
+                  backgroundColor: Colors.lightGreen,
+                  borderRadius: 50,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  height: 45,
+                  width: 45,
                 }}
               >
-                <View
-                  style={{
-                    backgroundColor: "#90AD0433",
-                    height: 40,
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    paddingHorizontal: 15,
-                  }}
-                >
-                  <AppText size="large" variant="medium">
-                    Tier {tier}
-                  </AppText>
-                </View>
-                <View
-                  style={{
-                    paddingVertical: 20,
-                    paddingHorizontal: 15,
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                  }}
-                >
-                  <AppText color={Colors.faintBlack}>{name}</AppText>
-                  <AppText variant="medium">
-                    {naira}
-                    {formatMoney(dailyTransactionLimit)}
-                  </AppText>
-                </View>
-                <View
-                  style={{
-                    paddingBottom: 20,
-                    paddingHorizontal: 15,
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <AppText color={Colors.faintBlack}>
-                    Maximum Account Balance
-                  </AppText>
-                  <AppText variant="medium">
-                    {maxAccountBalance === "UNLIMITED" ? (
-                      <AppText color={Colors.inputFocusBorder}>
-                        {maxAccountBalance}
-                      </AppText>
-                    ) : (
-                      <AppText>
-                        {naira}
-                        {formatMoney(maxAccountBalance)}
-                      </AppText>
-                    )}
-                  </AppText>
-                </View>
+                <AppText size="xxlarge" variant="medium">
+                  {getFirstLetter(bankName)}
+                </AppText>
               </View>
-            );
-          })}
-        </View>
-        <PrimaryButton
-          onPress={() => router.push("/initiate-upgrade")}
-          label="Upgrade Tier"
-        />
-      </ScrollView>
+
+              <View style={{ marginLeft: 10 }}>
+                <AppText size="small">Account Number</AppText>
+                <AppText
+                  size="xlarge"
+                  variant="medium"
+                  style={{ marginTop: 4 }}
+                >
+                  {accountNumber}
+                </AppText>
+              </View>
+              <TouchableOpacity
+                onPress={() => copyToClipboard(accountNumber)}
+                style={{
+                  marginLeft: "auto",
+                  backgroundColor: Colors.lightGreen,
+                  borderRadius: 50,
+                  paddingVertical: 10,
+                  paddingHorizontal: 15,
+                  flexDirection: "row",
+                  gap: 5,
+                  alignItems: "center",
+                }}
+              >
+                <AppText size="small">Copy</AppText>
+                <View style={{ marginTop: 4 }}>
+                  <Copy />
+                </View>
+              </TouchableOpacity>
+            </View>
+            <DashedBorder />
+
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                paddingVertical: 20,
+              }}
+            >
+              <BigBank />
+              <View style={{ marginLeft: 10 }}>
+                <AppText size="small">Bank Name</AppText>
+                <AppText
+                  size="xlarge"
+                  variant="medium"
+                  style={{ marginTop: 4 }}
+                >
+                  {bankName}
+                </AppText>
+              </View>
+            </View>
+            <DashedBorder />
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                paddingVertical: 20,
+              }}
+            >
+              <BigUser />
+              <View style={{ marginLeft: 10 }}>
+                <AppText size="small">Account Name</AppText>
+                <AppText
+                  size="xlarge"
+                  variant="medium"
+                  style={{ marginTop: 4 }}
+                >
+                  {accountName}
+                </AppText>
+              </View>
+            </View>
+            <DashedBorder />
+
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                paddingVertical: 20,
+              }}
+            >
+              <BigBank />
+              <View style={{ marginLeft: 10 }}>
+                <AppText size="small">Bank Verification Number</AppText>
+                <AppText
+                  size="xlarge"
+                  variant="medium"
+                  style={{ marginTop: 4 }}
+                >
+                  12345**12162
+                </AppText>
+              </View>
+            </View>
+            <DashedBorder />
+          </View>
+          <View style={{ marginTop: 10, marginBottom: 40, gap: 20 }}>
+            {tiersData?.data?.data?.kyc_level?.map((each) => {
+              const { daily_trans_limit, max_balance, name } = each;
+              return (
+                <View
+                  key={name}
+                  style={{
+                    backgroundColor: Colors.white,
+                    borderRadius: 10,
+                    borderWidth: 1,
+                    borderColor: "#ABABAB1A",
+                    overflow: "hidden",
+                  }}
+                >
+                  <View
+                    style={{
+                      backgroundColor: "#90AD0433",
+                      height: 40,
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      paddingHorizontal: 15,
+                    }}
+                  >
+                    <AppText size="large" variant="medium">
+                      Tier {name}
+                    </AppText>
+                  </View>
+                  <View
+                    style={{
+                      paddingVertical: 20,
+                      paddingHorizontal: 15,
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
+                  >
+                    <AppText color={Colors.faintBlack}>{name}</AppText>
+                    <AppText variant="medium">
+                      {naira}
+                      {formatMoney(daily_trans_limit)}
+                    </AppText>
+                  </View>
+                  <View
+                    style={{
+                      paddingBottom: 20,
+                      paddingHorizontal: 15,
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <AppText color={Colors.faintBlack}>
+                      Maximum Account Balance
+                    </AppText>
+                    <AppText variant="medium">
+                      {max_balance === "UNLIMITED" ? (
+                        <AppText color={Colors.inputFocusBorder}>
+                          {max_balance}
+                        </AppText>
+                      ) : (
+                        <AppText>
+                          {naira}
+                          {formatMoney(max_balance)}
+                        </AppText>
+                      )}
+                    </AppText>
+                  </View>
+                </View>
+              );
+            })}
+          </View>
+          <PrimaryButton
+            onPress={() => router.push("/initiate-upgrade")}
+            label="Upgrade Tier"
+          />
+        </ScrollView>
+      )}
     </Screen>
   );
 };

@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import {
   BareResponse,
   IGetRewards,
+  IGetTiers,
   IUpgradeAccount,
   IUserProfile,
   TokenType,
@@ -73,15 +74,17 @@ export const uploadProfilePhotoFn = async ({
 export const changePasswordFn = async ({
   oldPassword,
   newPassword,
+  confirmPassword,
   token,
 }: {
   oldPassword: string;
   newPassword: string;
+  confirmPassword: string;
   token: TokenType;
 }) => {
   const { data } = await authenticatedRequest(token).patch<BareResponse>(
-    "/auth/password/change",
-    { oldPassword, newPassword }
+    "/settings/password",
+    { oldPassword, newPassword, confirmPassword }
   );
   return data;
 };
@@ -89,15 +92,24 @@ export const changePasswordFn = async ({
 export const changePinFn = async ({
   oldPin,
   newPin,
+  confirmPin,
   token,
 }: {
   oldPin: string;
   newPin: string;
+  confirmPin: string;
   token: TokenType;
 }) => {
   const { data } = await authenticatedRequest(token).patch<BareResponse>(
     "/settings/pin",
-    { oldPin, newPin }
+    { oldPin, newPin, confirmPin }
+  );
+  return data;
+};
+
+export const getTiersFn = async ({ token }: { token: TokenType }) => {
+  const { data } = await authenticatedRequest(token).get<IGetTiers>(
+    "/settings/tier"
   );
   return data;
 };

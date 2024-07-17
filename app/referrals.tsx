@@ -1,5 +1,6 @@
-import { ScrollView, View, StyleSheet } from "react-native";
+import { ScrollView, View, StyleSheet, Pressable } from "react-native";
 import { router } from "expo-router";
+import * as Clipboard from "expo-clipboard";
 
 import {
   AppText,
@@ -7,6 +8,7 @@ import {
   ListItem,
   PrimaryButton,
   Screen,
+  showToast,
 } from "@/components";
 import { Colors } from "@/constants";
 import { BigGift, Gift } from "@/assets";
@@ -78,7 +80,13 @@ const ReferralsPage = () => {
             <AppText variant="medium" style={{ alignSelf: "flex-start" }}>
               Share your referral code
             </AppText>
-            <View
+            <Pressable
+              onPress={async () => {
+                await Clipboard.setStringAsync("SHSS");
+                setTimeout(() => {
+                  showToast("success", "Copied");
+                }, 100);
+              }}
               style={{
                 gap: 10,
                 flexDirection: "row",
@@ -96,14 +104,13 @@ const ReferralsPage = () => {
                 SHS2527SNA
               </AppText>
               <AppText
-                onPress={() => copyToClipboard("SHS2527SNA")}
                 style={{ fontSize: 15 }}
                 color={Colors.inputFocusBorder}
                 variant="medium"
               >
                 Copy
               </AppText>
-            </View>
+            </Pressable>
           </View>
         </View>
         <View
