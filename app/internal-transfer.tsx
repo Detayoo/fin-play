@@ -153,6 +153,9 @@ const InternalTransfer = () => {
                   keyboardType="number-pad"
                   hasBalance
                 />
+                {isPending && (
+                  <AppText style={{ marginTop: -10 }}>Fetching User..</AppText>
+                )}
                 {values.accountNumber.length === 10 && state.accountName && (
                   <>
                     <View

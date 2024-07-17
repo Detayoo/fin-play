@@ -220,7 +220,9 @@ const BankTransfer = () => {
                         />
                       </View>
                       {isPending && (
-                        <AppText variant="medium">LOADING..</AppText>
+                        <AppText style={{ marginTop: -10 }} variant="medium">
+                          Fetching User..
+                        </AppText>
                       )}
                       {values.accountNumber.length === 10 &&
                         state.accountName && (
