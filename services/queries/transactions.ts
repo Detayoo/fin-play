@@ -1,4 +1,9 @@
-import { TokenType, ITransactionsList, IGetStats } from "@/types";
+import {
+  TokenType,
+  ITransactionsList,
+  IGetStats,
+  IGetCashbackPoint,
+} from "@/types";
 import { authenticatedRequest } from "../api";
 
 export const getAllTransactionsFn = async ({
@@ -67,5 +72,31 @@ export const getTransactionStatsFn = async ({
     "/transactions/statistics",
     { params }
   );
+  return data;
+};
+
+export const getCashbackToReceiveFn = async ({
+  token,
+  amount,
+  serviceType,
+}: {
+  token: TokenType;
+  amount?: string | undefined;
+  serviceType: string | undefined;
+}) => {
+  const params: any = {};
+
+  if (amount) {
+    params.amount = amount;
+  }
+
+  if (serviceType) {
+    params.serviceType = serviceType;
+  }
+
+  const { data } = await authenticatedRequest(token).get<IGetCashbackPoint>(
+    "/wallet/rewards/point"
+  );
+
   return data;
 };

@@ -35,3 +35,12 @@ export interface IGetStats extends BareResponse {
     };
   };
 }
+
+export interface IGetCashbackPoint extends BareResponse {
+  data: {
+    rewardPoint: {
+      amount: number;
+      points: number;
+    }[];
+  };
+}
