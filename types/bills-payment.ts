@@ -132,20 +132,20 @@ export interface IBuyElectricityPayload {
 
 export interface IBuyElectricityResponse extends BareResponse {
   data: {
-    purchaseDate: string;
-    token: string;
-    units: string;
-    meterNumber: string;
-    address: string;
-    accountName: string;
-    receiptNo: string;
-    amountPaid: string;
-    status: string;
-    paidAt: string;
-    reference: string;
-    currency: string;
-    amount: number;
-    sessionId: string;
+    transaction: {
+      status: string;
+      amount: string;
+      reference: string;
+      purchaseDate: string;
+      token: string;
+      units: string;
+      meterNumber: string;
+      debtRemaining: string;
+      debtAmount: string;
+      address: string;
+      accountName: string;
+      receiptNo: string;
+    };
   };
 }
 

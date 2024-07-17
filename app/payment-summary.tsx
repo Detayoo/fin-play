@@ -139,7 +139,6 @@ const PaymentSummary = () => {
     if (!showModal) setPin("");
   }, [showModal]);
 
-
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Screen>

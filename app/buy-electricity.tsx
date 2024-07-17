@@ -256,7 +256,8 @@ const BuyElectricityPage = () => {
                           )}
 
                           {state?.meterNumber?.length === 11 &&
-                            userAccountData?.data?.data?.data?.meterDetails?.accountName && (
+                            userAccountData?.data?.data?.data?.meterDetails
+                              ?.accountName && (
                               <View
                                 style={{
                                   marginTop: -30,
@@ -308,8 +309,8 @@ const BuyElectricityPage = () => {
                                 !isValid ||
                                 !state.selectedType ||
                                 !state.serviceProvider ||
-                                !userAccountData?.data?.data?.data
-                                  ?.meterDetails?.accountName ||
+                                !userAccountData?.data?.data?.data?.meterDetails
+                                  ?.accountName ||
                                 (maximumAmountPayable &&
                                   +maximumAmountPayable < +state?.amount) ||
                                 (minimumAmountPayable &&

@@ -73,8 +73,6 @@ const ReviewPayment = () => {
     useMutation({
       mutationFn: buyAirtimeFn,
       onSuccess: (data) => {
-        // return;
-
         router.replace({
           pathname: "/payment-receipt",
           params: { ...data?.data?.transaction, from: "/airtime-payment" },
@@ -117,7 +115,14 @@ const ReviewPayment = () => {
       onSuccess: (data) => {
         router.replace({
           pathname: "/payment-receipt",
-          params: { ...data?.data, from: "/electricity-payment" },
+          params: {
+            ...data?.data?.transaction,
+
+            meterName: data?.data?.transaction?.accountName,
+            accountType: vendType,
+            serviceProvider,
+            from: "/electricity-payment",
+          },
         });
       },
       onError: (error) => {
@@ -402,7 +407,7 @@ const ReviewPayment = () => {
                 justifyContent: "center",
                 marginTop: 40,
                 width: "60%",
-                gap: 50,
+                gap: 60,
               }}
             >
               <OtpField

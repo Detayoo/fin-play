@@ -53,6 +53,12 @@ const PaymentReceipt = () => {
     fee,
     id,
     sessionId,
+    meterName,
+    meterNumber,
+    address,
+    accountType,
+    serviceProvider,
+    token: electricityToken
   } = useLocalSearchParams();
   console.log(useLocalSearchParams());
 
@@ -94,7 +100,7 @@ const PaymentReceipt = () => {
             paddingHorizontal: 16,
           }}
         >
-          <PaymentRecipient />
+          {/* <PaymentRecipient /> */}
           <BigBank />
           <AppText style={{ marginTop: 14 }} size="xlarge" variant="medium">
             NGN {formatMoney(amountPaid || 0)}
@@ -123,11 +129,28 @@ const PaymentReceipt = () => {
               paddingTop: 20,
             }}
           >
-            {accountName && (
+            {meterName && <ListItem name="Meter Name" value={meterName} />}
+            {meterNumber && (
+              <ListItem name="Meter Number" value={meterNumber} />
+            )}
+              {accountType && (
+                <ListItem name="Account Type" value={accountType} />
+              )}
+            {serviceProvider && (
+              <ListItem name="Service Provider" value={serviceProvider} />
+            )}
+            {electricityToken && <ListItem name="Token" value={electricityToken} canCopy />}
+            {address && <ListItem name="Address" value={address} />}
+
+            {accountName && !meterName && ( //to check in case account name is send as meter name, it causes chaos - really.
               <ListItem
                 name="Recipient's Details"
                 value={accountName}
-                value2={`${bankName} | ${accountName}`}
+                value2={
+                  bankName && accountNumber
+                    ? `${bankName} | ${accountNumber}`
+                    : null
+                }
               />
             )}
             {accountNumber && (
@@ -143,7 +166,7 @@ const PaymentReceipt = () => {
               <ListItem name="Telco Reference" value={telcoReference} canCopy />
             )}
             {reference && (
-              <ListItem name="Telco Reference" value={reference} canCopy />
+              <ListItem name="Transaction Reference" value={reference} canCopy />
             )}
             {narration && <ListItem name="Narration" value={narration} />}
             {fee && (

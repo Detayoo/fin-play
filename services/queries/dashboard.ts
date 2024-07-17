@@ -15,6 +15,6 @@ export const getUserAccountDetailsFn = async ({
 }) => {
   const { data } = await authenticatedRequest(
     token
-  ).get<IGetUserAccountDetails>("/wallet/account");
+  ).get<IGetUserAccountDetails>("/wallet");
   return data;
 };
