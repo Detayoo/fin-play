@@ -19,7 +19,7 @@ import {
 } from "@/components";
 import { Colors } from "@/constants";
 import { resolveTransferToBankFn } from "@/services";
-import { ERRORS, extractServerError } from "@/utils";
+import { ERRORS, bankTransferSchema, extractServerError } from "@/utils";
 import { useMutation } from "@tanstack/react-query";
 import { useAuth } from "@/context";
 
@@ -98,9 +98,9 @@ const BankTransfer = () => {
 
     onError: (error) => {
       showToast("error", extractServerError(error, ERRORS.SOMETHING_HAPPENED));
-      // updateState({
-      //   accountName: "",
-      // });
+      updateState({
+        accountName: "",
+      });
     },
   });
   const handleAccountNumberChange = (
@@ -184,7 +184,7 @@ const BankTransfer = () => {
               <Formik
                 initialValues={initialValues}
                 onSubmit={onSubmit}
-                //   validationSchema={validationSchema}
+                validationSchema={bankTransferSchema}
               >
                 {({
                   handleSubmit,
@@ -219,6 +219,9 @@ const BankTransfer = () => {
                           hasBalance
                         />
                       </View>
+                      {isPending && (
+                        <AppText variant="medium">LOADING..</AppText>
+                      )}
                       {values.accountNumber.length === 10 &&
                         state.accountName && (
                           <>
@@ -252,13 +255,15 @@ const BankTransfer = () => {
                               placeholder="Add a note"
                               errors={errors.narration}
                               touched={touched.narration}
-                              label="Narration"
+                              label="Narration (Optional)"
                             />
                           </>
                         )}
 
                       <PrimaryButton
-                        disabled={!isValid || !state.accountName}
+                        disabled={
+                          !isValid || !state.accountName || !selectedBank
+                        }
                         onPress={() => handleSubmit()}
                         label="Next"
                         style={{ marginTop: 40 }}

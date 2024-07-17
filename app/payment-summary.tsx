@@ -42,7 +42,7 @@ const PaymentSummary = () => {
   const [chargesData] = useQueries({
     queries: [
       {
-        queryKey: ["charge"],
+        queryKey: ["charge", amount],
         queryFn: () =>
           getChargeFn({
             amount,

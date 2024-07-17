@@ -15,7 +15,7 @@ import {
 import { Colors } from "@/constants";
 import { useMutation } from "@tanstack/react-query";
 import { resolveInternalTransferFn } from "@/services";
-import { ERRORS, extractServerError } from "@/utils";
+import { ERRORS, extractServerError, internalTransferSchema } from "@/utils";
 import { useAuth } from "@/context";
 import { isValid } from "date-fns";
 
@@ -124,7 +124,7 @@ const InternalTransfer = () => {
         <Formik
           initialValues={initialValues}
           onSubmit={onSubmit}
-          //   validationSchema={validationSchema}
+          validationSchema={internalTransferSchema}
         >
           {({
             handleSubmit,

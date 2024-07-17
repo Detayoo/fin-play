@@ -78,3 +78,13 @@ export const changePinSchema = Yup.object().shape({
     .required("Confirm Pin is required")
     .oneOf([Yup.ref("newPin"), ""], "Pins must match"),
 });
+
+export const bankTransferSchema = Yup.object().shape({
+  accountNumber: Yup.string().required().length(10),
+  amount: Yup.string().required(),
+});
+
+export const internalTransferSchema = Yup.object().shape({
+  accountNumber: Yup.string().required().length(10),
+  amount: Yup.string().required(),
+});
