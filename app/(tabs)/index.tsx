@@ -74,27 +74,25 @@ export default function HomeScreen() {
     return () => backHandler.remove();
   }, []);
 
-  const [userBalanceData, userAccountData, recentTransactionsData] = useQueries(
-    {
-      queries: [
-        {
-          queryKey: ["user main balance"],
-          queryFn: () => getUserMainBalanceFn({ token }),
-        },
-        {
-          queryKey: ["user account details"],
-          queryFn: () => getUserAccountDetailsFn({ token }),
-        },
-        {
-          queryKey: ["user recent transactions"],
-          queryFn: () =>
-            getAllTransactionsFn({ currentPage: 1, perPage: 5, token }),
-        },
-      ],
-    }
-  );
+  const [userAccountData, recentTransactionsData] = useQueries({
+    queries: [
+      // {
+      //   queryKey: ["user main balance"],
+      //   queryFn: () => getUserMainBalanceFn({ token }),
+      // },
+      {
+        queryKey: ["user account details"],
+        queryFn: () => getUserAccountDetailsFn({ token }),
+      },
+      {
+        queryKey: ["user recent transactions"],
+        queryFn: () =>
+          getAllTransactionsFn({ currentPage: 1, perPage: 5, token }),
+      },
+    ],
+  });
 
-  const pageIsLoading = userBalanceData?.isFetching || userAccountData?.isFetching;
+  const pageIsLoading = userAccountData?.isFetching;
 
   const { accountName, accountNumber, bankName } =
     userAccountData?.data?.data || {};
@@ -169,7 +167,7 @@ export default function HomeScreen() {
                 >
                   {state.showAccountBalance
                     ? `NGN ${formatMoney(
-                        userBalanceData?.data?.data?.balance || "0"
+                        userAccountData?.data?.data?.balance || "0"
                       )}`
                     : "***********"}
                 </AppText>

@@ -194,6 +194,7 @@ const BuyAirtimePage = () => {
                           label="Amount"
                           maxLength={10}
                           keyboardType="number-pad"
+                          hasBalance
                         />
                       </View>
                       {/* <AppText size="small" style={{ marginTop: -16 }}>

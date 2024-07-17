@@ -68,7 +68,9 @@ export const TextField = ({
           >
             <AppText size="small">
               Bal.{" "}
-              {show ? formatMoney(mainBalance?.data?.balance || 0) : "*****"}
+              {show
+                ? `NGN ${formatMoney(mainBalance?.data?.balance || 0)}`
+                : "*****"}
             </AppText>
             {show ? (
               <Hide onPress={() => setShow(!show)} />

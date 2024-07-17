@@ -10,5 +10,8 @@ export interface IGetUserAccountDetails extends BareResponse {
     accountNumber: string;
     accountName: string;
     bankName: string;
+    id: string;
+    balance: number;
+    walletType: string;
   };
 }
