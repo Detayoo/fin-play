@@ -1,5 +1,12 @@
-import { ScrollView, StyleSheet, View, Platform } from "react-native";
-import { useQueries } from "@tanstack/react-query";
+import {
+  ScrollView,
+  StyleSheet,
+  View,
+  Platform,
+  FlatList,
+  RefreshControl,
+} from "react-native";
+import { useInfiniteQuery, useQueries } from "@tanstack/react-query";
 import { router } from "expo-router";
 
 import {
@@ -11,12 +18,14 @@ import {
   Screen,
 } from "@/components";
 import { useAuth } from "@/context";
-import { getRewardsFn } from "@/services";
+import { getInviteesFn, getRewardsFn } from "@/services";
 import { Colors } from "@/constants";
 import { formatMoney } from "@/utils";
 import { UserHead } from "@/assets";
 import { Image } from "expo-image";
 import { format } from "date-fns";
+import { useRefreshByUser, useRefreshOnFocus } from "@/hooks";
+import { Referral } from "@/types";
 
 const InvitesPage = () => {
   const { token } = useAuth();
@@ -33,6 +42,67 @@ const InvitesPage = () => {
     ],
   });
 
+  const inviteesData = useInfiniteQuery({
+    queryKey: ["all invitees"],
+    queryFn: ({ pageParam: page }) =>
+      getInviteesFn({
+        token,
+        perPage: 50,
+        page,
+      }),
+    enabled: !!token,
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => {
+      const { total, page, perPage } = lastPage?.data?.metadata || {};
+      if (total > page * perPage) {
+        return page + 1;
+      } else {
+        return null;
+      }
+    },
+  });
+
+  const flatListData =
+    inviteesData?.data?.pages
+      ?.map((page) => page?.data?.referral_history)
+      .flat() ?? [];
+
+  useRefreshOnFocus(inviteesData?.refetch);
+
+  const loadMore = () => {
+    if (inviteesData?.hasNextPage) {
+      inviteesData?.fetchNextPage();
+    }
+  };
+
+  const { isRefetchingByUser, refetchByUser } = useRefreshByUser(
+    inviteesData.refetch
+  );
+
+  const renderItem = ({ item }: { item: Referral }) => (
+    <View style={{ flexDirection: "row", alignItems: "center" }}>
+      <Image
+        source={require("../assets/images/animoji.png")}
+        style={{ width: 50, height: 50 }}
+      />
+      <View style={{ marginLeft: 15, gap: 5 }}>
+        <AppText size="large">{item.name}</AppText>
+        <AppText color={Colors.faintBlack} size="small">
+          {format(new Date(item.approved_date), "MMMM dd, yyyy hh:mma")}
+        </AppText>
+      </View>
+      <AppText
+        style={{ marginLeft: "auto" }}
+        color={Colors.faintBlack}
+        size="small"
+      >
+        {item.status}
+      </AppText>
+    </View>
+  );
+
+  const data = inviteesData?.data?.pages?.map((page) => page?.data);
+
   return (
     <Screen>
       <View style={{}}>
@@ -41,8 +111,6 @@ const InvitesPage = () => {
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "space-between",
-            // paddingHorizontal: 16,
-            // paddingTop: 20,
           }}
         >
           <BackButton />
@@ -152,25 +220,27 @@ const InvitesPage = () => {
               <View style={[styles.dottedBorder, { borderColor: "#F2E6FF" }]} />
             </View>
             <View>
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Image
-                  source={require("../assets/images/animoji.png")}
-                  style={{ width: 50, height: 50 }}
-                />
-                <View style={{ marginLeft: 15, gap: 5 }}>
-                  <AppText size="large">Adedigba Peter Adetayo</AppText>
-                  <AppText color={Colors.faintBlack} size="small">
-                    {format(new Date(), "MMMM dd, yyyy hh:mma")}
-                  </AppText>
-                </View>
-                <AppText
-                  style={{ marginLeft: "auto" }}
-                  color={Colors.faintBlack}
-                  size="small"
-                >
-                  Pending
-                </AppText>
-              </View>
+              <FlatList
+                style={{}}
+                showsVerticalScrollIndicator={false}
+                data={flatListData}
+                renderItem={renderItem}
+                onEndReached={loadMore}
+                onEndReachedThreshold={0.1}
+                keyExtractor={(_, index) => index.toString()}
+                ListFooterComponent={
+                  inviteesData.isFetchingNextPage ? (
+                    <AppText>LOADING MORE..</AppText>
+                  ) : null
+                }
+                refreshControl={
+                  <RefreshControl
+                    onRefresh={refetchByUser}
+                    refreshing={isRefetchingByUser}
+                    title="Fetching Invites"
+                  />
+                }
+              />
             </View>
           </View>
         </ScrollView>

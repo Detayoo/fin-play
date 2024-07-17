@@ -56,3 +56,26 @@ export interface IGetTiers extends BareResponse {
     }[];
   };
 }
+
+export type Referral = {
+  name: string;
+  phone: string;
+  status: string;
+  bonus: string;
+  approved_date: string;
+};
+export interface IGetInvitees extends BareResponse {
+  data: {
+    referralId: string;
+    invitees_count: number;
+    invitees_registered_count: number;
+    invitees_transaction_count: number;
+    total_bonus: number;
+    referral_history: Referral[];
+    metadata: {
+      total: number;
+      page: number;
+      perPage: number;
+    };
+  };
+}

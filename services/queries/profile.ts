@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import {
   BareResponse,
+  IGetInvitees,
   IGetRewards,
   IGetTiers,
   IUpgradeAccount,
@@ -110,6 +111,32 @@ export const changePinFn = async ({
 export const getTiersFn = async ({ token }: { token: TokenType }) => {
   const { data } = await authenticatedRequest(token).get<IGetTiers>(
     "/settings/tier"
+  );
+  return data;
+};
+
+export const getInviteesFn = async ({
+  token,
+  page,
+  perPage,
+}: {
+  token: TokenType;
+  page: number;
+  perPage: number;
+}) => {
+  const params: any = {};
+
+  if (page) {
+    params.page = page;
+  }
+
+  if (perPage) {
+    params.perPage = perPage;
+  }
+
+  const { data } = await authenticatedRequest(token).get<IGetInvitees>(
+    "settings/referal/invitees",
+    { params }
   );
   return data;
 };
