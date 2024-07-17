@@ -355,7 +355,7 @@ const ReviewPayment = () => {
             <ListItem
               name="Cashback"
               value={formatNumber(
-                `${rewardedPointsData?.data?.data?.rewardPoint || 0}`
+                `+${rewardedPointsData?.data?.data?.rewardPoint || 0}`
               )}
               valueColor={Colors.inputFocusBorder}
             />
