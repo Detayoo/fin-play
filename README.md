@@ -1,6 +1,6 @@
-# hello, you# Welcome to finplay 👋
+# hello, you. welcome to finplay 👋
 
-## Get started
+## get started
 what's finplay? it is a typical nigerian fintech app, packed with loads of features. why not try it out and see for yourself?
 <!-- 
 1. Install dependencies
