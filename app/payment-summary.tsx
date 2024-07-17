@@ -3,6 +3,7 @@ import { ScrollView, View } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import { format } from "date-fns";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { useMutation, useQueries } from "@tanstack/react-query";
 
 import {
   AppText,
@@ -14,12 +15,12 @@ import {
   OtpField,
   SwitchComponent,
   showToast,
+  Loading,
 } from "@/components";
 import { Colors } from "@/constants";
 import { PaymentRecipient } from "@/assets";
 import { ERRORS, extractServerError, formatMoney } from "@/utils";
-import { useMutation } from "@tanstack/react-query";
-import { internalTransferFn } from "@/services";
+import { getChargeFn, internalTransferFn, transferToBankFn } from "@/services";
 import { useAuth } from "@/context";
 
 const PaymentSummary = () => {
@@ -27,9 +28,29 @@ const PaymentSummary = () => {
   const [showModal, setShowModal] = useState(false);
   const [save, setSave] = useState(false);
   const [pin, setPin] = useState("");
-  const { accountName, accountNumber, amount, narration, bankName, from } =
-    useLocalSearchParams();
-  console.log("form", from);
+  const {
+    accountName,
+    accountNumber,
+    amount,
+    narration,
+    bankName,
+    from,
+    bankCode,
+  } = useLocalSearchParams();
+
+  const [chargesData] = useQueries({
+    queries: [
+      {
+        queryKey: ["charge"],
+        queryFn: () =>
+          getChargeFn({
+            amount,
+            token,
+          }),
+        enabled: from === "/bank-transfer",
+      },
+    ],
+  });
 
   const { mutateAsync: internalTransferAsync, isPending } = useMutation({
     mutationFn: internalTransferFn,
@@ -44,7 +65,29 @@ const PaymentSummary = () => {
     },
   });
 
+  const { mutateAsync: bankTransferAsync, isPending: isTransferringToBank } =
+    useMutation({
+      mutationFn: transferToBankFn,
+      onSuccess: (data) => {
+        router.replace({
+          pathname: "/payment-receipt",
+          params: {
+            ...data?.data?.transaction,
+            fee: chargesData?.data?.data?.charges,
+            from: "/bank-transfer",
+          },
+        });
+      },
+      onError: (error) => {
+        showToast(
+          "error",
+          extractServerError(error, ERRORS.SOMETHING_HAPPENED)
+        );
+      },
+    });
+
   const makePayment = async () => {
+    if (isTransferringToBank || isPending) return;
     if (from === "/internal-transfer") {
       try {
         await internalTransferAsync({
@@ -52,6 +95,21 @@ const PaymentSummary = () => {
             accountNumber: accountNumber ?? "",
             amount: amount ?? "",
             pin,
+            narration: narration !== "" ? narration : undefined,
+          },
+          token,
+        });
+      } catch (error) {}
+    }
+    if (from === "/bank-transfer") {
+      try {
+        await bankTransferAsync({
+          payload: {
+            accountNumber: accountNumber ?? "",
+            amount: amount ?? "",
+            pin,
+            bankCode,
+            narration: narration !== "" ? narration : undefined,
           },
           token,
         });
@@ -123,8 +181,10 @@ const PaymentSummary = () => {
                 textAlign: "center",
               }}
             >
-              {bankName
-                ? "Transaction fee of ₦10 applies"
+              {chargesData?.isFetching
+                ? "Getting Charges, please wait"
+                : from === "/bank-transfer"
+                ? `Transaction fee of ₦${chargesData?.data?.data?.charges} applies`
                 : "Zero charges, Instant payment, Fast"}
             </AppText>
           </View>
@@ -134,7 +194,14 @@ const PaymentSummary = () => {
             <ListItem name="Account Number" value={accountNumber} />
             <ListItem name="Bank Name" value={bankName ?? "Uzzy Account"} />
             <ListItem name="Narration" value={narration} />
-            <ListItem name="Fee" value="NGN 0.00" />
+            <ListItem
+              name="Fee"
+              value={
+                from === "/bank-transfer"
+                  ? `NGN${chargesData?.data?.data?.charges || 0}`
+                  : "NGN 0.00"
+              }
+            />
             <View
               style={{
                 flexDirection: "row",
@@ -154,6 +221,7 @@ const PaymentSummary = () => {
           onPress={() => setShowModal(true)}
           style={{ marginTop: 50 }}
           label="Send Payment"
+          disabled={isPending || isTransferringToBank}
         />
       </Screen>
       <ReusableBottomSheet
@@ -180,11 +248,11 @@ const PaymentSummary = () => {
           >
             <View
               style={{
-                flexDirection: "row",
                 alignItems: "center",
                 justifyContent: "center",
                 marginTop: 40,
                 width: "60%",
+                gap: 100,
               }}
             >
               <OtpField
@@ -193,6 +261,7 @@ const PaymentSummary = () => {
                 setCode={setPin}
                 count={4}
               />
+              {(isTransferringToBank || isPending) && <Loading />}
             </View>
           </View>
         </View>

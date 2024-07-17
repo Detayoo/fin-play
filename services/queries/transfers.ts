@@ -1,6 +1,8 @@
 import {
+  BareResponse,
   IGetAccountResolutionResponse,
   IGetBanks,
+  IGetCharge,
   IResolveBankTransferPayload,
   IResolveInternalAccountPayload,
   ITransferResponse,
@@ -87,5 +89,21 @@ export const getBankCodesFn = async ({ token }: { token: TokenType }) => {
     "/transfer/bank/codes"
   );
 
+  return data;
+};
+
+export const getChargeFn = async ({
+  token,
+  amount,
+}: {
+  token: TokenType;
+  amount: string | string[] | undefined;
+}) => {
+  const { data } = await authenticatedRequest(token).get<IGetCharge>(
+    "/charge",
+    {
+      params: { amount },
+    }
+  );
   return data;
 };

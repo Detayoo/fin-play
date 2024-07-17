@@ -1,6 +1,9 @@
+import { useEffect, useState } from "react";
 import { Formik } from "formik";
 import { ScrollView, TouchableOpacity, View } from "react-native";
 import { router } from "expo-router";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 
 import { Empty, Recipient } from "@/assets";
 import {
@@ -12,11 +15,13 @@ import {
   SelectField,
   SelectPlaceholder,
   TextField,
+  showToast,
 } from "@/components";
 import { Colors } from "@/constants";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
-import { useState } from "react";
+import { resolveTransferToBankFn } from "@/services";
+import { ERRORS, extractServerError } from "@/utils";
+import { useMutation } from "@tanstack/react-query";
+import { useAuth } from "@/context";
 
 type FormField = {
   accountNumber: string;
@@ -28,13 +33,14 @@ type FormField = {
 interface Option {
   id: number;
   label: string;
+  code: string;
 }
 
 const options: Option[] = [
   //   { id: 1, label: "" },
-  { id: 1, label: "GTBank" },
-  { id: 2, label: "Option 2" },
-  { id: 3, label: "Option 3" },
+  { id: 1, label: "GTBank", code: "1234" },
+  { id: 2, label: "Option 2", code: "1234" },
+  { id: 3, label: "Option 3", code: "1234" },
 ];
 
 const beneficiaries = [
@@ -56,6 +62,7 @@ const beneficiaries = [
 ];
 
 const BankTransfer = () => {
+  const { token } = useAuth();
   const [list, setList] = useState(beneficiaries);
   const [showModal, setShowModal] = useState(false);
   const [selectedBank, setSelectedBank] = useState<Option | null>(null);
@@ -63,15 +70,92 @@ const BankTransfer = () => {
     accountNumber: "",
     amount: "",
     narration: "",
-    accountName: "ADEDIGBA PETER ADETAYO LOMOH LATILE",
+    accountName: "",
   };
 
-  const onSubmit = (values: FormField) => {
-    router.push({
-      pathname: "/payment-summary",
-      params: { ...values, bankName: "GTBank" },
-    });
+  const [state, setState] = useState({
+    accountName: "",
+    accountNumber: "",
+    selectedBankCode: "",
+  });
+
+  const updateState = (
+    payload: Partial<{
+      accountName: string;
+      accountNumber: string;
+      selectedBankCode: string;
+    }>
+  ) => {
+    setState((prev) => ({ ...prev, ...payload }));
   };
+
+  const { mutateAsync, isPending } = useMutation({
+    mutationFn: resolveTransferToBankFn,
+    onSuccess: (data) => {
+      updateState({
+        accountName: data?.data?.accountName,
+      });
+    },
+
+    onError: (error) => {
+      showToast("error", extractServerError(error, ERRORS.SOMETHING_HAPPENED));
+      // updateState({
+      //   accountName: "",
+      // });
+    },
+  });
+  const handleAccountNumberChange = (
+    value: string,
+    setFieldValue: (field: string, value: any) => void
+  ) => {
+    updateState({
+      accountNumber: value,
+    });
+    setFieldValue("accountNumber", value);
+  };
+
+  console.log("seelctdna", selectedBank);
+
+  const handleResolution = async () => {
+    try {
+      await mutateAsync({
+        payload: {
+          accountNumber: state.accountNumber,
+          bankCode: selectedBank?.code,
+        },
+        token,
+      });
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    if (state.accountNumber.length === 10) {
+      handleResolution();
+      updateState({
+        accountName: "Tayo ADE",
+      });
+    }
+  }, [state.accountNumber]);
+
+  console.log(state, "state");
+
+  const onSubmit = async (values: FormField) => {
+    try {
+      router.push({
+        pathname: "/payment-summary",
+        params: {
+          accountName: state.accountName,
+          accountNumber: values.accountNumber,
+          amount: values.amount,
+          narration: values.narration,
+          from: "/bank-transfer",
+          bankCode: selectedBank?.code,
+          bankName: selectedBank?.label,
+        },
+      });
+    } catch (error) {}
+  };
+
   return (
     <GestureHandlerRootView
       style={{
@@ -110,6 +194,8 @@ const BankTransfer = () => {
                   handleBlur,
                   handleChange,
                   touched,
+                  setFieldValue,
+                  isValid,
                 }) => {
                   return (
                     <View style={{ marginTop: 20 }}>
@@ -120,7 +206,9 @@ const BankTransfer = () => {
                           title="Bank Name"
                         />
                         <TextField
-                          onChange={handleChange("accountNumber")}
+                          onChange={(value: string) =>
+                            handleAccountNumberChange(value, setFieldValue)
+                          }
                           onBlur={handleBlur("accountNumber")}
                           value={values.accountNumber}
                           placeholder="Enter recipient's account number"
@@ -132,44 +220,46 @@ const BankTransfer = () => {
                           hasBalance
                         />
                       </View>
-                      {values.accountNumber.length === 10 && (
-                        <>
-                          <View
-                            style={{
-                              flexDirection: "row",
-                              gap: 10,
-                              marginBottom: 20,
-                              alignItems: "center",
-                            }}
-                          >
-                            <Recipient />
-                            <AppText variant="medium">
-                              {values.accountName}
-                            </AppText>
-                          </View>
-                          <AmountField
-                            onChange={handleChange("amount")}
-                            onBlur={handleBlur("amount")}
-                            value={values.amount}
-                            placeholder="Enter amount"
-                            errors={errors.amount}
-                            touched={touched.amount}
-                            label="Amount"
-                            keyboardType="number-pad"
-                          />
-                          <TextField
-                            onChange={handleChange("narration")}
-                            onBlur={handleBlur("narration")}
-                            value={values.narration}
-                            placeholder="Add a note"
-                            errors={errors.narration}
-                            touched={touched.narration}
-                            label="Narration"
-                          />
-                        </>
-                      )}
+                      {values.accountNumber.length === 10 &&
+                        state.accountName && (
+                          <>
+                            <View
+                              style={{
+                                flexDirection: "row",
+                                gap: 10,
+                                marginBottom: 20,
+                                alignItems: "center",
+                              }}
+                            >
+                              <Recipient />
+                              <AppText variant="medium">
+                                {state.accountName}
+                              </AppText>
+                            </View>
+                            <TextField
+                              onChange={handleChange("amount")}
+                              onBlur={handleBlur("amount")}
+                              value={values.amount}
+                              placeholder="Enter amount"
+                              errors={errors.amount}
+                              touched={touched.amount}
+                              label="Amount"
+                              keyboardType="number-pad"
+                            />
+                            <TextField
+                              onChange={handleChange("narration")}
+                              onBlur={handleBlur("narration")}
+                              value={values.narration}
+                              placeholder="Add a note"
+                              errors={errors.narration}
+                              touched={touched.narration}
+                              label="Narration"
+                            />
+                          </>
+                        )}
 
                       <PrimaryButton
+                        disabled={!isValid || !state.accountName}
                         onPress={() => handleSubmit()}
                         label="Next"
                         style={{ marginTop: 40 }}

@@ -1,16 +1,18 @@
 import { BareResponse } from ".";
 
 export type TransferToBankPayload = {
-  amount: string;
-  bankCode: string;
-  accountNumber: string;
+  amount: string | string[] | undefined;
+  bankCode: string | string[] | undefined;
+  accountNumber: string | string[] | undefined;
   pin: string;
+  narration?: string | undefined | string[];
 };
 
 export type InternalTransferPayload = {
   amount: string | string[] | undefined;
   accountNumber: string | string[] | undefined;
   pin: string;
+  narration?: string | undefined | string[];
 };
 
 export interface IResolveInternalAccountPayload {
@@ -19,7 +21,7 @@ export interface IResolveInternalAccountPayload {
 
 export interface IResolveBankTransferPayload {
   accountNumber: string;
-  bankCode: string;
+  bankCode: string | undefined;
 }
 
 export interface IGetAccountResolutionResponse extends BareResponse {
@@ -55,5 +57,11 @@ export interface ITransferResponse extends BareResponse {
       bankName: string;
       sessionId: string;
     };
+  };
+}
+
+export interface IGetCharge extends BareResponse {
+  data: {
+    charges: number;
   };
 }

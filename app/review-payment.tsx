@@ -15,6 +15,7 @@ import {
   OtpField,
   SwitchComponent,
   showToast,
+  Loading,
 } from "@/components";
 import { Colors } from "@/constants";
 import { BigMtn } from "@/assets";
@@ -157,6 +158,8 @@ const ReviewPayment = () => {
     });
 
   const makePayment = async () => {
+    if (buyingAirtime || buyingData || buyingElectricity || buyingBettingPlan)
+      return;
     try {
       if (from === "/buy-airtime") {
         await buyAirtimeAsync({
@@ -393,11 +396,11 @@ const ReviewPayment = () => {
           >
             <View
               style={{
-                flexDirection: "row",
                 alignItems: "center",
                 justifyContent: "center",
                 marginTop: 40,
                 width: "60%",
+                gap: 50,
               }}
             >
               <OtpField
@@ -406,6 +409,10 @@ const ReviewPayment = () => {
                 setCode={setPin}
                 count={4}
               />
+              {(buyingAirtime ||
+                buyingData ||
+                buyingElectricity ||
+                buyingBettingPlan) && <Loading />}
             </View>
           </View>
         </View>

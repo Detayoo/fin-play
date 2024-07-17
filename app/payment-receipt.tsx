@@ -42,6 +42,7 @@ const PaymentReceipt = () => {
     accountName,
     accountNumber,
     amountPaid,
+    bankName,
     narration,
     recipient,
     paidAt,
@@ -93,7 +94,7 @@ const PaymentReceipt = () => {
             paddingHorizontal: 16,
           }}
         >
-          {/* <PaymentRecipient /> */}
+          <PaymentRecipient />
           <BigBank />
           <AppText style={{ marginTop: 14 }} size="xlarge" variant="medium">
             NGN {formatMoney(amountPaid || 0)}
@@ -126,7 +127,7 @@ const PaymentReceipt = () => {
               <ListItem
                 name="Recipient's Details"
                 value={accountName}
-                value2={`${senderBankName} | ${accountName}`} //because all uzzy users have the same bankname
+                value2={`${bankName} | ${accountName}`}
               />
             )}
             {accountNumber && (
