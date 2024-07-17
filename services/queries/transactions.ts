@@ -81,7 +81,7 @@ export const getCashbackToReceiveFn = async ({
   serviceType,
 }: {
   token: TokenType;
-  amount?: string | undefined;
+  amount?: string | string[] | undefined;
   serviceType: string | undefined;
 }) => {
   const params: any = {};

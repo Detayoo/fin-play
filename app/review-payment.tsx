@@ -25,6 +25,7 @@ import {
   buyBettingPlanFn,
   buyDataFn,
   buyElectricityFn,
+  getCashbackToReceiveFn,
   getPointsBalanceFn,
 } from "@/services";
 import { useAuth } from "@/context";
@@ -54,7 +55,22 @@ const ReviewPayment = () => {
     price: planPrice,
   } = useLocalSearchParams();
 
-  const [pointsData] = useQueries({
+  const getServiceType = () => {
+    if (from === "/buy-electricity") {
+      return "electricity";
+    }
+    if (from === "/buy-airtime") {
+      return "airtime";
+    }
+    if (from === "/buy-data") {
+      return "data";
+    }
+    if (from === "/buy-betting") {
+      return "betting";
+    }
+  };
+
+  const [pointsData, rewardedPointsData] = useQueries({
     queries: [
       {
         queryKey: ["points balance"],
@@ -62,6 +78,16 @@ const ReviewPayment = () => {
           getPointsBalanceFn({
             token,
           }),
+      },
+      {
+        queryKey: ["reward to earn"],
+        queryFn: () =>
+          getCashbackToReceiveFn({
+            serviceType: getServiceType(),
+            token,
+            amount,
+          }),
+        enabled: !!getServiceType(),
       },
     ],
   });
@@ -328,7 +354,9 @@ const ReviewPayment = () => {
             )}
             <ListItem
               name="Cashback"
-              value="+0"
+              value={formatNumber(
+                `${rewardedPointsData?.data?.data?.rewardPoint || 0}`
+              )}
               valueColor={Colors.inputFocusBorder}
             />
             <View
