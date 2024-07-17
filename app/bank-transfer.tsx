@@ -309,6 +309,8 @@ const BankTransfer = () => {
                                 accountNumber,
                                 accountName,
                                 bankName,
+                                from: "/bank-transfer",
+                                bankCode: "", //todo: add bank code here
                               },
                             })
                           }

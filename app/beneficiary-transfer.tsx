@@ -13,7 +13,8 @@ import { PaymentRecipient } from "@/assets";
 import { Colors } from "@/constants";
 
 const BeneficiaryTransfer = () => {
-  const { accountName, accountNumber, bankName } = useLocalSearchParams();
+  const { accountName, accountNumber, bankName, bankCode, from } =
+    useLocalSearchParams();
   const initialValues = {
     amount: "",
     narration: "",
@@ -26,6 +27,8 @@ const BeneficiaryTransfer = () => {
         narration: values.narration,
         accountNumber,
         accountName,
+        bankCode,
+        from,
       },
     });
   };

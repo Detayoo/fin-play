@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { ScrollView, TouchableOpacity, View } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
-import { format, parse, parseISO } from "date-fns";
+import { format, parse } from "date-fns";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { useQuery } from "@tanstack/react-query";
 
 import {
   AppText,
@@ -19,8 +21,6 @@ import {
   ReceiptTypePDF,
 } from "@/assets";
 import { formatMoney } from "@/utils";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { useQuery } from "@tanstack/react-query";
 import { getUserAccountDetailsFn } from "@/services";
 import { useAuth } from "@/context";
 
