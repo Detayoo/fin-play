@@ -5,7 +5,7 @@ import { TokenType } from "@/types";
 
 export const useBalance = ({ token }: { token: TokenType }) => {
   return useQuery({
-    queryKey: ["user balance"],
+    queryKey: ["user account details"],
 
     queryFn: () => getUserAccountDetailsFn({ token }),
     enabled: !!token,

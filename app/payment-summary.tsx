@@ -67,7 +67,7 @@ const PaymentSummary = () => {
     },
     onSettled: () => {
       queryClient.invalidateQueries({
-        queryKey: ["user main balance"],
+        queryKey: ["user account details"],
       });
     },
   });
@@ -93,7 +93,7 @@ const PaymentSummary = () => {
       },
       onSettled: () => {
         queryClient.invalidateQueries({
-          queryKey: ["user main balance"],
+          queryKey: ["user account details"],
         });
       },
     });

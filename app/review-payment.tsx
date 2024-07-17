@@ -86,7 +86,7 @@ const ReviewPayment = () => {
       },
       onSettled: () => {
         queryClient.invalidateQueries({
-          queryKey: ["points balance", "user main balance"],
+          queryKey: ["points balance", "user account details"],
         });
       },
     });
@@ -104,7 +104,7 @@ const ReviewPayment = () => {
     },
     onSettled: () => {
       queryClient.invalidateQueries({
-        queryKey: ["points balance", "user main balance"],
+        queryKey: ["points balance", "user account details"],
       });
     },
   });
@@ -133,7 +133,7 @@ const ReviewPayment = () => {
       },
       onSettled: () => {
         queryClient.invalidateQueries({
-          queryKey: ["points balance", "user main balance"],
+          queryKey: ["points balance", "user account details"],
         });
       },
     });
@@ -155,7 +155,7 @@ const ReviewPayment = () => {
       },
       onSettled: () => {
         queryClient.invalidateQueries({
-          queryKey: ["points balance", "user main balance"],
+          queryKey: ["points balance", "user account details"],
         });
       },
     });

@@ -76,10 +76,6 @@ export default function HomeScreen() {
 
   const [userAccountData, recentTransactionsData] = useQueries({
     queries: [
-      // {
-      //   queryKey: ["user main balance"],
-      //   queryFn: () => getUserMainBalanceFn({ token }),
-      // },
       {
         queryKey: ["user account details"],
         queryFn: () => getUserAccountDetailsFn({ token }),
