@@ -13,21 +13,50 @@ import {
   ReusableBottomSheet,
   OtpField,
   SwitchComponent,
+  showToast,
 } from "@/components";
 import { Colors } from "@/constants";
 import { PaymentRecipient } from "@/assets";
-import { formatMoney } from "@/utils";
+import { ERRORS, extractServerError, formatMoney } from "@/utils";
+import { useMutation } from "@tanstack/react-query";
+import { internalTransferFn } from "@/services";
+import { useAuth } from "@/context";
 
 const PaymentSummary = () => {
+  const { token } = useAuth();
   const [showModal, setShowModal] = useState(false);
   const [save, setSave] = useState(false);
   const [pin, setPin] = useState("");
-  const { accountName, accountNumber, amount, narration, bankName } =
+  const { accountName, accountNumber, amount, narration, bankName, from } =
     useLocalSearchParams();
-  console.log(useLocalSearchParams());
+  console.log("form", from);
 
-  const makePayment = () => {
-    router.push("/payment-receipt");
+  const { mutateAsync: internalTransferAsync, isPending } = useMutation({
+    mutationFn: internalTransferFn,
+    onSuccess: (data) => {
+      router.replace({
+        pathname: "/payment-receipt",
+        params: { ...data?.data?.transaction, from: "/internal-transfer" },
+      });
+    },
+    onError: (error) => {
+      showToast("error", extractServerError(error, ERRORS.SOMETHING_HAPPENED));
+    },
+  });
+
+  const makePayment = async () => {
+    if (from === "/internal-transfer") {
+      try {
+        await internalTransferAsync({
+          payload: {
+            accountNumber: accountNumber ?? "",
+            amount: amount ?? "",
+            pin,
+          },
+          token,
+        });
+      } catch (error) {}
+    }
   };
 
   useEffect(() => {

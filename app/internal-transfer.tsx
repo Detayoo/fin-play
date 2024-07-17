@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Formik } from "formik";
 import { ScrollView, View } from "react-native";
 import { router } from "expo-router";
@@ -9,8 +10,14 @@ import {
   PrimaryButton,
   Screen,
   TextField,
+  showToast,
 } from "@/components";
 import { Colors } from "@/constants";
+import { useMutation } from "@tanstack/react-query";
+import { resolveInternalTransferFn } from "@/services";
+import { ERRORS, extractServerError } from "@/utils";
+import { useAuth } from "@/context";
+import { isValid } from "date-fns";
 
 type FormField = {
   accountNumber: string;
@@ -20,19 +27,86 @@ type FormField = {
 };
 
 const InternalTransfer = () => {
+  const { token } = useAuth();
+  const [state, setState] = useState({
+    accountName: "",
+    accountNumber: "",
+  });
+
+  const updateState = (
+    payload: Partial<{ accountName: string; accountNumber: string }>
+  ) => {
+    setState((prev) => ({ ...prev, ...payload }));
+  };
+
+  const { mutateAsync, isPending } = useMutation({
+    mutationFn: resolveInternalTransferFn,
+    onSuccess: (data) => {
+      updateState({
+        accountName: data?.data?.accountName,
+      });
+    },
+
+    onError: (error) => {
+      showToast("error", extractServerError(error, ERRORS.SOMETHING_HAPPENED));
+      // updateState({
+      //   accountName: "",
+      // });
+    },
+  });
+
+  const handleAccountNumberChange = (
+    value: string,
+    setFieldValue: (field: string, value: any) => void
+  ) => {
+    updateState({
+      accountNumber: value,
+    });
+    setFieldValue("accountNumber", value);
+  };
+
+  const handleResolution = async () => {
+    try {
+      await mutateAsync({
+        payload: {
+          accountNumber: state.accountNumber,
+        },
+        token,
+      });
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    if (state.accountNumber.length === 10) {
+      handleResolution();
+      updateState({
+        accountName: "Tayo ADE",
+      });
+    }
+  }, [state.accountNumber]);
+
   const initialValues = {
     accountNumber: "",
     amount: "",
     narration: "",
-    accountName: "ADEDIGBA PETER ADETAYO LOMOH LATILE",
+    accountName: "",
   };
 
-  const onSubmit = (values: FormField) => {
-    router.push({
-      pathname: "/payment-summary",
-      params: values,
-    });
+  const onSubmit = async (values: FormField) => {
+    try {
+      router.push({
+        pathname: "/payment-summary",
+        params: {
+          accountName: state.accountName,
+          accountNumber: values.accountNumber,
+          amount: values.amount,
+          narration: values.narration,
+          from: "/internal-transfer",
+        },
+      });
+    } catch (error) {}
   };
+
   return (
     <Screen>
       <BackButton />
@@ -59,13 +133,16 @@ const InternalTransfer = () => {
             handleBlur,
             handleChange,
             touched,
+            isValid,
             setFieldValue,
           }) => {
             console.log(values);
             return (
               <View style={{ marginTop: 20 }}>
                 <TextField
-                  onChange={handleChange("accountNumber")}
+                  onChange={(value: string) =>
+                    handleAccountNumberChange(value, setFieldValue)
+                  }
                   onBlur={handleBlur("accountNumber")}
                   value={values.accountNumber}
                   placeholder="Enter recipient's account number"
@@ -76,7 +153,7 @@ const InternalTransfer = () => {
                   keyboardType="number-pad"
                   hasBalance
                 />
-                {values.accountNumber.length === 10 && (
+                {values.accountNumber.length === 10 && state.accountName && (
                   <>
                     <View
                       style={{
@@ -87,7 +164,7 @@ const InternalTransfer = () => {
                       }}
                     >
                       <Recipient />
-                      <AppText variant="medium">{values.accountName}</AppText>
+                      <AppText variant="medium">{state.accountName}</AppText>
                     </View>
                     <TextField
                       onChange={handleChange("amount")}
@@ -112,6 +189,7 @@ const InternalTransfer = () => {
                 )}
 
                 <PrimaryButton
+                  disabled={!isValid || !state.accountName}
                   onPress={() => handleSubmit()}
                   label="Next"
                   style={{ marginTop: 40 }}

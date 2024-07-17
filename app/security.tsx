@@ -21,6 +21,7 @@ type Notifications = {
   fingerprint: boolean;
   "2fa": boolean;
   show2FAModal: boolean;
+  transferWithPin: boolean;
 };
 
 const SecurityPage = () => {
@@ -31,6 +32,7 @@ const SecurityPage = () => {
     fingerprint: !!biometrics,
     "2fa": false,
     show2FAModal: false,
+    transferWithPin: false,
   });
 
   const updateState = (payload: Partial<Notifications>) => {
@@ -203,6 +205,8 @@ const SecurityPage = () => {
                     updateState({
                       fingerprint: !state.fingerprint,
                     });
+
+                    //CHECK IF IT'S THE USER AND THEN SAVE THIS
                     saveBiometrics(!state.fingerprint);
                   }}
                 />
@@ -244,6 +248,52 @@ const SecurityPage = () => {
                   updateState({
                     // "2fa": !state["2fa"],
                     show2FAModal: true,
+                  });
+                }}
+              />
+            </Pressable>
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+              paddingVertical: 20,
+              borderBottomWidth: 1,
+              borderBottomColor: "#2A285F0D",
+            }}
+          >
+            <Pressable
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                width: "100%",
+              }}
+            >
+              <View
+                style={{
+                  flexDirection: "row",
+                  gap: 40,
+                  alignItems: "center",
+                }}
+              >
+                <TwoFA />
+                <AppText variant="medium">
+                  Transfer Using{" "}
+                  {isBiometricType === 1
+                    ? "Fingerprint"
+                    : isBiometricType === 2
+                    ? "Face ID"
+                    : null}
+                </AppText>
+              </View>
+              <SwitchComponent
+                state={state["2fa"]}
+                toggleSwitch={() => {
+                  updateState({
+                    // "2fa": !state["2fa"],
+                    transferWithPin: true,
                   });
                 }}
               />

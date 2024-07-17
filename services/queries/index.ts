@@ -3,3 +3,4 @@ export * from "./dashboard";
 export * from "./profile";
 export * from "./bills-payment";
 export * from "./transactions";
+export * from "./transfers";

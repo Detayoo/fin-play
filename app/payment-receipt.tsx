@@ -20,9 +20,24 @@ import {
 } from "@/assets";
 import { formatMoney } from "@/utils";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { useQuery } from "@tanstack/react-query";
+import { getUserAccountDetailsFn } from "@/services";
+import { useAuth } from "@/context";
 
 const PaymentReceipt = () => {
+  const { token } = useAuth();
   const [showModal, setShowModal] = useState(false);
+  const { data: senderDetails } = useQuery({
+    queryKey: ["user account details"],
+    queryFn: () => getUserAccountDetailsFn({ token }),
+  });
+
+  const {
+    accountName: senderAccountName,
+    accountNumber: senderAccountNumber,
+    bankName: senderBankName,
+  } = senderDetails?.data || {};
+
   const {
     accountName,
     accountNumber,
@@ -110,15 +125,15 @@ const PaymentReceipt = () => {
             {accountName && (
               <ListItem
                 name="Recipient's Details"
-                value={accountName || "Adedigba Peter Adetayo"}
-                value2={"Uzzy Bank | 01234567890"}
+                value={accountName}
+                value2={`${senderBankName} | ${accountName}`} //because all uzzy users have the same bankname
               />
             )}
             {accountNumber && (
               <ListItem
                 name="Sender's Details"
-                value={accountNumber || "Starboy"}
-                value2={"Uzzy Bank | 01234567890"}
+                value={senderAccountName}
+                value2={`${senderBankName} | ${senderAccountNumber}`}
               />
             )}
             {recipient && <ListItem name="Recipient" value={recipient} />}
