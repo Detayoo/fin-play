@@ -76,7 +76,6 @@ export const ContactSelect = ({
       <Pressable
         style={styles.item}
         onPress={() => {
-          console.log("item", item);
           setSelectedOption(item);
           bottomSheetModalRef.current?.close();
           setVisible(false);

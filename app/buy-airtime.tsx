@@ -16,7 +16,6 @@ import {
   SelectField,
   SelectPlaceholder,
   TextField,
-  showToast,
 } from "@/components";
 import { Recipient } from "@/assets";
 import { getAirtimeProvidersFn } from "@/services";
@@ -84,6 +83,13 @@ const BuyAirtimePage = () => {
     } catch (error) {}
   };
 
+  const handlePhoneNumberChange = (
+    value: string,
+    setFieldValue: (field: string, value: any) => void
+  ) => {
+    setFieldValue("phoneNumber", value);
+  };
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <BottomSheetModalProvider>
@@ -114,10 +120,9 @@ const BuyAirtimePage = () => {
                 enableReinitialize
                 initialValues={{
                   phoneNumber: state?.selectedContact?.phoneNumbers
-                    ? state?.selectedContact?.phoneNumbers[0]?.number?.replace(
-                        /[\s-]/g,
-                        ""
-                      )
+                    ? state?.selectedContact?.phoneNumbers[0]?.number
+                        ?.replace(/^(\+?234)/, "0")
+                        ?.replace(/[\s-]/g, "")
                     : "",
                   amount: "",
                   serviceProvider: state?.serviceProvider?.label || "",
@@ -151,7 +156,9 @@ const BuyAirtimePage = () => {
                       >
                         <View style={{ width: "85%" }}>
                           <TextField
-                            onChange={handleChange("phoneNumber")}
+                            onChange={(value: string) =>
+                              handlePhoneNumberChange(value, setFieldValue)
+                            }
                             onBlur={handleBlur("phoneNumber")}
                             value={values.phoneNumber}
                             placeholder="Enter recipient's phone number"
