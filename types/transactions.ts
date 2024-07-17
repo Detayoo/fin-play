@@ -20,3 +20,18 @@ export interface ITransactionsList extends BareResponse {
     currentPage: number;
   };
 }
+
+export interface IGetStats extends BareResponse {
+  data: {
+    income: {
+      total: number;
+      transfer: number;
+      bills: number;
+    };
+    expense: {
+      total: number;
+      transfer: number;
+      bills: number;
+    };
+  };
+}

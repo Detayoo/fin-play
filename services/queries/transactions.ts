@@ -1,4 +1,4 @@
-import { TokenType, ITransactionsList } from "@/types";
+import { TokenType, ITransactionsList, IGetStats } from "@/types";
 import { authenticatedRequest } from "../api";
 
 export const getAllTransactionsFn = async ({
@@ -45,6 +45,26 @@ export const getAllTransactionsFn = async ({
 
   const { data } = await authenticatedRequest(token).get<ITransactionsList>(
     "transactions/history",
+    { params }
+  );
+  return data;
+};
+
+export const getTransactionStatsFn = async ({
+  token,
+  period,
+}: {
+  token: TokenType;
+  period: string;
+}) => {
+  const params: any = {};
+
+  if (period) {
+    params.period = period;
+  }
+
+  const { data } = await authenticatedRequest(token).get<IGetStats>(
+    "/transactions/statistics",
     { params }
   );
   return data;

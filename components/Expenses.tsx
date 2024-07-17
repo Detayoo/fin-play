@@ -8,41 +8,49 @@ import { Electricity } from "./Electricity";
 import { Airtime } from "./Airtime";
 import { Cable } from "./Cable";
 import { Smile } from "./Smile";
+import { UseQueryResult } from "@tanstack/react-query";
+import { IGetStats } from "@/types";
 
-const list = [
-  {
-    icon: <Electricity />,
-    name: "Electricity",
-    amount: "4500",
-  },
-  {
-    icon: <Bank />,
-    name: "Transfer to Banks",
-    amount: "4500",
-  },
-  {
-    icon: <Bank />,
-    name: "Uzzy to Uzzy",
-    amount: "4500",
-  },
-  {
-    icon: <Airtime />,
-    name: "Airtime",
-    amount: "4500",
-  },
-  {
-    icon: <Cable />,
-    name: "Cable TV",
-    amount: "4500",
-  },
-  {
-    icon: <Smile />,
-    name: "Internet",
-    amount: "4500",
-  },
-];
+export const Expenses = ({
+  transactionStatsData,
+}: {
+  transactionStatsData: UseQueryResult<IGetStats>;
+}) => {
+  const { bills, total, transfer } =
+    transactionStatsData?.data?.data?.expense || {};
 
-export const Expenses = () => {
+  const list = [
+    {
+      icon: <Electricity />,
+      name: "Electricity",
+      amount: "4500",
+    },
+    {
+      icon: <Bank />,
+      name: "Transfer to Banks",
+      amount: transfer,
+    },
+    {
+      icon: <Bank />,
+      name: "Uzzy to Uzzy",
+      amount: "4500",
+    },
+    {
+      icon: <Airtime />,
+      name: "Airtime",
+      amount: "4500",
+    },
+    {
+      icon: <Cable />,
+      name: "Cable TV",
+      amount: "4500",
+    },
+    {
+      icon: <Smile />,
+      name: "Internet",
+      amount: "4500",
+    },
+  ];
   return (
     <ScrollView>
       <View
@@ -57,7 +65,7 @@ export const Expenses = () => {
         <AppText>Total Expenses</AppText>
         <AppText variant="medium" style={{ fontSize: 22 }}>
           {naira}
-          {formatMoney("540000")}
+          {formatMoney(total || "0")}
         </AppText>
       </View>
       <View

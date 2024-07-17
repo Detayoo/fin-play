@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FlatList, Pressable, RefreshControl, View } from "react-native";
 import { router } from "expo-router";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQueries } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
@@ -23,13 +23,14 @@ import {
   Transactions,
 } from "@/assets";
 import { useAuth } from "@/context";
-import { getAllTransactionsFn } from "@/services";
+import { getAllTransactionsFn, getTransactionStatsFn } from "@/services";
 import { useRefreshByUser, useRefreshOnFocus } from "@/hooks";
 
 type TransactionFilter = {
   duration: string;
   status: string;
   type: string;
+  period: string;
 };
 
 type StateType = {
@@ -66,6 +67,7 @@ const TransactionsHistoryPage = () => {
   ];
 
   const [statsActiveTab, setStatsActiveTab] = useState("expenses");
+  const [period, setPeriod] = useState("");
 
   const [filterObj, setFilterObj] = useState({
     duration: "",
@@ -120,6 +122,19 @@ const TransactionsHistoryPage = () => {
         return null;
       }
     },
+  });
+
+  const [transactionStatsData] = useQueries({
+    queries: [
+      {
+        queryKey: ["transaction stats"],
+        queryFn: () =>
+          getTransactionStatsFn({
+            token,
+            period: "week",
+          }),
+      },
+    ],
   });
 
   const flatListData =
@@ -306,7 +321,7 @@ const TransactionsHistoryPage = () => {
             {/* </ScrollView> */}
           </>
         ) : (
-          <Expenses />
+          <Expenses transactionStatsData={transactionStatsData} />
         )}
         <View
           style={{
