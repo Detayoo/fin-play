@@ -17,6 +17,8 @@ import {
   AppText,
   DashboardLayout,
   EmptyComponent,
+  FetchError,
+  Loading,
   PrimaryButton,
   ReusableBottomSheet,
   Services,
@@ -38,7 +40,11 @@ import {
 import { Colors } from "@/constants";
 import { copyToClipboard, formatMoney, getFirstLetter } from "@/utils";
 import { useAuth } from "@/context";
-import { getUserAccountDetailsFn, getUserMainBalanceFn } from "@/services";
+import {
+  getAllTransactionsFn,
+  getUserAccountDetailsFn,
+  getUserMainBalanceFn,
+} from "@/services";
 import { Spinner } from "@/components/Spinner";
 
 type StateType = {
@@ -68,18 +74,27 @@ export default function HomeScreen() {
     return () => backHandler.remove();
   }, []);
 
-  const [userBalanceData, userAccountData] = useQueries({
-    queries: [
-      {
-        queryKey: ["user main balance"],
-        queryFn: () => getUserMainBalanceFn({ token }),
-      },
-      {
-        queryKey: ["user account details"],
-        queryFn: () => getUserAccountDetailsFn({ token }),
-      },
-    ],
-  });
+  const [userBalanceData, userAccountData, recentTransactionsData] = useQueries(
+    {
+      queries: [
+        {
+          queryKey: ["user main balance"],
+          queryFn: () => getUserMainBalanceFn({ token }),
+        },
+        {
+          queryKey: ["user account details"],
+          queryFn: () => getUserAccountDetailsFn({ token }),
+        },
+        {
+          queryKey: ["user recent transactions"],
+          queryFn: () =>
+            getAllTransactionsFn({ currentPage: 1, perPage: 5, token }),
+        },
+      ],
+    }
+  );
+
+  const pageIsLoading = userBalanceData?.isFetching || userAccountData?.isFetching;
 
   const { accountName, accountNumber, bankName } =
     userAccountData?.data?.data || {};
@@ -107,192 +122,215 @@ export default function HomeScreen() {
           </View>
         </View>
 
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          style={styles.scrollView}
-        >
-          <View
-            style={{
-              borderRadius: 5,
-              overflow: "hidden",
-            }}
+        {pageIsLoading ? (
+          <Loading />
+        ) : (
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            style={styles.scrollView}
           >
-            <ImageBackground
-              source={require("../../assets/images/balance-background.png")}
-              style={styles.balanceBg}
-            >
-              <View
-                style={{ flexDirection: "row", alignItems: "center", gap: 12 }}
-              >
-                <Pressable
-                  onPress={() =>
-                    updateState({
-                      showAccountBalance: !state.showAccountBalance,
-                    })
-                  }
-                >
-                  {state.showAccountBalance ? (
-                    <Hide color={Colors.white} />
-                  ) : (
-                    <Show />
-                  )}
-                </Pressable>
-                <AppText color={Colors.white}>Wallet Balance</AppText>
-              </View>
-              <AppText
-                style={{ marginTop: 20 }}
-                color={Colors.white}
-                variant="medium"
-                size="xxlarge"
-              >
-                {state.showAccountBalance
-                  ? `NGN ${formatMoney(
-                      userBalanceData?.data?.data?.balance || "0"
-                    )}`
-                  : "***********"}
-              </AppText>
-            </ImageBackground>
-          </View>
-
-          <View style={styles.moneyActions}>
-            <TouchableOpacity
-              onPress={() =>
-                updateState({
-                  accountDetailsModal: true,
-                })
-              }
-              style={{ alignItems: "center" }}
-            >
-              <AddMoney />
-              <AppText variant="medium" style={{ marginTop: 4 }}>
-                Add Money
-              </AppText>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => router.push("/internal-transfer")}
-              style={{ alignItems: "center" }}
-            >
-              <UserHead />
-              <AppText variant="medium" style={{ marginTop: 4 }}>
-                To Uzzy
-              </AppText>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => router.push("/bank-transfer")}
-              style={{ alignItems: "center" }}
-            >
-              <Bank />
-              <AppText variant="medium" style={{ marginTop: 4 }}>
-                To Banks
-              </AppText>
-            </TouchableOpacity>
-          </View>
-
-          <Services />
-
-          <View style={{ marginTop: 30 }}>
-            <AppText variant="medium" size="large">
-              Learn More About Finance
-            </AppText>
-            <TouchableOpacity
-              style={{
-                marginTop: 15,
-                paddingVertical: 16,
-                paddingHorizontal: 16,
-                backgroundColor: Colors.primary,
-                borderRadius: 10,
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
-            >
-              <View style={{ gap: 12, width: "50%" }}>
-                <AppText color={Colors.boldGreen} size="small">
-                  Refer and get up to
-                </AppText>
-                <View
-                  style={{
-                    borderRadius: 5,
-                    backgroundColor: Colors.white,
-                    alignSelf: "flex-start",
-                  }}
-                >
-                  <AppText
-                    style={{
-                      paddingHorizontal: 12,
-                      paddingVertical: 5,
-                      borderRadius: 5,
-                    }}
-                  >
-                    N20,000
-                  </AppText>
-                </View>
-                <View
-                  style={{
-                    borderRadius: 5,
-                    backgroundColor: Colors.boldGreen,
-                  }}
-                >
-                  <AppText
-                    color={Colors.white}
-                    style={{
-                      paddingVertical: 5,
-                      paddingHorizontal: 12,
-                    }}
-                    size="small"
-                  >
-                    Commission bonus when you refer a friend
-                  </AppText>
-                </View>
-              </View>
-              <Image
-                source={require("../../assets/images/learn-more.png")}
-                style={{ width: 112, height: 117 }}
-              />
-            </TouchableOpacity>
-          </View>
-          <View style={{ marginVertical: 40 }}>
             <View
               style={{
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
-                marginBottom: 30,
+                borderRadius: 5,
+                overflow: "hidden",
               }}
             >
-              <AppText style={{ fontSize: 16 }} variant="medium">
-                Recent Transactions
-              </AppText>
-              <AppText
-                onPress={() => router.push("/transactions-history")}
-                style={{ fontSize: 15 }}
-                color={Colors.inputFocusBorder}
+              <ImageBackground
+                source={require("../../assets/images/balance-background.png")}
+                style={styles.balanceBg}
               >
-                View all
-              </AppText>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    gap: 12,
+                  }}
+                >
+                  <Pressable
+                    onPress={() =>
+                      updateState({
+                        showAccountBalance: !state.showAccountBalance,
+                      })
+                    }
+                  >
+                    {state.showAccountBalance ? (
+                      <Hide color={Colors.white} />
+                    ) : (
+                      <Show />
+                    )}
+                  </Pressable>
+                  <AppText color={Colors.white}>Wallet Balance</AppText>
+                </View>
+                <AppText
+                  style={{ marginTop: 20 }}
+                  color={Colors.white}
+                  variant="medium"
+                  size="xxlarge"
+                >
+                  {state.showAccountBalance
+                    ? `NGN ${formatMoney(
+                        userBalanceData?.data?.data?.balance || "0"
+                      )}`
+                    : "***********"}
+                </AppText>
+              </ImageBackground>
             </View>
-            {/* <EmptyComponent message="No Transaction Found" /> */}
 
-            <TransactionItem
-              onPress={() =>
-                router.push({
-                  pathname: "/payment-receipt",
-                  params: {},
+            <View style={styles.moneyActions}>
+              <TouchableOpacity
+                onPress={() =>
+                  updateState({
+                    accountDetailsModal: true,
+                  })
+                }
+                style={{ alignItems: "center" }}
+              >
+                <AddMoney />
+                <AppText variant="medium" style={{ marginTop: 4 }}>
+                  Add Money
+                </AppText>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => router.push("/internal-transfer")}
+                style={{ alignItems: "center" }}
+              >
+                <UserHead />
+                <AppText variant="medium" style={{ marginTop: 4 }}>
+                  To Uzzy
+                </AppText>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => router.push("/bank-transfer")}
+                style={{ alignItems: "center" }}
+              >
+                <Bank />
+                <AppText variant="medium" style={{ marginTop: 4 }}>
+                  To Banks
+                </AppText>
+              </TouchableOpacity>
+            </View>
+
+            <Services />
+
+            <View style={{ marginTop: 30 }}>
+              <AppText variant="medium" size="large">
+                Learn More About Finance
+              </AppText>
+              <TouchableOpacity
+                style={{
+                  marginTop: 15,
+                  paddingVertical: 16,
+                  paddingHorizontal: 16,
+                  backgroundColor: Colors.primary,
+                  borderRadius: 10,
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
+                <View style={{ gap: 12, width: "50%" }}>
+                  <AppText color={Colors.boldGreen} size="small">
+                    Refer and get up to
+                  </AppText>
+                  <View
+                    style={{
+                      borderRadius: 5,
+                      backgroundColor: Colors.white,
+                      alignSelf: "flex-start",
+                    }}
+                  >
+                    <AppText
+                      style={{
+                        paddingHorizontal: 12,
+                        paddingVertical: 5,
+                        borderRadius: 5,
+                      }}
+                    >
+                      N20,000
+                    </AppText>
+                  </View>
+                  <View
+                    style={{
+                      borderRadius: 5,
+                      backgroundColor: Colors.boldGreen,
+                    }}
+                  >
+                    <AppText
+                      color={Colors.white}
+                      style={{
+                        paddingVertical: 5,
+                        paddingHorizontal: 12,
+                      }}
+                      size="small"
+                    >
+                      Commission bonus when you refer a friend
+                    </AppText>
+                  </View>
+                </View>
+                <Image
+                  source={require("../../assets/images/learn-more.png")}
+                  style={{ width: 112, height: 117 }}
+                />
+              </TouchableOpacity>
+            </View>
+            <View style={{ marginVertical: 40 }}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  marginBottom: 30,
+                }}
+              >
+                <AppText style={{ fontSize: 16 }} variant="medium">
+                  Recent Transactions
+                </AppText>
+                {recentTransactionsData?.data?.data?.transactions && (
+                  <AppText
+                    onPress={() => router.push("/transactions-history")}
+                    style={{ fontSize: 15 }}
+                    color={Colors.inputFocusBorder}
+                  >
+                    View all
+                  </AppText>
+                )}
+              </View>
+              {/* */}
+
+              {recentTransactionsData?.isFetching ? (
+                <View style={{ paddingVertical: 80 }}>
+                  <Loading />
+                </View>
+              ) : recentTransactionsData?.isError ? (
+                <FetchError
+                  message="Error fetching transactions"
+                  onPress={recentTransactionsData.refetch}
+                />
+              ) : recentTransactionsData?.data?.data?.transactions?.length ===
+                0 ? (
+                <EmptyComponent message="No Transaction Found" />
+              ) : (
+                recentTransactionsData?.data?.data?.transactions?.map((trx) => {
+                  return (
+                    <TransactionItem
+                      onPress={() =>
+                        router.push({
+                          pathname: "/payment-receipt",
+                          params: {},
+                        })
+                      }
+                      status="GLO"
+                      data={{
+                        amountPaid: "4500",
+                        status: "success",
+                      }}
+                    />
+                  );
                 })
-              }
-              status="GLO"
-            />
-            <TransactionItem
-              onPress={() =>
-                router.push({
-                  pathname: "/payment-receipt",
-                  params: {},
-                })
-              }
-              status="DEBIT"
-            />
-          </View>
-        </ScrollView>
+              )}
+            </View>
+          </ScrollView>
+        )}
       </DashboardLayout>
       <ReusableBottomSheet
         snapPoints={["50%"]}

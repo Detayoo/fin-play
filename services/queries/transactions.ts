@@ -11,10 +11,10 @@ export const getAllTransactionsFn = async ({
   currentPage,
 }: {
   token: TokenType;
-  startDate: string | null;
-  endDate: string | null;
-  status: string | null;
-  transactionType: string | null;
+  startDate?: string | null;
+  endDate?: string | null;
+  status?: string | null;
+  transactionType?: string | null;
   perPage: number;
   currentPage: number;
 }) => {

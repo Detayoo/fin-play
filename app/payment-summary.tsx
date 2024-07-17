@@ -3,7 +3,7 @@ import { ScrollView, View } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import { format } from "date-fns";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { useMutation, useQueries } from "@tanstack/react-query";
+import { useMutation, useQueries, useQueryClient } from "@tanstack/react-query";
 
 import {
   AppText,
@@ -25,6 +25,7 @@ import { useAuth } from "@/context";
 
 const PaymentSummary = () => {
   const { token } = useAuth();
+  const queryClient = useQueryClient();
   const [showModal, setShowModal] = useState(false);
   const [save, setSave] = useState(false);
   const [pin, setPin] = useState("");
@@ -63,6 +64,11 @@ const PaymentSummary = () => {
     onError: (error) => {
       showToast("error", extractServerError(error, ERRORS.SOMETHING_HAPPENED));
     },
+    onSettled: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["user main balance"],
+      });
+    },
   });
 
   const { mutateAsync: bankTransferAsync, isPending: isTransferringToBank } =
@@ -83,6 +89,11 @@ const PaymentSummary = () => {
           "error",
           extractServerError(error, ERRORS.SOMETHING_HAPPENED)
         );
+      },
+      onSettled: () => {
+        queryClient.invalidateQueries({
+          queryKey: ["user main balance"],
+        });
       },
     });
 

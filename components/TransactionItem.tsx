@@ -10,10 +10,12 @@ export const TransactionItem = ({
   addBorder = true,
   status,
   onPress,
+  data,
 }: {
   addBorder?: boolean;
   status: "GLO" | "DEBIT";
   onPress: () => void;
+  data?: any;
 }) => {
   const renderImage = () => {
     switch (status) {
@@ -46,19 +48,30 @@ export const TransactionItem = ({
         }}
       >
         <AppText numberOfLines={1} variant="medium">
-          Adedigba Peter Adetayo YasMineeeeeeeeeeeee
+          {data?.accountName}
         </AppText>
         <AppText size="small" color={Colors.faintBlack}>
-          {format(new Date(), "MMMM dd, yyyy hh:mma")}
+          {data?.paidAt
+            ? format(new Date(data.paidAt), "MMMM dd, yyyy hh:mma")
+            : null}
         </AppText>
       </View>
 
       <View style={{ marginLeft: "auto", gap: 8, alignItems: "flex-end" }}>
         <AppText style={{ fontSize: 13 }} variant="medium">
-          -NGN{formatMoney("2000")}
+          {/* check ttype here */}
+          {"-"}NGN{formatMoney(data?.amountPaid || 0)}
         </AppText>
-        <AppText size="small" color={Colors.inputFocusBorder}>
-          Successful
+        <AppText
+          size="small"
+          style={{ textTransform: "capitalize" }}
+          color={
+            data?.status?.toLocaleLowerCase() === "success"
+              ? Colors.inputFocusBorder
+              : Colors.error
+          }
+        >
+          {data?.status}
         </AppText>
       </View>
     </TouchableOpacity>

@@ -37,7 +37,6 @@ interface Option {
 }
 
 const options: Option[] = [
-  //   { id: 1, label: "" },
   { id: 1, label: "GTBank", code: "1234" },
   { id: 2, label: "Option 2", code: "1234" },
   { id: 3, label: "Option 3", code: "1234" },
