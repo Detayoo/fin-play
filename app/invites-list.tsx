@@ -7,23 +7,14 @@ import {
   RefreshControl,
 } from "react-native";
 import { useInfiniteQuery, useQueries } from "@tanstack/react-query";
-import { router } from "expo-router";
+import { Image } from "expo-image";
+import { format } from "date-fns";
 
-import {
-  AppText,
-  BackButton,
-  ListItem,
-  Loading,
-  PrimaryButton,
-  Screen,
-} from "@/components";
+import { AppText, BackButton, ListItem, Loading, Screen } from "@/components";
 import { useAuth } from "@/context";
 import { getInviteesFn, getRewardsFn } from "@/services";
 import { Colors } from "@/constants";
 import { formatMoney } from "@/utils";
-import { UserHead } from "@/assets";
-import { Image } from "expo-image";
-import { format } from "date-fns";
 import { useRefreshByUser, useRefreshOnFocus } from "@/hooks";
 import { Referral } from "@/types";
 
