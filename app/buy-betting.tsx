@@ -21,10 +21,8 @@ import { getBettingProvidersFn, getUserBettingDetailsFn } from "@/services";
 import { useAuth } from "@/context";
 import { bettingSchema, formatMoney } from "@/utils";
 
-type Options = { id: number; label: string }[];
 type State = {
   serviceProvider: any;
-  options: Options;
   customerId: string;
   amount: string;
 };
@@ -39,10 +37,6 @@ const BuyBettingPage = () => {
   const [showModal, setShowModal] = useState(false);
   const [state, setState] = useState<State>({
     serviceProvider: null,
-    options: [
-      { id: 1, label: "MTN" },
-      { id: 2, label: "GLO" },
-    ],
     customerId: "",
     amount: "",
   });
@@ -81,7 +75,7 @@ const BuyBettingPage = () => {
           getUserBettingDetailsFn({
             token,
             customerId: state?.customerId,
-            provider: state?.serviceProvider,
+            provider: state?.serviceProvider?.label,
           }),
         enabled: !!(state.serviceProvider?.label && state.customerId?.length),
       },
@@ -104,21 +98,6 @@ const BuyBettingPage = () => {
   //     return;
   //   }
   // }, [state?.amount, minimumAmountPayable]);
-
-  const [providerOptions, setProviderOptions] = useState<any>();
-
-  useEffect(() => {
-    if (providerOptions?.data?.data?.providers) {
-      setProviderOptions(
-        providersData?.data?.data?.providers?.map(
-          (each: string, index: number) => ({
-            id: index + 1,
-            label: each,
-          })
-        )
-      );
-    }
-  }, [providersData?.data?.data?.providers]);
 
   const onSubmit = async (values: BettingForm) => {
     try {
@@ -281,7 +260,12 @@ const BuyBettingPage = () => {
         </View>
 
         <SelectField
-          options={providerOptions}
+          options={providersData?.data?.data?.providers?.map(
+            (each: string, index: number) => ({
+              id: index + 1,
+              label: each,
+            })
+          )}
           visible={showModal}
           setVisible={setShowModal}
           setSelectedOption={(e: any) => {
