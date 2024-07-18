@@ -107,10 +107,10 @@ const LoginPage = () => {
     setEmail(email);
     setPassword(password);
 
-    // saveUser({}, "toks");
-    // router.push("/(tabs)");
+    saveUser({}, "toks");
+    router.push("/(tabs)");
 
-    // return;
+    return;
 
     try {
       await mutateAsync({
@@ -150,7 +150,7 @@ const LoginPage = () => {
           email: user?.email && user?.rememberMe ? user?.email : "",
           password: "",
         }}
-        validationSchema={loginSchema}
+        // validationSchema={loginSchema}
         onSubmit={handleSubmit}
       >
         {({

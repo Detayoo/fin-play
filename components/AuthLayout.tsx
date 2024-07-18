@@ -36,10 +36,12 @@ export const AuthLayout = ({
             </AppText>
           </View>
         )}
-        <AppText variant="medium" size="large">
-          {headerText}
-        </AppText>
-        <BackButton style={{ opacity: 0 }} />
+        {!!headerText && (
+          <AppText variant="medium" size="large">
+            {headerText}
+          </AppText>
+        )}
+        {headerText && <BackButton style={{ opacity: 0 }} />}
       </View>
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : undefined}

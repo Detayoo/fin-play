@@ -115,6 +115,7 @@ export default function RootLayout() {
             <Stack.Screen name="change-password" options={options} />
             <Stack.Screen name="change-pin" options={options} />
             <Stack.Screen name="forgot-pin" options={options} />
+            <Stack.Screen name="cable-tv" options={options} />
             {/* </Screen> */}
             <Stack.Screen
               name="(tabs)"

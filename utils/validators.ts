@@ -89,3 +89,7 @@ export const internalTransferSchema = Yup.object().shape({
   accountNumber: Yup.string().required().length(10),
   amount: Yup.string().required(),
 });
+
+export const buyBouquetSchema = Yup.object().shape({
+  smartCardNumber: Yup.string().required().length(10),
+});

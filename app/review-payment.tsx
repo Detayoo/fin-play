@@ -23,6 +23,7 @@ import { ERRORS, extractServerError, formatMoney, formatNumber } from "@/utils";
 import {
   buyAirtimeFn,
   buyBettingPlanFn,
+  buyBouquetFn,
   buyDataFn,
   buyElectricityFn,
   getCashbackToReceiveFn,
@@ -53,6 +54,9 @@ const ReviewPayment = () => {
     name: planName,
     validity: planValidity,
     price: planPrice,
+    bouquetProductKey,
+    requestId,
+    smartCardNumber,
   } = useLocalSearchParams();
 
   const getServiceType = () => {
@@ -112,7 +116,11 @@ const ReviewPayment = () => {
       },
       onSettled: () => {
         queryClient.invalidateQueries({
-          queryKey: ["points balance", "user account details"],
+          queryKey: [
+            "points balance",
+            "user account details",
+            "all transactions",
+          ],
         });
       },
     });
@@ -130,7 +138,11 @@ const ReviewPayment = () => {
     },
     onSettled: () => {
       queryClient.invalidateQueries({
-        queryKey: ["points balance", "user account details"],
+        queryKey: [
+          "points balance",
+          "user account details",
+          "all transactions",
+        ],
       });
     },
   });
@@ -143,7 +155,9 @@ const ReviewPayment = () => {
           pathname: "/payment-receipt",
           params: {
             ...data?.data?.transaction,
+            amountPaid: data?.data?.transaction?.amount,
             meterName: data?.data?.transaction?.accountName,
+            paidAt: data?.data?.transaction?.purchaseDate,
             accountType: vendType,
             serviceProvider,
             from: "/electricity-payment",
@@ -158,7 +172,11 @@ const ReviewPayment = () => {
       },
       onSettled: () => {
         queryClient.invalidateQueries({
-          queryKey: ["points balance", "user account details"],
+          queryKey: [
+            "points balance",
+            "user account details",
+            "all transactions",
+          ],
         });
       },
     });
@@ -169,7 +187,12 @@ const ReviewPayment = () => {
       onSuccess: (data) => {
         router.replace({
           pathname: "/payment-receipt",
-          params: { ...data?.data?.transaction, from: "/betting-payment" },
+          params: {
+            ...data?.data?.transaction,
+            customerId: data?.data?.transaction?.customerId,
+            serviceProvider,
+            from: "/betting-payment",
+          },
         });
       },
       onError: (error) => {
@@ -180,13 +203,52 @@ const ReviewPayment = () => {
       },
       onSettled: () => {
         queryClient.invalidateQueries({
-          queryKey: ["points balance", "user account details"],
+          queryKey: [
+            "points balance",
+            "user account details",
+            "all transactions",
+          ],
+        });
+      },
+    });
+
+  const { isPending: buyingTvBouquet, mutateAsync: buyTvBouquetAsync } =
+    useMutation({
+      mutationFn: buyBouquetFn,
+      onSuccess: (data) => {
+        router.replace({
+          pathname: "/payment-receipt",
+          params: {
+            ...data?.data,
+            from: "/tv-payment",
+          },
+        });
+      },
+      onError: (error) => {
+        showToast(
+          "error",
+          extractServerError(error, ERRORS.SOMETHING_HAPPENED)
+        );
+      },
+      onSettled: () => {
+        queryClient.invalidateQueries({
+          queryKey: [
+            "points balance",
+            "user account details",
+            "all transactions",
+          ],
         });
       },
     });
 
   const makePayment = async () => {
-    if (buyingAirtime || buyingData || buyingElectricity || buyingBettingPlan)
+    if (
+      buyingAirtime ||
+      buyingData ||
+      buyingElectricity ||
+      buyingBettingPlan ||
+      buyingTvBouquet
+    )
       return;
     try {
       if (from === "/buy-airtime") {
@@ -237,6 +299,21 @@ const ReviewPayment = () => {
         });
       }
     } catch (error) {}
+
+    if (from === "/buy-tv") {
+      try {
+        await buyTvBouquetAsync({
+          payload: {
+            amount: amount ? +amount : 0,
+            bouquetProductKey,
+            provider,
+            requestId,
+            smartCardNumber,
+          },
+          token,
+        });
+      } catch (error) {}
+    }
   };
 
   useEffect(() => {
@@ -446,7 +523,8 @@ const ReviewPayment = () => {
               {(buyingAirtime ||
                 buyingData ||
                 buyingElectricity ||
-                buyingBettingPlan) && <Loading />}
+                buyingBettingPlan ||
+                buyingTvBouquet) && <Loading />}
             </View>
           </View>
         </View>

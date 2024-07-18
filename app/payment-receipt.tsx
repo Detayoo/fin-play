@@ -43,6 +43,7 @@ const PaymentReceipt = () => {
     accountNumber,
     amountPaid,
     bankName,
+    customerId,
     narration,
     recipient,
     paidAt,
@@ -59,6 +60,7 @@ const PaymentReceipt = () => {
     accountType,
     serviceProvider,
     token: electricityToken,
+    customerReference
   } = useLocalSearchParams();
   console.log(useLocalSearchParams());
 
@@ -115,7 +117,7 @@ const PaymentReceipt = () => {
               ? format(
                   parse(`${paidAt}`, "dd/MM/yyyy HH:mm:ss", new Date()),
                   "MMMM dd, yyyy hh:mma"
-                ) || paidAt
+                )
               : null}
           </AppText>
 
@@ -129,6 +131,7 @@ const PaymentReceipt = () => {
             }}
           >
             {meterName && <ListItem name="Meter Name" value={meterName} />}
+            {customerId && <ListItem name="Customer ID" value={customerId} />}
             {meterNumber && (
               <ListItem name="Meter Number" value={meterNumber} />
             )}
@@ -166,6 +169,9 @@ const PaymentReceipt = () => {
             {telco && <ListItem name="TELCO" value={telco} />}
             {telcoReference && (
               <ListItem name="Telco Reference" value={telcoReference} canCopy />
+            )}
+            {customerReference && (
+              <ListItem name="Customer Reference" value={customerReference} canCopy />
             )}
             {reference && (
               <ListItem
