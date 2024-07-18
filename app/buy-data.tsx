@@ -60,7 +60,7 @@ const BuyDataPage = () => {
     ],
   });
 
-  console.log(providersData?.data?.data?.providers)
+  console.log(providersData?.data?.data?.providers);
 
   const [state, setState] = useState<State>({
     modal: false,
@@ -94,7 +94,6 @@ const BuyDataPage = () => {
           (each) => state.selectedPlan?.name === each?.name
         )
       : null;
-
 
   const onSubmit = async (values: DataForm) => {
     try {
@@ -273,6 +272,8 @@ const BuyDataPage = () => {
                           bottom: 0,
                           right: 0,
                           width: "100%",
+                          backgroundColor: Colors.white,
+                            // paddingTop: 10,
                         }}
                       >
                         <PrimaryButton
@@ -281,7 +282,11 @@ const BuyDataPage = () => {
                           style={{
                             marginTop: 20,
                           }}
-                          disabled={!isValid || !selectedTariff || !state.serviceProvider}
+                          disabled={
+                            !isValid ||
+                            !selectedTariff ||
+                            !state.serviceProvider
+                          }
                         />
                       </View>
                     </View>
