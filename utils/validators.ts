@@ -14,6 +14,7 @@ export const registrationSchema = Yup.object().shape({
     .min(6, "Password must be at least 6 characters")
     .required("Password is required"),
   terms: Yup.boolean().oneOf([true], ""),
+  phone: Yup.string().required().length(11),
 });
 
 export const forgotPasswordSchema = Yup.object().shape({

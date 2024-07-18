@@ -41,7 +41,7 @@ const RegistrationPage = () => {
     },
   });
   const handleSubmit = async (values: RegistrationType, { resetForm }: any) => {
-    const { email, fullName, password } = values;
+    const { email, fullName, password, phone } = values;
     setEmail(email);
     setPassword(password);
     try {
@@ -49,6 +49,8 @@ const RegistrationPage = () => {
         email,
         password,
         fullName,
+        phone
+      
       });
       resetForm();
     } catch (error) {}
@@ -57,7 +59,7 @@ const RegistrationPage = () => {
   return (
     <Screen>
       <Formik
-        initialValues={{ email: "", password: "", fullName: "", terms: false }}
+        initialValues={{ email: "", password: "", fullName: "", terms: false, phone:'' }}
         validationSchema={registrationSchema}
         onSubmit={handleSubmit}
       >
@@ -102,6 +104,17 @@ const RegistrationPage = () => {
                     errors={errors.email}
                     touched={touched.email}
                     label="Email"
+                  />
+                  <TextField
+                    onChange={handleChange("phone")}
+                    onBlur={handleBlur("phone")}
+                    value={values.phone}
+                    placeholder="Enter your phone number"
+                    errors={errors.phone}
+                    touched={touched.phone}
+                    label="Phone number"
+                    maxLength={11}
+                    keyboardType='number-pad'
                   />
                   <PasswordField
                     name="password"

@@ -1,4 +1,4 @@
-import { SafeAreaView, StyleSheet, View } from "react-native";
+import { SafeAreaView, StyleSheet, View, StatusBar } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { ToastComponent } from "./ToastComponent";
 import { Colors } from "@/constants";
@@ -23,7 +23,8 @@ export const DashboardLayout = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 16,
+    // paddingHorizontal: 16,
     backgroundColor: Colors.white,
+    paddingTop: StatusBar.currentHeight,
   },
 });

@@ -22,6 +22,7 @@ export const registerFn = async ({
   email,
   fullName,
   password,
+  phone
 }: RegistrationType) => {
   const { data } = await baseRequest.post<RegistrationResponse>(
     "/auth/register",
@@ -29,7 +30,7 @@ export const registerFn = async ({
       email,
       fullName,
       password,
-      phone: "8169971160",
+      phone,
     }
   );
   return data;

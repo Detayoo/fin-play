@@ -2,6 +2,8 @@ export type RegistrationType = {
   email: string;
   fullName: string;
   password: string;
+  phone: string;
+  // terms: boolean
 };
 
 export type LoginType = {
