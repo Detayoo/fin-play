@@ -47,6 +47,7 @@ const styles = StyleSheet.create({
     margin: 0,
     padding: 0,
     flexDirection: "row",
+    gap:10
   },
 
   codeInputFieldStyle: {

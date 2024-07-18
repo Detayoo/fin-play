@@ -62,6 +62,10 @@ const styles = StyleSheet.create({
     zIndex: 9999999999,
 
     elevation: 10000,
+    // shadowColor: "#ABABAB1A",
+    // shadowOffset: { width: 4, height: 6 },
+    // shadowOpacity: 4,
+    // shadowRadius: 1,
   },
   successToast: {
     borderLeftColor: Colors.primary,

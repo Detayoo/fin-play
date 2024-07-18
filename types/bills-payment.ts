@@ -47,15 +47,17 @@ export interface IValidateBettingAccountResponse extends BareResponse {
 
 export interface IBuyBettingResponse extends BareResponse {
   data: {
-    customerId: string;
-    accountName: string;
-    amountPaid: string;
-    status: string;
-    paidAt: string;
-    reference: string;
-    currency: string;
-    amount: number;
-    sessionId: string;
+    transaction: {
+      customerId: string;
+      accountName: string;
+      amountPaid: string;
+      status: string;
+      paidAt: string;
+      reference: string;
+      currency: string;
+      amount: number;
+      sessionId: string;
+    };
   };
 }
 

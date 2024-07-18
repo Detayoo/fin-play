@@ -170,7 +170,7 @@ const ReviewPayment = () => {
       onSuccess: (data) => {
         router.replace({
           pathname: "/payment-receipt",
-          params: { ...data?.data, from: "/betting-payment" },
+          params: { ...data?.data?.transaction, from: "/betting-payment" },
         });
       },
       onError: (error) => {

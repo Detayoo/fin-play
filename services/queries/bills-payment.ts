@@ -52,21 +52,23 @@ export const getUserBettingDetailsFn = async ({
   provider: string;
   customerId: string;
 }) => {
-  const data: IValidateBettingAccountResponse = {
-    message: "",
-    data: {
-      provider: "string",
-      customerId: "string",
-      accountName: "string",
-      minimumAmountPayable: 400,
-    },
-  };
+  // const data: IValidateBettingAccountResponse = {
+  //   message: "",
+  //   data: {
+  //     provider: "string",
+  //     customerId: "string",
+  //     accountName: "string",
+  //     minimumAmountPayable: 400,
+  //   },
+  // };
 
-  return data;
-  // const { data } = await authenticatedRequest(token).get<IValidateBettingAccountResponse>(
-  //   `/betting/account?provider=${provider}&customerId=${customerId}`
-  // );
   // return data;
+  const { data } = await authenticatedRequest(
+    token
+  ).get<IValidateBettingAccountResponse>(
+    `/betting/account?provider=${provider}&customerId=${customerId}`
+  );
+  return data;
 };
 
 export const getBettingProvidersFn = async ({

@@ -19,7 +19,7 @@ import {
 import { Recipient } from "@/assets";
 import { getBettingProvidersFn, getUserBettingDetailsFn } from "@/services";
 import { useAuth } from "@/context";
-import { bettingSchema } from "@/utils";
+import { bettingSchema, formatMoney } from "@/utils";
 
 type Options = { id: number; label: string }[];
 type State = {
@@ -83,7 +83,7 @@ const BuyBettingPage = () => {
             customerId: state?.customerId,
             provider: state?.serviceProvider,
           }),
-        // enabled: !!(state.serviceProvider?.label && state.customerId,
+        enabled: !!(state.serviceProvider?.label && state.customerId?.length),
       },
     ],
   });
@@ -91,28 +91,34 @@ const BuyBettingPage = () => {
   const { minimumAmountPayable, accountName } =
     userAccountData?.data?.data || {};
 
-  useEffect(() => {
-    if (
-      minimumAmountPayable &&
-      state.amount &&
-      +minimumAmountPayable > +state?.amount
-    ) {
-      showToast(
-        "error",
-        "This amount is lesser than the minimum payable amount"
-      );
-      return;
-    }
-  }, [state?.amount, minimumAmountPayable]);
+  // useEffect(() => {
+  //   if (
+  //     minimumAmountPayable &&
+  //     state.amount &&
+  //     +minimumAmountPayable > +state?.amount
+  //   ) {
+  //     showToast(
+  //       "error",
+  //       "This amount is lesser than the minimum payable amount"
+  //     );
+  //     return;
+  //   }
+  // }, [state?.amount, minimumAmountPayable]);
 
-  const [providerOptions, setProviderOptions] = useState(
-    providersData?.data?.data?.providers?.map(
-      (each: string, index: number) => ({
-        id: index + 1,
-        label: each,
-      })
-    )
-  );
+  const [providerOptions, setProviderOptions] = useState<any>();
+
+  useEffect(() => {
+    if (providerOptions?.data?.data?.providers) {
+      setProviderOptions(
+        providersData?.data?.data?.providers?.map(
+          (each: string, index: number) => ({
+            id: index + 1,
+            label: each,
+          })
+        )
+      );
+    }
+  }, [providersData?.data?.data?.providers]);
 
   const onSubmit = async (values: BettingForm) => {
     try {
@@ -189,7 +195,6 @@ const BuyBettingPage = () => {
                       />
 
                       <TextField
-                        // onChange={handleChange("customerId")}
                         onChange={(value: string) =>
                           handleCustomerIdChange(value, setFieldValue)
                         }
@@ -202,18 +207,28 @@ const BuyBettingPage = () => {
                         keyboardType="number-pad"
                       />
 
-                      {!!accountName && (
-                        <View
+                      {userAccountData?.isFetching ? (
+                        <AppText
                           style={{
                             marginTop: -20,
-                            flexDirection: "row",
-                            gap: 10,
-                            alignItems: "center",
                           }}
                         >
-                          <Recipient />
-                          <AppText variant="medium">{accountName}</AppText>
-                        </View>
+                          Fetching User..
+                        </AppText>
+                      ) : (
+                        !!accountName && (
+                          <View
+                            style={{
+                              marginTop: -20,
+                              flexDirection: "row",
+                              gap: 10,
+                              alignItems: "center",
+                            }}
+                          >
+                            <Recipient />
+                            <AppText variant="medium">{accountName}</AppText>
+                          </View>
+                        )
                       )}
 
                       <View style={{}}>
@@ -231,8 +246,17 @@ const BuyBettingPage = () => {
                         />
                       </View>
 
+                      {minimumAmountPayable && (
+                        <AppText>
+                          Minimum Payable Amount - NGN
+                          {formatMoney(minimumAmountPayable)}
+                        </AppText>
+                      )}
+
                       <PrimaryButton
-                        disabled={!isValid || !state.serviceProvider}
+                        disabled={
+                          !isValid || !state.serviceProvider || !accountName
+                        }
                         onPress={
                           minimumAmountPayable &&
                           +minimumAmountPayable > +state?.amount
@@ -257,10 +281,7 @@ const BuyBettingPage = () => {
         </View>
 
         <SelectField
-          options={[
-            { id: 1, label: "Bet9ja" },
-            { id: 2, label: "NairaBet" },
-          ]}
+          options={providerOptions}
           visible={showModal}
           setVisible={setShowModal}
           setSelectedOption={(e: any) => {

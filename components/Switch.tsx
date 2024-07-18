@@ -1,4 +1,4 @@
-import { Switch } from "react-native";
+import { Switch, Platform } from "react-native";
 
 import { Colors } from "@/constants";
 
@@ -15,7 +15,7 @@ export const SwitchComponent = ({
         false: Colors.inputBackground,
         true: Colors.inputFocusBorder,
       }}
-      thumbColor={Colors.white}
+      thumbColor={Platform.OS === "android" ? Colors.primary : Colors.white}
       ios_backgroundColor={Colors.inputBackground}
       onValueChange={toggleSwitch}
       value={state}
