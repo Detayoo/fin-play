@@ -107,8 +107,6 @@ const TVPage = () => {
     }
   }, [providersData?.data?.data?.providers]);
 
-  const { accountName } = userAccountData?.data?.data || {};
-
   const selectedPackage = bouquetData?.data?.data[
     state.serviceProvider?.label?.toLowerCase()
   ]?.find((each) => state.packageType?.name === each?.name);
@@ -117,15 +115,22 @@ const TVPage = () => {
     bouquetData?.data?.data[state.serviceProvider?.label?.toLowerCase()]
   );
 
+  const { accountName, requestId, smartCardNumber } =
+    userAccountData?.data?.data?.transaction || {};
   const onSubmit = async (values: ElectricityForm) => {
     try {
       router.push({
         pathname: "/review-payment",
         params: {
           ...values,
-          ...userAccountData?.data?.data,
+          // ...userAccountData?.data?.data,
+          // amount:
+          //   userAccountData?.data?.data?.transaction?.additionalInformation
+          //     ?.totalAmount,
+          smartCardNumber,
+          accountName,
           bouquetProductKey: selectedPackage?.productKey,
-          requestId: selectedPackage?.bouquetId,
+          requestId,
           provider: state.serviceProvider,
           amount: selectedPackage?.amount,
           from: "/buy-tv",
@@ -223,7 +228,7 @@ const TVPage = () => {
                             Fetching Details..
                           </AppText>
                         ) : (
-                          state?.smartCardNumber?.length === 10 &&
+                          smartCardNumber &&
                           accountName && (
                             <View
                               style={{

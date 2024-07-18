@@ -164,8 +164,21 @@ export interface IGetPointBalance {
 
 export interface IValidateTVAccountResponse extends BareResponse {
   data: {
-    accountName: string | null;
-    smartCardNumber: string;
+    transaction: {
+      currentPackage: {
+        code: string;
+        name: string;
+        isActive: boolean;
+      };
+      additionalInformation: {
+        totalAmount: string;
+        dueDate: string;
+        balanceDue: string;
+      };
+      accountName: string;
+      smartCardNumber: string;
+      requestId: string;
+    };
   };
 }
 
