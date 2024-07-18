@@ -38,10 +38,14 @@ export interface IBuyBettingPayload {
 
 export interface IValidateBettingAccountResponse extends BareResponse {
   data: {
-    provider: string;
-    customerId: string;
-    accountName: string;
-    minimumAmountPayable: number;
+    transaction: {
+      details: {
+        provider: string;
+        customerId: string;
+        accountName: string;
+        minimumAmountPayable: number;
+      };
+    };
   };
 }
 

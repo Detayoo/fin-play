@@ -184,7 +184,7 @@ export const SelectPlaceholder = ({
       <TouchableOpacity onPress={onSelect} style={styles.input}>
         <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
           {label && useImage && <GTBank />}
-          <AppText>{label || "Select"}</AppText>
+          <AppText variant="medium">{label || "Select"}</AppText>
         </View>
         <ChevronDown />
       </TouchableOpacity>

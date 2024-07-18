@@ -70,7 +70,11 @@ const BuyBettingPage = () => {
         queryFn: () => getBettingProvidersFn({ token }),
       },
       {
-        queryKey: ["user betting details"],
+        queryKey: [
+          "user betting details",
+          state.serviceProvider?.label,
+          state?.customerId,
+        ],
         queryFn: () =>
           getUserBettingDetailsFn({
             token,
@@ -83,7 +87,7 @@ const BuyBettingPage = () => {
   });
 
   const { minimumAmountPayable, accountName } =
-    userAccountData?.data?.data || {};
+    userAccountData?.data?.data?.transaction?.details || {};
 
   // useEffect(() => {
   //   if (
@@ -104,8 +108,9 @@ const BuyBettingPage = () => {
       router.push({
         pathname: "/review-payment",
         params: {
-          ...values,
-          ...userAccountData?.data?.data,
+          // ...values,
+          amount: values.amount,
+          ...userAccountData?.data?.data?.transaction?.details,
           from: "/buy-betting",
         },
       });

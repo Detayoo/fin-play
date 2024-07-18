@@ -90,7 +90,7 @@ export const buyBettingPlanFn = async ({
   payload: IBuyBettingPayload;
 }) => {
   const { data } = await authenticatedRequest(token).post<IBuyBettingResponse>(
-    "/betting/vend",
+    "/betting/pay",
     payload
   );
 

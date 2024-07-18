@@ -58,7 +58,7 @@ const PaymentReceipt = () => {
     address,
     accountType,
     serviceProvider,
-    token: electricityToken
+    token: electricityToken,
   } = useLocalSearchParams();
   console.log(useLocalSearchParams());
 
@@ -115,7 +115,7 @@ const PaymentReceipt = () => {
               ? format(
                   parse(`${paidAt}`, "dd/MM/yyyy HH:mm:ss", new Date()),
                   "MMMM dd, yyyy hh:mma"
-                )
+                ) || paidAt
               : null}
           </AppText>
 
@@ -132,26 +132,29 @@ const PaymentReceipt = () => {
             {meterNumber && (
               <ListItem name="Meter Number" value={meterNumber} />
             )}
-              {accountType && (
-                <ListItem name="Account Type" value={accountType} />
-              )}
+            {accountType && (
+              <ListItem name="Account Type" value={accountType} />
+            )}
             {serviceProvider && (
               <ListItem name="Service Provider" value={serviceProvider} />
             )}
-            {electricityToken && <ListItem name="Token" value={electricityToken} canCopy />}
+            {electricityToken && (
+              <ListItem name="Token" value={electricityToken} canCopy />
+            )}
             {address && <ListItem name="Address" value={address} />}
 
-            {accountName && !meterName && ( //to check in case account name is send as meter name, it causes chaos - really.
-              <ListItem
-                name="Recipient's Details"
-                value={accountName}
-                value2={
-                  bankName && accountNumber
-                    ? `${bankName} | ${accountNumber}`
-                    : null
-                }
-              />
-            )}
+            {accountName &&
+              !meterName && ( //to check in case account name is send as meter name, it causes chaos - really.
+                <ListItem
+                  name="Recipient's Details"
+                  value={accountName}
+                  value2={
+                    bankName && accountNumber
+                      ? `${bankName} | ${accountNumber}`
+                      : null
+                  }
+                />
+              )}
             {accountNumber && (
               <ListItem
                 name="Sender's Details"
@@ -165,7 +168,11 @@ const PaymentReceipt = () => {
               <ListItem name="Telco Reference" value={telcoReference} canCopy />
             )}
             {reference && (
-              <ListItem name="Transaction Reference" value={reference} canCopy />
+              <ListItem
+                name="Transaction Reference"
+                value={reference}
+                canCopy
+              />
             )}
             {narration && <ListItem name="Narration" value={narration} />}
             {fee && (

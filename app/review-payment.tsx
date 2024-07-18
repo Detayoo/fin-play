@@ -143,7 +143,6 @@ const ReviewPayment = () => {
           pathname: "/payment-receipt",
           params: {
             ...data?.data?.transaction,
-
             meterName: data?.data?.transaction?.accountName,
             accountType: vendType,
             serviceProvider,
