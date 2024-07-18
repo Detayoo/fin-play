@@ -95,7 +95,8 @@ export const getCashbackToReceiveFn = async ({
   }
 
   const { data } = await authenticatedRequest(token).get<IGetCashbackPoint>(
-    "/wallet/rewards/point"
+    "/wallet/rewards/point",
+    { params }
   );
 
   return data;

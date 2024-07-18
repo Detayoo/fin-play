@@ -339,7 +339,7 @@ const ReviewPayment = () => {
               name="Amount to pay (NGN)"
               value={
                 useCashback
-                  ? formatMoney(subsidizedAmount || "0")
+                  ? formatMoney(subsidizedAmount > 0 ? subsidizedAmount : "0")
                   : formatMoney(amount || "0")
               }
             />
@@ -354,9 +354,9 @@ const ReviewPayment = () => {
             )}
             <ListItem
               name="Cashback"
-              value={formatNumber(
-                `+${rewardedPointsData?.data?.data?.rewardPoint || 0}`
-              )}
+              value={`+${formatNumber(
+                `${rewardedPointsData?.data?.data?.rewardPoint || 0}`
+              )}`}
               valueColor={Colors.inputFocusBorder}
             />
             <View

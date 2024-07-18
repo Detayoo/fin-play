@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef } from "react";
 import { View, StyleSheet, Pressable, Animated } from "react-native";
 import BottomSheet from "@gorhom/bottom-sheet";
+import { Colors } from "@/constants";
 
 export const ReusableBottomSheet = ({
   children,
@@ -60,7 +61,8 @@ export const ReusableBottomSheet = ({
         enablePanDownToClose={true}
         style={styles.bottomSheet}
         handleIndicatorStyle={styles.handleIndicator}
-        // keyboardBehavior='interactive'
+        keyboardBehavior="interactive"
+        keyboardBlurBehavior="restore"
       >
         <View style={styles.contentContainer}>{children}</View>
       </BottomSheet>
@@ -88,7 +90,7 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: Colors.white,
     paddingHorizontal: 16,
     borderRadius: 50,
   },

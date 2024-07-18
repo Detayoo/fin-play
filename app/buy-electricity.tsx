@@ -246,15 +246,14 @@ const BuyElectricityPage = () => {
                             touched={touched.meterNumber}
                             label="Meter Number"
                             keyboardType="number-pad"
-                            length={11}
+                            maxLength={11}
                           />
-                          {userAccountData.isFetching && (
+                          {userAccountData.isFetching ? (
                             <AppText style={{ marginTop: -30 }}>
                               Fetching Meter Details..
                             </AppText>
-                          )}
-
-                          {state?.meterNumber?.length === 11 &&
+                          ) : (
+                            state?.meterNumber?.length === 11 &&
                             userAccountData?.data?.data?.data?.meterDetails
                               ?.accountName && (
                               <View
@@ -273,9 +272,10 @@ const BuyElectricityPage = () => {
                                   }
                                 </AppText>
                               </View>
-                            )}
+                            )
+                          )}
 
-                          <View style={{ marginTop: -10 }}>
+                          <View style={{}}>
                             <TextField
                               onChange={(value: string) =>
                                 handleAmountChange(value, setFieldValue)

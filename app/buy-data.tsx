@@ -39,7 +39,7 @@ type State = {
 
 type DataForm = {
   phoneNumber: string | undefined;
-  serviceProvider: string;
+  // serviceProvider: string;
 };
 
 const BuyDataPage = () => {
@@ -59,6 +59,8 @@ const BuyDataPage = () => {
       },
     ],
   });
+
+  console.log(providersData?.data?.data?.providers)
 
   const [state, setState] = useState<State>({
     modal: false,
@@ -89,7 +91,7 @@ const BuyDataPage = () => {
   const selectedTariff =
     dataPlans?.data?.data?.dataplans && state?.serviceProvider
       ? dataPlans?.data?.data?.dataplans[state?.serviceProvider?.label]?.find(
-          (each) => state.selectedPlan?.tariff_type_id === each?.tariff_type_id
+          (each) => state.selectedPlan?.name === each?.name
         )
       : null;
 
@@ -144,7 +146,7 @@ const BuyDataPage = () => {
                         ?.replace(/^(\+?234)/, "0")
                         ?.replace(/[\s-]/g, "")
                     : "",
-                  serviceProvider: state?.serviceProvider?.label || "",
+                  // serviceProvider: state?.serviceProvider?.label || "",
                 }}
                 onSubmit={onSubmit}
                 validationSchema={buyDataSchema}
@@ -231,9 +233,9 @@ const BuyDataPage = () => {
                                     });
                                     // handleSubmit();
 
-                                    setTimeout(() => {
-                                      handleSubmit();
-                                    }, 200);
+                                    // setTimeout(() => {
+                                    //   handleSubmit();
+                                    // }, 200);
                                   }}
                                   style={{
                                     flexDirection: "row",
@@ -278,7 +280,7 @@ const BuyDataPage = () => {
                           style={{
                             marginTop: 20,
                           }}
-                          disabled={!isValid || !selectedTariff}
+                          disabled={!isValid || !selectedTariff || !state.serviceProvider}
                         />
                       </View>
                     </View>
