@@ -44,7 +44,7 @@ const TVPage = () => {
     modal: false,
     typeModal: false,
     serviceProvider: null,
-    packageType: "",
+    packageType: null,
     smartCardNumber: "",
   });
 
@@ -109,8 +109,12 @@ const TVPage = () => {
 
   const { accountName } = userAccountData?.data?.data || {};
 
-  const selectedPackage = bouquetData?.data?.data[state.serviceProvider]?.find(
-    (each) => state.packageType?.name === each?.name
+  const selectedPackage = bouquetData?.data?.data[
+    state.serviceProvider?.label?.toLowerCase()
+  ]?.find((each) => state.packageType?.name === each?.name);
+
+  console.log(
+    bouquetData?.data?.data[state.serviceProvider?.label?.toLowerCase()]
   );
 
   const onSubmit = async (values: ElectricityForm) => {
@@ -190,75 +194,71 @@ const TVPage = () => {
                         title="Select Service Provider"
                       />
                       {/* {state.serviceProvider?.label && ( */}
-                        <>
-                          <SelectPlaceholder
-                            label={
-                              state.packageType?.label ?? "Select package"
-                            }
-                            onSelect={() =>
-                              updateState({
-                                typeModal: true,
-                              })
-                            }
-                            title="Select Package"
-                          />
+                      <>
+                        <SelectPlaceholder
+                          label={state.packageType?.label ?? "Select package"}
+                          onSelect={() =>
+                            updateState({
+                              typeModal: true,
+                            })
+                          }
+                          title="Select Package"
+                        />
 
-                          <TextField
-                            onChange={(value: string) =>
-                              handlesmartCardNumberChange(value, setFieldValue)
-                            }
-                            onBlur={handleBlur("smartCardNumber")}
-                            value={values.smartCardNumber}
-                            placeholder="Enter SmartCard Number"
-                            errors={errors.smartCardNumber}
-                            touched={touched.smartCardNumber}
-                            label="SmartCard Number"
-                            keyboardType="number-pad"
-                            maxLength={10}
-                          />
-                          {userAccountData.isFetching ? (
-                            <AppText style={{ marginTop: -30 }}>
-                              Fetching Details..
-                            </AppText>
-                          ) : (
-                            state?.smartCardNumber?.length === 10 &&
-                            accountName && (
-                              <View
-                                style={{
-                                  marginTop: -30,
-                                  flexDirection: "row",
-                                  gap: 10,
-                                  alignItems: "center",
-                                }}
-                              >
-                                <Recipient />
-                                <AppText variant="medium">
-                                  {accountName}
-                                </AppText>
-                              </View>
+                        <TextField
+                          onChange={(value: string) =>
+                            handlesmartCardNumberChange(value, setFieldValue)
+                          }
+                          onBlur={handleBlur("smartCardNumber")}
+                          value={values.smartCardNumber}
+                          placeholder="Enter SmartCard Number"
+                          errors={errors.smartCardNumber}
+                          touched={touched.smartCardNumber}
+                          label="SmartCard Number"
+                          keyboardType="number-pad"
+                          maxLength={10}
+                        />
+                        {userAccountData.isFetching ? (
+                          <AppText style={{ marginTop: -30 }}>
+                            Fetching Details..
+                          </AppText>
+                        ) : (
+                          state?.smartCardNumber?.length === 10 &&
+                          accountName && (
+                            <View
+                              style={{
+                                marginTop: -30,
+                                flexDirection: "row",
+                                gap: 10,
+                                alignItems: "center",
+                              }}
+                            >
+                              <Recipient />
+                              <AppText variant="medium">{accountName}</AppText>
+                            </View>
+                          )
+                        )}
+
+                        <PrimaryButton
+                          disabled={
+                            !!(
+                              !isValid ||
+                              !state.serviceProvider ||
+                              !accountName ||
+                              state?.packageType
                             )
-                          )}
-
-                          <PrimaryButton
-                            disabled={
-                              !!(
-                                !isValid ||
-                                !state.serviceProvider ||
-                                !accountName ||
-                                state?.packageType
-                              )
-                            }
-                            onPress={() => handleSubmit()}
-                            label="Proceed to Payment"
-                            style={{
-                              marginTop: 20,
-                              position: "absolute",
-                              bottom: 0,
-                              right: 0,
-                              width: "100%",
-                            }}
-                          />
-                        </>
+                          }
+                          onPress={() => handleSubmit()}
+                          label="Proceed to Payment"
+                          style={{
+                            marginTop: 20,
+                            position: "absolute",
+                            bottom: 0,
+                            right: 0,
+                            width: "100%",
+                          }}
+                        />
+                      </>
                       {/* )} */}
                     </View>
                   );
@@ -269,9 +269,13 @@ const TVPage = () => {
         </View>
 
         <SelectField
-          options={bouquetData?.data?.data[state?.serviceProvider]?.map(
-            (each, index) => ({ id: index + 1, label: each })
-          )}
+          options={bouquetData?.data?.data[
+            state?.serviceProvider?.label?.toLowerCase()
+          ]?.map((each, index) => ({
+            id: index + 1,
+            label: each.name,
+            ...each,
+          }))}
           visible={state.typeModal}
           setVisible={(e) => {
             updateState({
@@ -291,6 +295,7 @@ const TVPage = () => {
           setSelectedOption={(e: any) => {
             updateState({
               serviceProvider: e,
+              packageType: null, //update packagetype everytime the user changes the service providerd
             });
           }}
         />

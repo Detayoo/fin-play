@@ -32,7 +32,7 @@ type State = {
 
 type AirtimeForm = {
   amount: string;
-  serviceProvider: string;
+  // serviceProvider: string;
   phoneNumber: string | undefined;
 };
 const BuyAirtimePage = () => {
@@ -75,7 +75,11 @@ const BuyAirtimePage = () => {
     try {
       router.push({
         pathname: "/review-payment",
-        params: { ...values, from: "/buy-airtime" },
+        params: {
+          ...values,
+          serviceProvider: state.serviceProvider.label,
+          from: "/buy-airtime",
+        },
       });
       return;
     } catch (error) {}
@@ -123,7 +127,6 @@ const BuyAirtimePage = () => {
                         ?.replace(/[\s-]/g, "")
                     : "",
                   amount: "",
-                  serviceProvider: state?.serviceProvider?.label || "",
                 }}
                 onSubmit={onSubmit}
                 validationSchema={buyAirtimeSchema}
@@ -136,6 +139,7 @@ const BuyAirtimePage = () => {
                   handleChange,
                   touched,
                   setFieldValue,
+                  isValid,
                 }) => {
                   return (
                     <View
@@ -224,21 +228,23 @@ const BuyAirtimePage = () => {
                             <AppText>NGN1.00</AppText>
                           </View>
                         </Pressable>
-                        <View
+                        <Pressable
                           style={{
                             flexDirection: "row",
                             justifyContent: "space-between",
                             alignItems: "center",
                           }}
+                          onPress={() => setFieldValue("amount", "100")}
                         >
                           <AppText>NGN100.00</AppText>
                           <View style={{ gap: 4 }}>
                             <AppText size="small">Cashback</AppText>
                             <AppText>NGN2.00</AppText>
                           </View>
-                        </View>
+                        </Pressable>
                       </View>
                       <PrimaryButton
+                        disabled={!isValid || !state.serviceProvider}
                         onPress={() => handleSubmit()}
                         label="Proceed to Payment"
                         style={{

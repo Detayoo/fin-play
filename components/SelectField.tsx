@@ -85,7 +85,6 @@ export const SelectField = ({
     []
   );
 
-  console.log("vis", visible);
   return (
     <>
       {visible && (

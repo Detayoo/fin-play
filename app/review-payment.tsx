@@ -233,9 +233,9 @@ const ReviewPayment = () => {
       onSettled: () => {
         queryClient.invalidateQueries({
           queryKey: [
+            "all transactions",
             "points balance",
             "user account details",
-            "all transactions",
           ],
         });
       },

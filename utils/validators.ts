@@ -33,7 +33,7 @@ export const resetPasswordSchema = Yup.object().shape({
 export const buyAirtimeSchema = Yup.object().shape({
   amount: Yup.string().required(),
   phoneNumber: Yup.string().required().length(11),
-  serviceProvider: Yup.string().required(),
+  // serviceProvider: Yup.string().required(),
 });
 
 export const buyDataSchema = Yup.object().shape({
