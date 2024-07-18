@@ -105,6 +105,7 @@ const BuyDataPage = () => {
           ...selectedTariff,
           amount: selectedTariff?.price,
           tariffId: selectedTariff?.tariff_type_id,
+          serviceProvider: state?.serviceProvider?.label,
           from: "/buy-data",
         },
       });
