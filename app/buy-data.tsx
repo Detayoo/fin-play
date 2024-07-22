@@ -65,11 +65,7 @@ const BuyDataPage = () => {
   const [state, setState] = useState<State>({
     modal: false,
     serviceProvider: null,
-    options:
-      providersData?.data?.data?.providers?.map((each, index) => ({
-        id: index + 1,
-        label: each,
-      })) || [],
+    options: [],
     selectedContact: null,
     selectedPlan: null,
     phoneNumber: "",
@@ -92,7 +88,6 @@ const BuyDataPage = () => {
   useEffect(() => {
     const phoneStarter = state?.phoneNumber?.slice(0, 4);
 
-    console.log("starter", phoneStarter);
     const provider = PROVIDER_VALIDATOR?.find((prov) =>
       prov.prefixes.includes(phoneStarter)
     )?.provider;
@@ -246,11 +241,6 @@ const BuyDataPage = () => {
                                     updateState({
                                       selectedPlan: each,
                                     });
-                                    // handleSubmit();
-
-                                    // setTimeout(() => {
-                                    //   handleSubmit();
-                                    // }, 200);
                                   }}
                                   style={{
                                     flexDirection: "row",
@@ -271,10 +261,6 @@ const BuyDataPage = () => {
                                     NGN
                                     {each.price}
                                   </AppText>
-                                  {/* <View style={{ gap: 4, width: "20%" }}>
-                                    <AppText size="small">Cashback</AppText>
-                                    <AppText>NGN1.00</AppText>
-                                  </View> */}
                                 </TouchableOpacity>
                               );
                             })}
@@ -292,7 +278,11 @@ const BuyDataPage = () => {
                         }}
                       >
                         <PrimaryButton
-                          onPress={() => handleSubmit()}
+                          onPress={
+                            !state.selectedPlan
+                              ? () => {}
+                              : () => handleSubmit()
+                          }
                           label="Proceed to Payment"
                           style={{
                             marginTop: 20,
@@ -300,7 +290,8 @@ const BuyDataPage = () => {
                           disabled={
                             !isValid ||
                             !selectedTariff ||
-                            !state.serviceProvider
+                            !state.serviceProvider ||
+                            !state.selectedPlan
                           }
                         />
                       </View>
@@ -319,6 +310,7 @@ const BuyDataPage = () => {
           setSelectedOption={(e: any) => {
             updateState({
               serviceProvider: e,
+              selectedPlan: null,
             });
           }}
         />
