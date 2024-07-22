@@ -69,7 +69,7 @@ export const TransactionItem = ({
         }}
       >
         <AppText
-          style={{ textTransform: "none" }}
+          style={{ textTransform: "uppercase" }}
           numberOfLines={1}
           variant="medium"
         >

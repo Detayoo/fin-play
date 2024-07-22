@@ -1,4 +1,4 @@
-import { Pressable, View } from "react-native";
+import { Pressable, TextStyle, View } from "react-native";
 
 import { AppText } from "./AppText";
 import { Colors } from "../constants";
@@ -16,9 +16,10 @@ export const ListItem = ({
   maxWidth,
   valueColor,
   styles,
+  value2Styles,
 }: {
   name: string;
-  value: string | string[] | undefined;
+  value: any;
   value2?: any;
   canCopy?: boolean;
   hasBottomBorder?: boolean;
@@ -27,6 +28,7 @@ export const ListItem = ({
   maxWidth?: any;
   valueColor?: string;
   styles?: any;
+  value2Styles?: TextStyle;
 }) => {
   return (
     <View
@@ -80,7 +82,12 @@ export const ListItem = ({
             </Pressable>
           )}
         </View>
-        <AppText style={{ textAlign: "right", fontSize: 12, marginTop: 5 }}>
+        <AppText
+          style={[
+            { textAlign: "right", fontSize: 12, marginTop: 5 },
+            value2Styles,
+          ]}
+        >
           {value2}
         </AppText>
       </View>

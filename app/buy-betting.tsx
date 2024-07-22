@@ -240,7 +240,13 @@ const BuyBettingPage = () => {
 
                       <PrimaryButton
                         disabled={
-                          !isValid || !state.serviceProvider || !accountName
+                          !!(
+                            !isValid ||
+                            !state.serviceProvider ||
+                            !accountName ||
+                            (minimumAmountPayable &&
+                              +minimumAmountPayable > +state?.amount)
+                          )
                         }
                         onPress={
                           minimumAmountPayable &&

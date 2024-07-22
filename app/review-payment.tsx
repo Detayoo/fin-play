@@ -19,7 +19,13 @@ import {
 } from "@/components";
 import { Colors } from "@/constants";
 import { BigMtn } from "@/assets";
-import { ERRORS, extractServerError, formatMoney, formatNumber } from "@/utils";
+import {
+  ERRORS,
+  extractServerError,
+  formatMoney,
+  formatNumber,
+  naira,
+} from "@/utils";
 import {
   buyAirtimeFn,
   buyBettingPlanFn,
@@ -218,6 +224,8 @@ const ReviewPayment = () => {
     useMutation({
       mutationFn: buyBouquetFn,
       onSuccess: (data) => {
+        console.log(data?.data?.transaction);
+
         router.replace({
           pathname: "/payment-receipt",
           params: {
@@ -373,11 +381,7 @@ const ReviewPayment = () => {
           }}
         >
           {/* <BigMtn /> */}
-          {
-            PROVIDER_LOGOS?.find(
-              (each) => each.name === serviceProvider
-            )?.logo
-          }
+          {PROVIDER_LOGOS?.find((each) => each.name === serviceProvider)?.logo}
           <AppText style={{ marginTop: 14 }} size="xlarge" variant="medium">
             NGN {formatMoney(amount)}
           </AppText>
@@ -432,10 +436,29 @@ const ReviewPayment = () => {
             <ListItem
               name="Amount to pay (NGN)"
               value={
-                useCashback
-                  ? formatMoney(subsidizedAmount > 0 ? subsidizedAmount : "0")
-                  : formatMoney(amount || "0")
+                useCashback ? (
+                  <>
+                    {naira}
+                    {formatMoney(subsidizedAmount > 0 ? subsidizedAmount : "0")}
+                  </>
+                ) : (
+                  <>
+                    {naira}
+                    {formatMoney(amount || "0")}
+                  </>
+                )
               }
+              value2={
+                <>
+                  {naira}
+                  {formatMoney(amount || "0")}
+                </>
+              }
+              value2Styles={{
+                textDecorationLine: "line-through",
+                display: useCashback ? "flex" : "none",
+                color: Colors.faintBlack,
+              }}
             />
             {serviceProvider && (
               <ListItem name="Network Provider" value={serviceProvider} />
