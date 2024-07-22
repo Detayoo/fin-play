@@ -24,7 +24,7 @@ const { width } = Dimensions.get("window");
 const COLUMNS = 4;
 const ROWS = 2;
 const ITEMS_PER_PAGE = COLUMNS * ROWS;
-const ITEM_SIZE = width / COLUMNS - 16;
+const ITEM_SIZE = width / COLUMNS - 9;
 
 const ServiceItem = ({
   icon,
@@ -115,30 +115,30 @@ export const Services = () => {
         },
       },
     },
-    {
-      icon: <Education />,
-      label: "Education",
-    },
-    {
-      icon: <Smile />,
-      label: "Smile Internet",
-    },
-    {
-      icon: <Water />,
-      label: "Water",
-    },
-    {
-      icon: <Airtime />,
-      label: "Airtime",
-    },
-    {
-      icon: <Data />,
-      label: "Data",
-    },
-    {
-      icon: <Electricity />,
-      label: "Electricity",
-    },
+    // {
+    //   icon: <Education />,
+    //   label: "Education",
+    // },
+    // {
+    //   icon: <Smile />,
+    //   label: "Smile Internet",
+    // },
+    // {
+    //   icon: <Water />,
+    //   label: "Water",
+    // },
+    // {
+    //   icon: <Airtime />,
+    //   label: "Airtime",
+    // },
+    // {
+    //   icon: <Data />,
+    //   label: "Data",
+    // },
+    // {
+    //   icon: <Electricity />,
+    //   label: "Electricity",
+    // },
   ];
 
   const pages = [];
