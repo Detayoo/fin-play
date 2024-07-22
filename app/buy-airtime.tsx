@@ -21,6 +21,7 @@ import { Recipient } from "@/assets";
 import { getAirtimeProvidersFn } from "@/services";
 import { useAuth } from "@/context";
 import { buyAirtimeSchema } from "@/utils";
+import { PROVIDER_VALIDATOR } from "@/data";
 
 type Options = { id: number; label: string }[];
 type State = {
@@ -28,6 +29,7 @@ type State = {
   options: Options;
   modal: boolean;
   selectedContact: null | Contact;
+  phoneNumber: string;
 };
 
 type AirtimeForm = {
@@ -55,6 +57,7 @@ const BuyAirtimePage = () => {
         }))
       : [],
     selectedContact: null,
+    phoneNumber: "",
   });
   const updateState = (payload: any) => {
     setState((prevState: any) => ({ ...prevState, ...payload }));
@@ -70,6 +73,24 @@ const BuyAirtimePage = () => {
       });
     }
   }, [providersData?.data?.providers]);
+
+  useEffect(() => {
+    const phoneStarter = state?.phoneNumber?.slice(0, 4);
+
+    console.log("starter", phoneStarter);
+    const provider = PROVIDER_VALIDATOR?.find((prov) =>
+      prov.prefixes.includes(phoneStarter)
+    )?.provider;
+
+    if (provider) {
+      updateState({
+        serviceProvider: { id: Math.random(), label: provider },
+      });
+    } else
+      updateState({
+        serviceProvider: null,
+      });
+  }, [state?.phoneNumber]);
 
   const onSubmit = async (values: AirtimeForm) => {
     try {
@@ -90,6 +111,9 @@ const BuyAirtimePage = () => {
     setFieldValue: (field: string, value: any) => void
   ) => {
     setFieldValue("phoneNumber", value);
+    updateState({
+      phoneNumber: value,
+    });
   };
 
   return (
@@ -121,11 +145,7 @@ const BuyAirtimePage = () => {
               <Formik
                 enableReinitialize
                 initialValues={{
-                  phoneNumber: state?.selectedContact?.phoneNumbers
-                    ? state?.selectedContact?.phoneNumbers[0]?.number
-                        ?.replace(/^(\+?234)/, "0")
-                        ?.replace(/[\s-]/g, "")
-                    : "",
+                  phoneNumber: state?.phoneNumber ? state?.phoneNumber : "",
                   amount: "",
                 }}
                 onSubmit={onSubmit}
@@ -275,9 +295,12 @@ const BuyAirtimePage = () => {
         />
 
         <PhoneContacts
-          setSelectedContact={(e) => {
+          setSelectedContact={(e: any) => {
             updateState({
               selectedContact: e,
+              phoneNumber: e?.phoneNumbers[0]?.number
+                ?.replace(/^(\+?234)/, "0")
+                ?.replace(/[\s-]/g, ""),
             });
           }}
           showModal={state.modal}
