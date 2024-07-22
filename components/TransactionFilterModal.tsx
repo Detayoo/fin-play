@@ -18,7 +18,7 @@ const categories = [
     label: "Airtime",
   },
   {
-    name: "CableTV",
+    name: "TV",
     label: "Cable TV",
   },
   {
@@ -103,7 +103,7 @@ export const TransactionFilterModal = ({
       ...filterObj,
       duration: selected.duration,
       status: selected.status?.toLowerCase(),
-      type: categories.find((cat) => cat.label === selected.category)?.name,
+      type: categories.find((cat) => cat.label === selected.category)?.name?.toLowerCase(),
       range: {
         start: selected.dateRange.start,
         end: selected.dateRange.end,
