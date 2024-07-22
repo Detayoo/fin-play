@@ -5,6 +5,7 @@ import {
   StyleSheet,
   StatusBar,
   Platform,
+  KeyboardAvoidingView,
 } from "react-native";
 import { usePathname } from "expo-router";
 
@@ -38,7 +39,13 @@ export const Screen = ({
                 backgroundColor: "#fff",
               }}
             >
-              {children}
+              <KeyboardAvoidingView
+                behavior={Platform.OS === "ios" ? "padding" : undefined}
+                keyboardVerticalOffset={100}
+                style={{ flex: 1 }}
+              >
+                {children}
+              </KeyboardAvoidingView>
             </View>
           </GestureHandlerRootView>
         </SafeAreaView>
