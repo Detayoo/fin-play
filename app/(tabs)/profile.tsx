@@ -14,7 +14,7 @@ const ProfilePage = () => {
   const { data: user } = useR({
     token,
   });
-  const { tier } = user?.data || {};
+  const { tier } = user?.data?.userProfile || {};
   const handleNavigation = (route: any) => {
     if (route === "/") {
       logout();
@@ -85,7 +85,7 @@ const ProfilePage = () => {
                       paddingVertical: 20,
                     }}
                   >
-                    {/* {setting.icon} */}
+                    {/* <View>{setting.icon}</View> */}
                     <AppText variant="medium">{setting.label}</AppText>
                   </View>
 
@@ -148,7 +148,7 @@ const ProfilePage = () => {
                       paddingVertical: 20,
                     }}
                   >
-                    {/* {setting.icon} */}
+                    {/* <View>{setting.icon}</View> */}
                     <AppText
                       variant="medium"
                       color={

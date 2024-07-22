@@ -60,9 +60,9 @@ const PaymentReceipt = () => {
     accountType,
     serviceProvider,
     token: electricityToken,
-    customerReference
+    customerReference, bouquet
   } = useLocalSearchParams();
-  console.log(useLocalSearchParams());
+  // console.log(useLocalSearchParams());
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -130,6 +130,7 @@ const PaymentReceipt = () => {
               paddingTop: 20,
             }}
           >
+            {bouquet && <ListItem name="Bouquet Name" value={bouquet} />}
             {meterName && <ListItem name="Meter Name" value={meterName} />}
             {customerId && <ListItem name="Customer ID" value={customerId} />}
             {meterNumber && (

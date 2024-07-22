@@ -23,7 +23,7 @@ import {
   getUserTvDetailsFn,
 } from "@/services";
 import { useAuth } from "@/context";
-import { buyBouquetSchema } from "@/utils";
+import { buyBouquetSchema, formatMoney } from "@/utils";
 
 type State = {
   serviceProvider: any;
@@ -111,10 +111,6 @@ const TVPage = () => {
     state.serviceProvider?.label?.toLowerCase()
   ]?.find((each) => state.packageType?.name === each?.name);
 
-  console.log(
-    bouquetData?.data?.data[state.serviceProvider?.label?.toLowerCase()]
-  );
-
   const { accountName, requestId, smartCardNumber } =
     userAccountData?.data?.data?.transaction || {};
   const onSubmit = async (values: ElectricityForm) => {
@@ -131,8 +127,10 @@ const TVPage = () => {
           accountName,
           bouquetProductKey: selectedPackage?.productKey,
           requestId,
-          provider: state.serviceProvider,
+          provider: state.serviceProvider?.label,
           amount: selectedPackage?.amount,
+          packageName: selectedPackage?.name,
+
           from: "/buy-tv",
         },
       });
@@ -201,7 +199,15 @@ const TVPage = () => {
                       {/* {state.serviceProvider?.label && ( */}
                       <>
                         <SelectPlaceholder
-                          label={state.packageType?.label ?? "Select package"}
+                          label={
+                            state.packageType?.label
+                              ? `${
+                                  state?.packageType?.label
+                                } at NGN${formatMoney(
+                                  state?.packageType?.amount || 0
+                                )}`
+                              : "Select package"
+                          }
                           onSelect={() =>
                             updateState({
                               typeModal: true,
@@ -250,7 +256,7 @@ const TVPage = () => {
                               !isValid ||
                               !state.serviceProvider ||
                               !accountName ||
-                              state?.packageType
+                              !state?.packageType
                             )
                           }
                           onPress={() => handleSubmit()}
@@ -279,6 +285,7 @@ const TVPage = () => {
           ]?.map((each, index) => ({
             id: index + 1,
             label: each.name,
+            extra: `NGN ${formatMoney(each.amount || 0)}`,
             ...each,
           }))}
           visible={state.typeModal}

@@ -24,7 +24,7 @@ const ChangePasswordPage = () => {
     onSuccess: (data) => {
       showToast("success", data?.message);
       setTimeout(() => {
-        router.push("/security");
+        router.replace("/(tabs)/profile");
       }, 1000);
     },
     onError: (error) => {

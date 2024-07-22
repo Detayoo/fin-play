@@ -9,6 +9,7 @@ import {
   AppText,
   BackButton,
   Expenses,
+  Loading,
   Screen,
   TransactionFilterModal,
   TransactionItem,
@@ -277,19 +278,28 @@ const TransactionsHistoryPage = () => {
               }}
             > */}
             <View style={{ marginTop: 20 }}>
+              {transactionsData?.isLoading && (
+                <View style={{ flex: 1 }}>
+                  <Loading />
+                </View>
+              )}
               <FlatList
                 style={{}}
                 showsVerticalScrollIndicator={false}
                 data={flatListData}
-                renderItem={({ item }) => (
+                renderItem={({ item, index }) => (
                   <TransactionItem
+                    key={index}
                     onPress={() =>
                       router.push({
-                        pathname: "/payment-receipt",
-                        params: {},
+                        pathname: "/transaction-details",
+                        params: {
+                          id: item.id,
+                        },
                       })
                     }
                     status="GLO"
+                    data={item}
                   />
                 )}
                 onEndReached={loadMore}
@@ -307,15 +317,6 @@ const TransactionsHistoryPage = () => {
                     title="Fetching Transactions"
                   />
                 }
-              />
-              <TransactionItem
-                onPress={() =>
-                  router.push({
-                    pathname: "/payment-receipt",
-                    params: {},
-                  })
-                }
-                status="GLO"
               />
             </View>
             {/* </ScrollView> */}

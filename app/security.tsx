@@ -40,7 +40,7 @@ const SecurityPage = () => {
     setState((prevState) => ({ ...prevState, ...payload }));
   };
 
-  console.log(isBiometricType, 't', isBiometricSupported, '?')
+  // console.log(isBiometricType, 't', isBiometricSupported, '?')
 
   const toggleBiometrics = async () => {
     try {

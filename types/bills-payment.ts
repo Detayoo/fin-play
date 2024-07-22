@@ -199,12 +199,17 @@ export interface IPurchaseBouquet {
   provider: string | string[] | undefined;
   smartCardNumber: string | string[] | undefined;
   amount: number | string[] | undefined;
+  pin: string;
 }
 
 export interface IPurchaseBouquetResponse extends BareResponse {
   data: {
-    amountPaid: string;
-    customerReference: string;
-    status: string;
+    transaction: {
+      amountPaid: string;
+      reference: string;
+      status: string;
+      bouquet: string;
+      paidAt: string;
+    };
   };
 }

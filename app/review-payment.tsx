@@ -57,6 +57,7 @@ const ReviewPayment = () => {
     bouquetProductKey,
     requestId,
     smartCardNumber,
+    packageName,
   } = useLocalSearchParams();
 
   const getServiceType = () => {
@@ -219,7 +220,13 @@ const ReviewPayment = () => {
         router.replace({
           pathname: "/payment-receipt",
           params: {
-            ...data?.data,
+            ...data?.data?.transaction,
+            amount: data?.data?.transaction?.amountPaid,
+            bouquet: packageName,
+            smartCardNumber,
+            serviceProvider,
+            accountName,
+
             from: "/tv-payment",
           },
         });
@@ -309,6 +316,7 @@ const ReviewPayment = () => {
             provider,
             requestId,
             smartCardNumber,
+            pin,
           },
           token,
         });
@@ -390,6 +398,10 @@ const ReviewPayment = () => {
             {meterNumber && (
               <ListItem name="Meter Number" value={meterNumber} />
             )}
+            {smartCardNumber && (
+              <ListItem name="SmartCard Number" value={smartCardNumber} />
+            )}
+            {packageName && <ListItem name="Package" value={packageName} />}
             {provider && <ListItem name="Service Provider" value={provider} />}
             {disco && <ListItem name="Service Provider" value={disco} />}
 
@@ -456,7 +468,7 @@ const ReviewPayment = () => {
               value={`${formatNumber(pointBal?.toFixed(2) || 0)}`}
               valueColor={Colors.inputFocusBorder}
             />
-            <View
+            {/* <View
               style={{
                 flexDirection: "row",
                 justifyContent: "space-between",
@@ -468,7 +480,7 @@ const ReviewPayment = () => {
                 state={save}
                 toggleSwitch={() => setSave(!save)}
               />
-            </View>
+            </View> */}
           </View>
         </ScrollView>
         <PrimaryButton

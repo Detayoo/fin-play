@@ -5,21 +5,26 @@ import { AppText } from "./AppText";
 import { formatMoney } from "../utils";
 import { Colors } from "../constants";
 import { BankOutward, GloOutward } from "../assets";
+import { IGetTransactionById } from "@/types";
 
 export const TransactionItem = ({
   addBorder = true,
   status,
   onPress,
   data,
+  type,
 }: {
   addBorder?: boolean;
-  status: "GLO" | "DEBIT";
+  status?: "GLO" | "DEBIT" | "CREDIT";
   onPress: () => void;
   data?: any;
+  type?: string;
 }) => {
   const renderImage = () => {
-    switch (status) {
+    switch (type) {
       case "DEBIT":
+        return <BankOutward />;
+      case "CREDIT":
         return <BankOutward />;
       case "GLO":
         return <GloOutward />;
@@ -27,6 +32,13 @@ export const TransactionItem = ({
         break;
     }
   };
+
+  const isBill =
+    data?.category?.toLowerCase() == "airtime" ||
+    data?.category?.toLowerCase() === "data" ||
+    data?.category?.toLowerCase() === "electricity" ||
+    data?.category?.toLowerCase() === "tv" ||
+    data?.category?.toLowerCase() === "betting";
 
   return (
     <TouchableOpacity
@@ -40,27 +52,32 @@ export const TransactionItem = ({
         gap: 15,
       }}
     >
-      {renderImage()}
+      {type && renderImage()}
       <View
         style={{
           gap: 8,
           flex: 1,
         }}
       >
-        <AppText numberOfLines={1} variant="medium">
-          {data?.accountName}
+        <AppText style={{textTransform:'capitalize'}} numberOfLines={1} variant="medium">
+          {isBill
+            ? `${
+                data?.category
+              } purchase for ${data?.beneficiary}`
+            : data?.accountName}
         </AppText>
         <AppText size="small" color={Colors.faintBlack}>
-          {data?.paidAt
-            ? format(new Date(data.paidAt), "MMMM dd, yyyy hh:mma")
+          {data?.time
+            ? format(new Date(data.time), "MMMM dd, yyyy hh:mma")
             : null}
         </AppText>
       </View>
 
       <View style={{ marginLeft: "auto", gap: 8, alignItems: "flex-end" }}>
         <AppText style={{ fontSize: 13 }} variant="medium">
-          {/* check ttype here */}
-          {"-"}NGN{formatMoney(data?.amountPaid || 0)}
+          {/* check type here */}
+          {isBill ? "-" : ""}
+          NGN{formatMoney(data?.amountPaid || 0)}
         </AppText>
         <AppText
           size="small"

@@ -5,7 +5,14 @@ import * as FileSystem from "expo-file-system";
 import * as ImagePicker from "expo-image-picker";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { AppText, BackButton, ListItem, Screen, showToast } from "@/components";
+import {
+  AppText,
+  BackButton,
+  ListItem,
+  Loading,
+  Screen,
+  showToast,
+} from "@/components";
 import { uploadProfilePhotoFn, useR } from "@/services";
 import { useAuth } from "@/context";
 import { ERRORS, extractServerError } from "@/utils";
@@ -18,11 +25,12 @@ const UserProfilePage = () => {
     return isOk;
   };
   const { token } = useAuth();
-  const { data: userData } = useR({
+  const { data: userData, isFetching } = useR({
     token,
   });
 
-  const { email, firstName, lastName, tier } = userData?.data || {};
+  const { email, firstName, lastName, tier, fullName, dob } =
+    userData?.data?.userProfile || {};
   const photo = "y";
 
   const { isPending, mutateAsync } = useMutation({
@@ -103,29 +111,32 @@ const UserProfilePage = () => {
           }}
         />
       </View>
-      <ScrollView
-        contentContainerStyle={{ paddingTop: 20 }}
-        showsVerticalScrollIndicator={false}
-      >
-        <View
-          style={{
-            borderRadius: 10,
-            backgroundColor: "#90AD0408",
-            paddingHorizontal: 15,
-            paddingVertical: 20,
-            justifyContent: "center",
-            alignItems: "center",
-            borderWidth: 1,
-            borderColor: "#ABABAB40",
-          }}
+      {isFetching ? (
+        <Loading />
+      ) : (
+        <ScrollView
+          contentContainerStyle={{ paddingTop: 20 }}
+          showsVerticalScrollIndicator={false}
         >
-          {photo ? (
-            <Image
-              source={require("../assets/images/animoji.png")}
-              style={{ width: 50, height: 50 }}
-            />
-          ) : null}
-          {/* <AppText
+          <View
+            style={{
+              borderRadius: 10,
+              backgroundColor: "#90AD0408",
+              paddingHorizontal: 15,
+              paddingVertical: 20,
+              justifyContent: "center",
+              alignItems: "center",
+              borderWidth: 1,
+              borderColor: "#ABABAB40",
+            }}
+          >
+            {photo ? (
+              <Image
+                source={require("../assets/images/animoji.png")}
+                style={{ width: 50, height: 50 }}
+              />
+            ) : null}
+            {/* <AppText
             onPress={pickImage}
             style={{ marginTop: 20 }}
             color={Colors.inputFocusBorder}
@@ -134,28 +145,29 @@ const UserProfilePage = () => {
             Tap to change photo
           </AppText> */}
 
-          <View style={{ width: "100%", marginTop: 50 }}>
-            <ListItem
-              name="Full Name"
-              value={(firstName ?? "") + " " + (lastName ?? "")}
-              hasBottomBorder
-            />
-            <ListItem name="Email" value={email} hasBottomBorder />
-            <ListItem name="BVN" value="12345678900" hasBottomBorder />
-            <ListItem
-              name="Date Of Birth"
-              value={format(new Date(), "do MMMM, yyyy")}
-              hasBottomBorder
-            />
-            <ListItem
-              name="Current Tier"
-              value={`Tier ${tier}`}
-              hasBottomBorder
-              hasBackgroundColor
-            />
+            <View style={{ width: "100%", marginTop: 50 }}>
+              <ListItem
+                name="Full Name"
+                value={fullName}
+                hasBottomBorder
+              />
+              <ListItem name="Email" value={email} hasBottomBorder />
+              <ListItem name="BVN" value="12345678900" hasBottomBorder />
+              <ListItem
+                name="Date Of Birth"
+                value={format(new Date(), "do MMMM, yyyy")}
+                hasBottomBorder
+              />
+              <ListItem
+                name="Current Tier"
+                value={`Tier ${tier}`}
+                hasBottomBorder
+                hasBackgroundColor
+              />
+            </View>
           </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      )}
     </Screen>
   );
 };

@@ -44,3 +44,33 @@ export interface IGetCashbackPoint extends BareResponse {
     }[];
   };
 }
+
+export interface IGetTransactionById extends BareResponse {
+  data: {
+    id: string;
+    category: string;
+    initialAmount: number;
+    amountPaid: number;
+    cashbackUsed: number;
+    cashback: number;
+    status: string;
+    recipientNumber: string;
+    telco: string;
+    tarrifName: string; // data
+    customerId: string; // betting
+    token: string; // electricity
+    units: number; // electricity
+    meterNumber: string; // electricity
+    address: string; // electricity
+    accountNumber: string; // transfer
+    bankName: string; //transfer
+    paymentMethod: string;
+    transactionType: string;
+    accountName: string; // betting & electricity & transfer
+    reference: string;
+    fee: string;
+    meterName: string;
+    narration: string;
+    paidAt: string;
+  };
+}

@@ -98,9 +98,9 @@ const BankTransfer = () => {
 
     onError: (error) => {
       showToast("error", extractServerError(error, ERRORS.SOMETHING_HAPPENED));
-      updateState({
-        accountName: "",
-      });
+      // updateState({
+      //   accountName: "",
+      // });
     },
   });
   const handleAccountNumberChange = (

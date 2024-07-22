@@ -116,6 +116,7 @@ export default function RootLayout() {
             <Stack.Screen name="change-pin" options={options} />
             <Stack.Screen name="forgot-pin" options={options} />
             <Stack.Screen name="cable-tv" options={options} />
+            <Stack.Screen name="transaction-details" options={options} />
             {/* </Screen> */}
             <Stack.Screen
               name="(tabs)"
@@ -123,9 +124,9 @@ export default function RootLayout() {
             />
           </Stack>
         </QueryClientProvider>
-        <View style={{ height: 250 }}>
+        {/* <View style={{ height: 250 }}>
           <NetworkLogger />
-        </View>
+        </View> */}
       </AuthProvider>
 
       {/* </ThemeProvider> */}

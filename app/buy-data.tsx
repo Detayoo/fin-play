@@ -60,8 +60,6 @@ const BuyDataPage = () => {
     ],
   });
 
-  console.log(providersData?.data?.data?.providers);
-
   const [state, setState] = useState<State>({
     modal: false,
     serviceProvider: null,
@@ -273,7 +271,7 @@ const BuyDataPage = () => {
                           right: 0,
                           width: "100%",
                           backgroundColor: Colors.white,
-                            // paddingTop: 10,
+                          // paddingTop: 10,
                         }}
                       >
                         <PrimaryButton
