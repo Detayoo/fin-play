@@ -3,6 +3,7 @@ import {
   ITransactionsList,
   IGetStats,
   IGetCashbackPoint,
+  IGetTransactionById,
 } from "@/types";
 import { authenticatedRequest } from "../api";
 
@@ -99,5 +100,18 @@ export const getCashbackToReceiveFn = async ({
     { params }
   );
 
+  return data;
+};
+
+export const getTransactionById = async ({
+  token,
+  id,
+}: {
+  token: TokenType;
+  id: string | string[] | undefined;
+}) => {
+  const { data } = await authenticatedRequest(token).get<IGetTransactionById>(
+    `/transactions/single?id=${id}`
+  );
   return data;
 };

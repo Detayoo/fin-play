@@ -10,11 +10,15 @@ import { PrimaryButton } from "./PrimaryButton";
 
 const categories = [
   {
+    name: "ALL",
+    label: "All",
+  },
+  {
     name: "AIRTIME",
     label: "Airtime",
   },
   {
-    name: "CableTV",
+    name: "TV",
     label: "Cable TV",
   },
   {
@@ -37,8 +41,8 @@ const categories = [
 
 const statuses = [
   {
-    name: "SUCCESSFUL",
-    label: "Successful",
+    name: "SUCCESS",
+    label: "Success",
   },
   {
     name: "PENDING",
@@ -98,8 +102,8 @@ export const TransactionFilterModal = ({
     setFilterObj({
       ...filterObj,
       duration: selected.duration,
-      status: selected.status?.toLocaleUpperCase(),
-      type: categories.find((cat) => cat.label === selected.category)?.name,
+      status: selected.status?.toLowerCase(),
+      type: categories.find((cat) => cat.label === selected.category)?.name?.toLowerCase(),
       range: {
         start: selected.dateRange.start,
         end: selected.dateRange.end,

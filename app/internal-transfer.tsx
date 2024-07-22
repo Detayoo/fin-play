@@ -49,9 +49,9 @@ const InternalTransfer = () => {
 
     onError: (error) => {
       showToast("error", extractServerError(error, ERRORS.SOMETHING_HAPPENED));
-      updateState({
-        accountName: "",
-      });
+      // updateState({
+      //   accountName: "",
+      // });
     },
   });
 
@@ -118,9 +118,6 @@ const InternalTransfer = () => {
           With just their account number, send money to any Uzzy app users.
         </AppText>
 
-        <AppText style={{ marginTop: 30 }} variant="medium" size="large">
-          Recipient Account
-        </AppText>
         <Formik
           initialValues={initialValues}
           onSubmit={onSubmit}

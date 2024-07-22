@@ -15,8 +15,9 @@
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
-        "NSFaceIDUsageDescription": "This app uses Face ID for secure and convenient user authentication."
-      }
+        "NSFaceIDUsageDescription": "Allow UZZY to use Face ID."
+      },
+      "bundleIdentifier": "com.adedigba.uzzyv1"
     },
     "android": {
       "adaptiveIcon": {
@@ -28,14 +29,14 @@
         "android.permission.WRITE_CONTACTS",
         "android.permission.USE_BIOMETRIC",
         "android.permission.USE_FINGERPRINT"
-      ]
+      ],
+      "package": "com.adedigba.uzzyv1"
     },
     "web": {
       "bundler": "metro",
       "output": "static",
       "favicon": "./assets/images/favicon.png"
     },
-
     "plugins": [
       [
         "expo-local-authentication",
@@ -43,7 +44,9 @@
           "faceIDPermission": "Allow UZZY to use Face ID."
         }
       ],
-      ["expo-router"],
+      [
+        "expo-router"
+      ],
       [
         "expo-contacts",
         {
@@ -53,6 +56,20 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "ee9231cd-c8b1-4ba1-91d9-8267d6bc0cc6"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/ee9231cd-c8b1-4ba1-91d9-8267d6bc0cc6"
     }
   }
 }

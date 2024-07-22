@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, SafeAreaView } from "react-native";
+import { View, Text, StyleSheet, SafeAreaView, StatusBar } from "react-native";
 import { router } from "expo-router";
 import { useMutation } from "@tanstack/react-query";
 
@@ -75,6 +75,11 @@ const ConfirmTransactionPIN = () => {
   return (
     <Screen>
       <SafeAreaView style={styles.container}>
+        <StatusBar
+          barStyle="dark-content"
+          backgroundColor="transparent"
+          translucent
+        />
         <View style={styles.header}>
           <LockIcon />
           <Text style={styles.title}>

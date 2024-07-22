@@ -8,11 +8,15 @@ import {
   IBuyElectricityPayload,
   IBuyElectricityResponse,
   ICheckMeterResponse,
+  IGetBouquet,
   IGetDataPlans,
   IGetElectricityProviders,
   IGetPointBalance,
   IGetProviders,
+  IPurchaseBouquet,
+  IPurchaseBouquetResponse,
   IValidateBettingAccountResponse,
+  IValidateTVAccountResponse,
   TokenType,
 } from "@/types";
 import { authenticatedRequest } from "../api";
@@ -232,5 +236,49 @@ export const get = async ({ token }: { token: TokenType }) => {
   const { data } = await authenticatedRequest(token).get<IGetPointBalance>(
     "/wallet/rewards"
   );
+  return data;
+};
+
+export const getTVProvidersFn = async ({ token }: { token: TokenType }) => {
+  const { data } = await authenticatedRequest(token).get<IGetProviders>(
+    "/tv/providers"
+  );
+  return data;
+};
+
+export const getUserTvDetailsFn = async ({
+  token,
+  provider,
+  smartCardNumber,
+}: {
+  token: TokenType;
+  provider: string;
+  smartCardNumber: string;
+}) => {
+  const { data } = await authenticatedRequest(
+    token
+  ).get<IValidateTVAccountResponse>(
+    `/tv/account?provider=${provider}&smartCardNumber=${smartCardNumber}`
+  );
+  return data;
+};
+
+export const getBouquetsFn = async ({ token }: { token: TokenType }) => {
+  const { data } = await authenticatedRequest(token).get<IGetBouquet>(
+    "/tv/bouquets"
+  );
+  return data;
+};
+
+export const buyBouquetFn = async ({
+  token,
+  payload,
+}: {
+  token: TokenType;
+  payload: IPurchaseBouquet;
+}) => {
+  const { data } = await authenticatedRequest(
+    token
+  ).post<IPurchaseBouquetResponse>("/tv/vend", payload);
   return data;
 };

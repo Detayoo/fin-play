@@ -8,7 +8,9 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import {
   AppText,
   BackButton,
+  EmptyComponent,
   Expenses,
+  Loading,
   Screen,
   TransactionFilterModal,
   TransactionItem,
@@ -98,18 +100,18 @@ const TransactionsHistoryPage = () => {
         transactionType: filterObj?.type ?? null,
         startDate:
           filterObj?.duration === "Last 7 Days"
-            ? format(new Date(dayFromNow(7)), "yyyy-MM-dd")
+            ? format(new Date(dayFromNow(7)), "dd-MM-yyyy")
             : filterObj?.duration === "Last 30 Days"
-            ? format(new Date(dayFromNow(30)), "yyyy-MM-dd")
+            ? format(new Date(dayFromNow(30)), "dd-MM-yyyy")
             : filterObj.duration === "Custom"
-            ? format(new Date(filterObj.range.start), "yyyy-MM-dd")
+            ? format(new Date(filterObj.range.start), "dd-MM-yyyy")
             : null,
         endDate:
           filterObj?.duration === "Last 7 Days" ||
           filterObj.duration === "Last 30 Days"
-            ? format(new Date(currentDate), "yyyy-MM-dd")
+            ? format(new Date(currentDate), "dd-MM-yyyy")
             : filterObj.duration === "Custom"
-            ? format(new Date(filterObj.range.end), "yyyy-MM-dd")
+            ? format(new Date(filterObj.range.end), "dd-MM-yyyyy")
             : null,
       }),
     enabled: !!token,
@@ -276,47 +278,58 @@ const TransactionsHistoryPage = () => {
                 width: "100%",
               }}
             > */}
-            <View style={{ marginTop: 20 }}>
-              <FlatList
-                style={{}}
-                showsVerticalScrollIndicator={false}
-                data={flatListData}
-                renderItem={({ item }) => (
-                  <TransactionItem
-                    onPress={() =>
-                      router.push({
-                        pathname: "/payment-receipt",
-                        params: {},
-                      })
-                    }
-                    status="GLO"
-                  />
-                )}
-                onEndReached={loadMore}
-                onEndReachedThreshold={0.1}
-                keyExtractor={(item) => item.id}
-                ListFooterComponent={
-                  transactionsData.isFetchingNextPage ? (
-                    <AppText>LOADING MORE..</AppText>
-                  ) : null
-                }
-                refreshControl={
-                  <RefreshControl
-                    onRefresh={refetchByUser}
-                    refreshing={isRefetchingByUser}
-                    title="Fetching Transactions"
-                  />
-                }
-              />
-              <TransactionItem
-                onPress={() =>
-                  router.push({
-                    pathname: "/payment-receipt",
-                    params: {},
-                  })
-                }
-                status="GLO"
-              />
+            <View style={{ marginTop: 20, flex: 1 }}>
+              {transactionsData?.isLoading ? (
+                <Loading />
+              ) : (
+                <FlatList
+                  style={{ flex: 1 }}
+                  showsVerticalScrollIndicator={false}
+                  data={flatListData}
+                  ListEmptyComponent={
+                    <View
+                      style={{
+                        flex: 1,
+                        minHeight: "100%",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <EmptyComponent message="No transaction found" />
+                    </View>
+                  }
+                  renderItem={({ item, index }) => (
+                    <TransactionItem
+                      key={index}
+                      onPress={() =>
+                        router.push({
+                          pathname: "/transaction-details",
+                          params: {
+                            id: item.id,
+                          },
+                        })
+                      }
+                      status="GLO"
+                      data={item}
+                    />
+                  )}
+                  onEndReached={loadMore}
+                  onEndReachedThreshold={0.1}
+                  keyExtractor={(item) => item.id}
+                  ListFooterComponent={
+                    transactionsData.isFetchingNextPage ? (
+                      <AppText>LOADING MORE..</AppText>
+                    ) : null
+                  }
+                  refreshControl={
+                    <RefreshControl
+                      onRefresh={refetchByUser}
+                      refreshing={isRefetchingByUser}
+                      title="Fetching Transactions"
+                      tintColor={Colors.primary}
+                    />
+                  }
+                />
+              )}
             </View>
             {/* </ScrollView> */}
           </>

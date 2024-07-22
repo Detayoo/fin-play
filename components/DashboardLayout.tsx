@@ -12,6 +12,11 @@ export const DashboardLayout = ({
     <>
       <ToastComponent />
       <SafeAreaView style={styles.container}>
+        <StatusBar
+          barStyle="dark-content"
+          backgroundColor="transparent"
+          translucent
+        />
         <GestureHandlerRootView style={{ flex: 1 }}>
           <View style={{ paddingHorizontal: 16, flex: 1 }}>{children}</View>
         </GestureHandlerRootView>

@@ -161,3 +161,55 @@ export interface IGetPointBalance {
     availablePoint: number;
   };
 }
+
+export interface IValidateTVAccountResponse extends BareResponse {
+  data: {
+    transaction: {
+      currentPackage: {
+        code: string;
+        name: string;
+        isActive: boolean;
+      };
+      additionalInformation: {
+        totalAmount: string;
+        dueDate: string;
+        balanceDue: string;
+      };
+      accountName: string;
+      smartCardNumber: string;
+      requestId: string;
+    };
+  };
+}
+
+export interface IGetBouquet {
+  data: {
+    [key: string]: {
+      amount: string;
+      bouquetId: string;
+      name: string;
+      productKey: string;
+    }[];
+  };
+}
+
+export interface IPurchaseBouquet {
+  bouquetProductKey: string | string[] | undefined;
+  requestId: string | string[] | undefined;
+  provider: string | string[] | undefined;
+  smartCardNumber: string | string[] | undefined;
+  amount: number | string[] | undefined;
+  pin: string;
+}
+
+export interface IPurchaseBouquetResponse extends BareResponse {
+  data: {
+    transaction: {
+      amountPaid: string;
+      reference: string;
+      status: string;
+      bouquet: string;
+      paidAt: string;
+    };
+  };
+}

@@ -175,7 +175,7 @@ const AccountLimitPage = () => {
                   variant="medium"
                   style={{ marginTop: 4 }}
                 >
-                  12345**12162
+                  {/* 12345**12162 */}
                 </AppText>
               </View>
             </View>

@@ -98,6 +98,12 @@ export const Services = () => {
     {
       icon: <Cable />,
       label: "Cable",
+      route: {
+        pathname: "/cable-tv",
+        params: {
+          type: "TV Subscription",
+        },
+      },
     },
     {
       icon: <Betting />,
@@ -105,7 +111,7 @@ export const Services = () => {
       route: {
         pathname: "/buy-betting",
         params: {
-          type: "Betting",
+          type: "Betting Subscription",
         },
       },
     },

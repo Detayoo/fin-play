@@ -110,6 +110,7 @@ const BuyBettingPage = () => {
         params: {
           // ...values,
           amount: values.amount,
+          serviceProvider: state.serviceProvider?.label,
           ...userAccountData?.data?.data?.transaction?.details,
           from: "/buy-betting",
         },

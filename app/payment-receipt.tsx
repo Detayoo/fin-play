@@ -12,6 +12,7 @@ import {
   Screen,
   ListItem,
   ReusableBottomSheet,
+  styles,
 } from "@/components";
 import { Colors } from "@/constants";
 import {
@@ -23,6 +24,7 @@ import {
 import { formatMoney } from "@/utils";
 import { getUserAccountDetailsFn } from "@/services";
 import { useAuth } from "@/context";
+import { Image } from "expo-image";
 
 const PaymentReceipt = () => {
   const { token } = useAuth();
@@ -43,6 +45,7 @@ const PaymentReceipt = () => {
     accountNumber,
     amountPaid,
     bankName,
+    customerId,
     narration,
     recipient,
     paidAt,
@@ -59,8 +62,10 @@ const PaymentReceipt = () => {
     accountType,
     serviceProvider,
     token: electricityToken,
+    customerReference,
+    bouquet,
   } = useLocalSearchParams();
-  console.log(useLocalSearchParams());
+  // console.log(useLocalSearchParams());
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -100,22 +105,28 @@ const PaymentReceipt = () => {
           }}
         >
           {/* <PaymentRecipient /> */}
-          <BigBank />
-          <AppText style={{ marginTop: 14 }} size="xlarge" variant="medium">
-            NGN {formatMoney(amountPaid || 0)}
-          </AppText>
-          <AppText style={{ marginTop: 10 }} color={Colors.inputFocusBorder}>
+          {/* <BigBank /> */}
+          {status?.toString()?.toLowerCase() === "success" && (
+            <Image
+              source={require("../assets/images/success.gif")}
+              style={{ width: 116, height: 116 }}
+            />
+          )}
+          <AppText style={{}} color={Colors.inputFocusBorder}>
             Transfer{" "}
             {status?.toString()?.toLocaleLowerCase() === "success"
               ? "Successful"
               : status}
+          </AppText>
+          <AppText style={{ marginTop: 14 }} size="xlarge" variant="medium">
+            NGN {formatMoney(amountPaid || 0)}
           </AppText>
           <AppText style={{ marginTop: 10, marginBottom: 30 }}>
             {paidAt
               ? format(
                   parse(`${paidAt}`, "dd/MM/yyyy HH:mm:ss", new Date()),
                   "MMMM dd, yyyy hh:mma"
-                ) || paidAt
+                )
               : null}
           </AppText>
 
@@ -128,7 +139,9 @@ const PaymentReceipt = () => {
               paddingTop: 20,
             }}
           >
+            {bouquet && <ListItem name="Bouquet Name" value={bouquet} />}
             {meterName && <ListItem name="Meter Name" value={meterName} />}
+            {customerId && <ListItem name="Customer ID" value={customerId} />}
             {meterNumber && (
               <ListItem name="Meter Number" value={meterNumber} />
             )}
@@ -166,6 +179,13 @@ const PaymentReceipt = () => {
             {telco && <ListItem name="TELCO" value={telco} />}
             {telcoReference && (
               <ListItem name="Telco Reference" value={telcoReference} canCopy />
+            )}
+            {customerReference && (
+              <ListItem
+                name="Customer Reference"
+                value={customerReference}
+                canCopy
+              />
             )}
             {reference && (
               <ListItem

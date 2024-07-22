@@ -218,7 +218,7 @@ const PaymentSummary = () => {
                   : "NGN 0.00"
               }
             />
-            <View
+            {/* <View
               style={{
                 flexDirection: "row",
                 justifyContent: "space-between",
@@ -230,7 +230,7 @@ const PaymentSummary = () => {
                 state={save}
                 toggleSwitch={() => setSave(!save)}
               />
-            </View>
+            </View> */}
           </View>
         </ScrollView>
         <PrimaryButton

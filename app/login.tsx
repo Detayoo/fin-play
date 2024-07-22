@@ -118,8 +118,6 @@ const LoginPage = () => {
         password: user?.rememberMe ? user?.password : values.password,
       });
     } catch (error) {}
-
-    return;
   };
 
   const switchAccount = () => {

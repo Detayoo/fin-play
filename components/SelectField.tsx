@@ -79,13 +79,17 @@ export const SelectField = ({
           setVisible(false);
         }}
       >
-        <Text>{item.label}</Text>
+        <Text style={{ maxWidth: "70%" }}>{item.label}</Text>
+        {item?.extra && (
+          <AppText style={{ marginLeft: "auto" }} variant="medium">
+            {item?.extra}
+          </AppText>
+        )}
       </Pressable>
     ),
     []
   );
 
-  console.log("vis", visible);
   return (
     <>
       {visible && (
@@ -149,6 +153,7 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     // backgroundColor: "#f9c2ff",
     borderRadius: 8,
+    flexDirection: "row",
   },
   input: {
     height: 50,
@@ -171,12 +176,12 @@ export const SelectPlaceholder = ({
   onSelect,
   label,
   title,
-  useImage= false
+  useImage = false,
 }: {
   onSelect: () => void;
   label: string | null;
   title: string;
-  useImage?: boolean
+  useImage?: boolean;
 }) => {
   return (
     <View style={{}}>

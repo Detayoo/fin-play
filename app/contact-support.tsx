@@ -72,6 +72,7 @@ const ContactSupportPage = () => {
         {DETAILS.map(({ action, icon, value, subValue }) => {
           return (
             <View
+              key={value}
               style={{
                 flexDirection: "row",
                 justifyContent: "space-between",

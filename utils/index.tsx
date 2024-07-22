@@ -3,6 +3,7 @@ import {
   CustomerSupport,
   Logout,
   ReferAFriend,
+  Security,
   SettingsProfile,
   TermsAndConditions,
   UpgradeTier,
@@ -36,7 +37,7 @@ export const SETTINGS_ROUTES = [
     route: "/preferences",
   },
   {
-    icon: <AccountLimit />,
+    icon: <Security />,
     label: "Security",
     route: "/security",
   },

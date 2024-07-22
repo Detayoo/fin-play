@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   View,
   BackHandler,
+  RefreshControl,
 } from "react-native";
 import { Image } from "expo-image";
 import { router } from "expo-router";
@@ -112,10 +113,17 @@ export default function HomeScreen() {
           </View>
         </View>
 
-        {pageIsLoading ? (
+        {/* {pageIsLoading ? (
           <Loading />
-        ) : (
+        ) : ( */}
           <ScrollView
+            refreshControl={
+              <RefreshControl
+                refreshing={userAccountData?.isFetching}
+                onRefresh={userAccountData?.refetch}
+                tintColor={Colors.primary}
+              />
+            }
             showsVerticalScrollIndicator={false}
             style={styles.scrollView}
           >
@@ -275,7 +283,7 @@ export default function HomeScreen() {
                 <AppText style={{ fontSize: 16 }} variant="medium">
                   Recent Transactions
                 </AppText>
-                {recentTransactionsData?.data?.data?.transactions && (
+                {recentTransactionsData?.data?.data?.transactions?.length ? (
                   <AppText
                     onPress={() => router.push("/transactions-history")}
                     style={{ fontSize: 15 }}
@@ -283,7 +291,7 @@ export default function HomeScreen() {
                   >
                     View all
                   </AppText>
-                )}
+                ) : null}
               </View>
               {/* */}
 
@@ -300,27 +308,29 @@ export default function HomeScreen() {
                 0 ? (
                 <EmptyComponent message="No Transaction Found" />
               ) : (
-                recentTransactionsData?.data?.data?.transactions?.map((trx) => {
-                  return (
-                    <TransactionItem
-                      onPress={() =>
-                        router.push({
-                          pathname: "/payment-receipt",
-                          params: {},
-                        })
-                      }
-                      status="GLO"
-                      data={{
-                        amountPaid: "4500",
-                        status: "success",
-                      }}
-                    />
-                  );
-                })
+                recentTransactionsData?.data?.data?.transactions?.map(
+                  (trx, index) => {
+                    return (
+                      <TransactionItem
+                        key={index}
+                        onPress={() =>
+                          router.push({
+                            pathname: "/transaction-details",
+                            params: {
+                              id: trx.id,
+                            },
+                          })
+                        }
+                        status="GLO"
+                        data={trx}
+                      />
+                    );
+                  }
+                )
               )}
             </View>
           </ScrollView>
-        )}
+        {/* )} */}
       </DashboardLayout>
       <ReusableBottomSheet
         snapPoints={["50%"]}

@@ -2,11 +2,18 @@ import { BareResponse } from ".";
 
 export interface IUserProfile extends BareResponse {
   data: {
-    email: string;
-    phone: string;
-    firstName: string;
-    lastName: string;
-    tier: number;
+    userProfile: {
+      email: string;
+      phone: string;
+      firstName: string;
+      lastName: string;
+      tier: number;
+      fullName: string;
+      dob: any;
+      nin: string;
+      address: string;
+      bvn: string;
+    };
   };
 }
 

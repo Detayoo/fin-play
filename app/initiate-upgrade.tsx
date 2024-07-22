@@ -27,7 +27,7 @@ const InitialUpgradePage = () => {
     token,
   });
 
-  const { tier } = userData?.data || {};
+  const { tier } = userData?.data?.userProfile || {};
   return (
     <Screen>
       <View
@@ -176,7 +176,7 @@ const InitialUpgradePage = () => {
                 </AppText>
               </AppText>
 
-              {tier && tier < 3 && (
+              {tier && tier === 2 && (
                 <PrimaryButton
                   onPress={() => {
                     router.push({

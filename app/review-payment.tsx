@@ -23,12 +23,14 @@ import { ERRORS, extractServerError, formatMoney, formatNumber } from "@/utils";
 import {
   buyAirtimeFn,
   buyBettingPlanFn,
+  buyBouquetFn,
   buyDataFn,
   buyElectricityFn,
   getCashbackToReceiveFn,
   getPointsBalanceFn,
 } from "@/services";
 import { useAuth } from "@/context";
+import { PROVIDER_LOGOS } from "@/data";
 
 const ReviewPayment = () => {
   const { token } = useAuth();
@@ -53,6 +55,10 @@ const ReviewPayment = () => {
     name: planName,
     validity: planValidity,
     price: planPrice,
+    bouquetProductKey,
+    requestId,
+    smartCardNumber,
+    packageName,
   } = useLocalSearchParams();
 
   const getServiceType = () => {
@@ -112,7 +118,11 @@ const ReviewPayment = () => {
       },
       onSettled: () => {
         queryClient.invalidateQueries({
-          queryKey: ["points balance", "user account details"],
+          queryKey: [
+            "points balance",
+            "user account details",
+            "all transactions",
+          ],
         });
       },
     });
@@ -130,7 +140,11 @@ const ReviewPayment = () => {
     },
     onSettled: () => {
       queryClient.invalidateQueries({
-        queryKey: ["points balance", "user account details"],
+        queryKey: [
+          "points balance",
+          "user account details",
+          "all transactions",
+        ],
       });
     },
   });
@@ -143,7 +157,9 @@ const ReviewPayment = () => {
           pathname: "/payment-receipt",
           params: {
             ...data?.data?.transaction,
+            amountPaid: data?.data?.transaction?.amount,
             meterName: data?.data?.transaction?.accountName,
+            paidAt: data?.data?.transaction?.purchaseDate,
             accountType: vendType,
             serviceProvider,
             from: "/electricity-payment",
@@ -158,7 +174,11 @@ const ReviewPayment = () => {
       },
       onSettled: () => {
         queryClient.invalidateQueries({
-          queryKey: ["points balance", "user account details"],
+          queryKey: [
+            "points balance",
+            "user account details",
+            "all transactions",
+          ],
         });
       },
     });
@@ -169,7 +189,12 @@ const ReviewPayment = () => {
       onSuccess: (data) => {
         router.replace({
           pathname: "/payment-receipt",
-          params: { ...data?.data?.transaction, from: "/betting-payment" },
+          params: {
+            ...data?.data?.transaction,
+            customerId: data?.data?.transaction?.customerId,
+            serviceProvider,
+            from: "/betting-payment",
+          },
         });
       },
       onError: (error) => {
@@ -180,13 +205,58 @@ const ReviewPayment = () => {
       },
       onSettled: () => {
         queryClient.invalidateQueries({
-          queryKey: ["points balance", "user account details"],
+          queryKey: [
+            "points balance",
+            "user account details",
+            "all transactions",
+          ],
+        });
+      },
+    });
+
+  const { isPending: buyingTvBouquet, mutateAsync: buyTvBouquetAsync } =
+    useMutation({
+      mutationFn: buyBouquetFn,
+      onSuccess: (data) => {
+        router.replace({
+          pathname: "/payment-receipt",
+          params: {
+            ...data?.data?.transaction,
+            amount: data?.data?.transaction?.amountPaid,
+            bouquet: packageName,
+            smartCardNumber,
+            serviceProvider,
+            accountName,
+
+            from: "/tv-payment",
+          },
+        });
+      },
+      onError: (error) => {
+        showToast(
+          "error",
+          extractServerError(error, ERRORS.SOMETHING_HAPPENED)
+        );
+      },
+      onSettled: () => {
+        queryClient.invalidateQueries({
+          queryKey: [
+            "all transactions",
+            "points balance",
+            "user account details",
+          ],
         });
       },
     });
 
   const makePayment = async () => {
-    if (buyingAirtime || buyingData || buyingElectricity || buyingBettingPlan)
+    if (
+      buyingAirtime ||
+      buyingData ||
+      buyingElectricity ||
+      buyingBettingPlan ||
+      buyingTvBouquet
+    )
       return;
     try {
       if (from === "/buy-airtime") {
@@ -237,6 +307,22 @@ const ReviewPayment = () => {
         });
       }
     } catch (error) {}
+
+    if (from === "/buy-tv") {
+      try {
+        await buyTvBouquetAsync({
+          payload: {
+            amount: amount ? +amount : 0,
+            bouquetProductKey,
+            provider,
+            requestId,
+            smartCardNumber,
+            pin,
+          },
+          token,
+        });
+      } catch (error) {}
+    }
   };
 
   useEffect(() => {
@@ -286,7 +372,12 @@ const ReviewPayment = () => {
             paddingHorizontal: 16,
           }}
         >
-          <BigMtn />
+          {/* <BigMtn /> */}
+          {
+            PROVIDER_LOGOS?.find(
+              (each) => each.name === serviceProvider
+            )?.logo
+          }
           <AppText style={{ marginTop: 14 }} size="xlarge" variant="medium">
             NGN {formatMoney(amount)}
           </AppText>
@@ -313,6 +404,10 @@ const ReviewPayment = () => {
             {meterNumber && (
               <ListItem name="Meter Number" value={meterNumber} />
             )}
+            {smartCardNumber && (
+              <ListItem name="SmartCard Number" value={smartCardNumber} />
+            )}
+            {packageName && <ListItem name="Package" value={packageName} />}
             {provider && <ListItem name="Service Provider" value={provider} />}
             {disco && <ListItem name="Service Provider" value={disco} />}
 
@@ -352,12 +447,19 @@ const ReviewPayment = () => {
               />
             )}
             <ListItem
-              name="Cashback"
+              name="Cashback to earn"
               value={`+${formatNumber(
                 `${rewardedPointsData?.data?.data?.rewardPoint || 0}`
               )}`}
               valueColor={Colors.inputFocusBorder}
             />
+
+            <ListItem
+              name="Available Cashback"
+              value={`${formatNumber(pointBal?.toFixed(2) || 0)}`}
+              valueColor={Colors.inputFocusBorder}
+            />
+
             <View
               style={{
                 flexDirection: "row",
@@ -373,13 +475,7 @@ const ReviewPayment = () => {
                 />
               </View>
             </View>
-
-            <ListItem
-              name="Available Reward Point"
-              value={`${formatNumber(pointBal?.toFixed(2) || 0)}`}
-              valueColor={Colors.inputFocusBorder}
-            />
-            <View
+            {/* <View
               style={{
                 flexDirection: "row",
                 justifyContent: "space-between",
@@ -391,7 +487,7 @@ const ReviewPayment = () => {
                 state={save}
                 toggleSwitch={() => setSave(!save)}
               />
-            </View>
+            </View> */}
           </View>
         </ScrollView>
         <PrimaryButton
@@ -446,7 +542,8 @@ const ReviewPayment = () => {
               {(buyingAirtime ||
                 buyingData ||
                 buyingElectricity ||
-                buyingBettingPlan) && <Loading />}
+                buyingBettingPlan ||
+                buyingTvBouquet) && <Loading />}
             </View>
           </View>
         </View>
