@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   View,
   BackHandler,
+  RefreshControl,
 } from "react-native";
 import { Image } from "expo-image";
 import { router } from "expo-router";
@@ -112,10 +113,17 @@ export default function HomeScreen() {
           </View>
         </View>
 
-        {pageIsLoading ? (
+        {/* {pageIsLoading ? (
           <Loading />
-        ) : (
+        ) : ( */}
           <ScrollView
+            refreshControl={
+              <RefreshControl
+                refreshing={userAccountData?.isFetching}
+                onRefresh={userAccountData?.refetch}
+                tintColor={Colors.primary}
+              />
+            }
             showsVerticalScrollIndicator={false}
             style={styles.scrollView}
           >
@@ -322,7 +330,7 @@ export default function HomeScreen() {
               )}
             </View>
           </ScrollView>
-        )}
+        {/* )} */}
       </DashboardLayout>
       <ReusableBottomSheet
         snapPoints={["50%"]}
