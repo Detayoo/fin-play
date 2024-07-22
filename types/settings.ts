@@ -9,9 +9,10 @@ export interface IUserProfile extends BareResponse {
       lastName: string;
       tier: number;
       fullName: string;
-      dob: string;
+      dob: any;
       nin: string;
       address: string;
+      bvn: string;
     };
   };
 }

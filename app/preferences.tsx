@@ -2,7 +2,7 @@ import { Pressable, ScrollView, View } from "react-native";
 import { useState } from "react";
 
 import { AppText, BackButton, Screen, SwitchComponent } from "@/components";
-import { PushNotification } from "@/assets";
+import { EmailNotification, PushNotification } from "@/assets";
 
 type Notifications = {
   pushNotification: boolean;
@@ -65,7 +65,7 @@ const PreferencesPage = () => {
                 paddingVertical: 15,
               }}
             >
-              <PushNotification />
+              <EmailNotification />
               <AppText variant="medium">Push Notification</AppText>
             </View>
             <SwitchComponent

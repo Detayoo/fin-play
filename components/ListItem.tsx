@@ -15,6 +15,7 @@ export const ListItem = ({
   size,
   maxWidth,
   valueColor,
+  styles,
 }: {
   name: string;
   value: string | string[] | undefined;
@@ -25,16 +26,20 @@ export const ListItem = ({
   size?: "normal" | "xsmall" | "small" | "large" | "xlarge" | "xxlarge";
   maxWidth?: any;
   valueColor?: string;
+  styles?: any;
 }) => {
   return (
     <View
-      style={{
-        flexDirection: "row",
-        justifyContent: "space-between",
-        borderBottomWidth: hasBottomBorder ? 1 : 0,
-        borderBottomColor: "#2A285F0D",
-        paddingTop: hasBottomBorder ? 20 : 0,
-      }}
+      style={[
+        {
+          flexDirection: "row",
+          justifyContent: "space-between",
+          borderBottomWidth: hasBottomBorder ? 1 : 0,
+          borderBottomColor: "#2A285F0D",
+          paddingTop: hasBottomBorder ? 20 : 0,
+        },
+        styles,
+      ]}
     >
       <AppText
         size={size}

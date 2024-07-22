@@ -29,7 +29,7 @@ const UserProfilePage = () => {
     token,
   });
 
-  const { email, firstName, lastName, tier, fullName, dob } =
+  const { email, firstName, lastName, tier, fullName, dob, bvn } =
     userData?.data?.userProfile || {};
   const photo = "y";
 
@@ -123,7 +123,7 @@ const UserProfilePage = () => {
               borderRadius: 10,
               backgroundColor: "#90AD0408",
               paddingHorizontal: 15,
-              paddingVertical: 20,
+              paddingTop: 20,
               justifyContent: "center",
               alignItems: "center",
               borderWidth: 1,
@@ -146,23 +146,21 @@ const UserProfilePage = () => {
           </AppText> */}
 
             <View style={{ width: "100%", marginTop: 50 }}>
-              <ListItem
-                name="Full Name"
-                value={fullName}
-                hasBottomBorder
-              />
+              <ListItem name="Full Name" value={fullName} hasBottomBorder />
               <ListItem name="Email" value={email} hasBottomBorder />
-              <ListItem name="BVN" value="12345678900" hasBottomBorder />
+              <ListItem name="BVN" value={bvn} hasBottomBorder />
               <ListItem
                 name="Date Of Birth"
-                value={format(new Date(), "do MMMM, yyyy")}
+                // value={format(new Date(dob), "do MMMM, yyyy")}
+                value={dob}
                 hasBottomBorder
               />
               <ListItem
                 name="Current Tier"
                 value={`Tier ${tier}`}
-                hasBottomBorder
+                // hasBottomBorder
                 hasBackgroundColor
+                styles={{ paddingTop: 20 }}
               />
             </View>
           </View>
