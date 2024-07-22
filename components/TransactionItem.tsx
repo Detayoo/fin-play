@@ -6,6 +6,7 @@ import { formatMoney } from "../utils";
 import { Colors } from "../constants";
 import { BankOutward, GloOutward } from "../assets";
 import { IGetTransactionById } from "@/types";
+import { Debit } from "@/assets/icons/Debit";
 
 export const TransactionItem = ({
   addBorder = true,
@@ -52,18 +53,26 @@ export const TransactionItem = ({
         gap: 15,
       }}
     >
-      {type && renderImage()}
+      <View style={{ position: "relative" }}>
+        {type && renderImage()}
+        <Debit style={{ position: "absolute", bottom: 0, right: 0 }} />
+      </View>
       <View
         style={{
           gap: 8,
           flex: 1,
         }}
       >
-        <AppText style={{textTransform:'capitalize'}} numberOfLines={1} variant="medium">
-          {isBill
-            ? `${
-                data?.category
-              } purchase for ${data?.beneficiary}`
+        <AppText
+          style={{ textTransform: "none" }}
+          numberOfLines={1}
+          variant="medium"
+        >
+          {isBill && (data?.category === "airtime" || data?.category === "data")
+            ? `${data?.operatorName} VTU ${data?.beneficiary}`
+            : isBill &&
+              !(data?.category === "airtime" || data?.category === "data")
+            ? `${data?.category} purchase for ${data?.beneficiary}`
             : data?.accountName}
         </AppText>
         <AppText size="small" color={Colors.faintBlack}>
@@ -74,9 +83,13 @@ export const TransactionItem = ({
       </View>
 
       <View style={{ marginLeft: "auto", gap: 8, alignItems: "flex-end" }}>
-        <AppText style={{ fontSize: 13 }} variant="medium">
+        <AppText
+          style={{ fontSize: 13 }}
+          variant="medium"
+          color={isBill || data?.type == "debit" ? Colors.error : Colors.black}
+        >
           {/* check type here */}
-          {isBill ? "-" : ""}
+          {isBill || data?.type === "debit" ? "-" : ""}
           NGN{formatMoney(data?.amountPaid || 0)}
         </AppText>
         <AppText
@@ -84,7 +97,7 @@ export const TransactionItem = ({
           style={{ textTransform: "capitalize" }}
           color={
             data?.status?.toLocaleLowerCase() === "success"
-              ? Colors.inputFocusBorder
+              ? Colors.primary
               : Colors.error
           }
         >

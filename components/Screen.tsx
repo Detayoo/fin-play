@@ -24,6 +24,11 @@ export const Screen = ({
       <ToastComponent />
       <View style={{ backgroundColor: "#fff", flex: 1 }}>
         <SafeAreaView style={[styles.safeArea, style]}>
+          <StatusBar
+            barStyle="dark-content"
+            backgroundColor="transparent"
+            translucent
+          />
           <GestureHandlerRootView style={{ flex: 1 }}>
             <View
               style={{

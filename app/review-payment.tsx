@@ -30,6 +30,7 @@ import {
   getPointsBalanceFn,
 } from "@/services";
 import { useAuth } from "@/context";
+import { PROVIDER_LOGOS } from "@/data";
 
 const ReviewPayment = () => {
   const { token } = useAuth();
@@ -371,7 +372,12 @@ const ReviewPayment = () => {
             paddingHorizontal: 16,
           }}
         >
-          <BigMtn />
+          {/* <BigMtn /> */}
+          {
+            PROVIDER_LOGOS?.find(
+              (each) => each.name === serviceProvider
+            )?.logo
+          }
           <AppText style={{ marginTop: 14 }} size="xlarge" variant="medium">
             NGN {formatMoney(amount)}
           </AppText>
@@ -441,12 +447,19 @@ const ReviewPayment = () => {
               />
             )}
             <ListItem
-              name="Cashback"
+              name="Cashback to earn"
               value={`+${formatNumber(
                 `${rewardedPointsData?.data?.data?.rewardPoint || 0}`
               )}`}
               valueColor={Colors.inputFocusBorder}
             />
+
+            <ListItem
+              name="Available Cashback"
+              value={`${formatNumber(pointBal?.toFixed(2) || 0)}`}
+              valueColor={Colors.inputFocusBorder}
+            />
+
             <View
               style={{
                 flexDirection: "row",
@@ -462,12 +475,6 @@ const ReviewPayment = () => {
                 />
               </View>
             </View>
-
-            <ListItem
-              name="Available Reward Point"
-              value={`${formatNumber(pointBal?.toFixed(2) || 0)}`}
-              valueColor={Colors.inputFocusBorder}
-            />
             {/* <View
               style={{
                 flexDirection: "row",

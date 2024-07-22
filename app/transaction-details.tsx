@@ -24,6 +24,7 @@ import {
 import { formatMoney, formatNumber } from "@/utils";
 import { getTransactionById, getUserAccountDetailsFn } from "@/services";
 import { useAuth } from "@/context";
+import { PROVIDER_LOGOS } from "@/data";
 
 const PaymentReceipt = () => {
   const { token } = useAuth();
@@ -33,11 +34,11 @@ const PaymentReceipt = () => {
     queryFn: () => getUserAccountDetailsFn({ token }),
   });
 
-  const {
-    accountName: senderAccountName,
-    accountNumber: senderAccountNumber,
-    bankName: senderBankName,
-  } = senderDetails?.data || {};
+  // const {
+  //   accountName: senderAccountName,
+  //   accountNumber: senderAccountNumber,
+  //   bankName: senderBankName,
+  // } = senderDetails?.data || {};
 
   const { id } = useLocalSearchParams();
 
@@ -60,7 +61,6 @@ const PaymentReceipt = () => {
     cashback,
     cashbackUsed,
     category,
-    customerId,
     fee,
     id: transactionId,
     initialAmount,
@@ -72,12 +72,49 @@ const PaymentReceipt = () => {
     recipientNumber,
     reference,
     status,
-    tarrifName,
     telco,
     token: electricityToken,
     transactionType,
     units,
-  } = data?.data || {};
+    adminId,
+    amount,
+    balanceAfterTransaction,
+    balanceBeforeTransaction,
+    beneficiary,
+    charges,
+    createdAt,
+    debtAmount,
+    debtRemaining,
+    email,
+    deletedAt,
+    fromWalletId,
+    maximumAmountPayable,
+    minimumAmountPayable,
+    operatorId,
+    operatorName,
+    operatorReference,
+    operatorStatusMessage,
+    phoneNumber,
+    receiptNo,
+    recipientAccountName,
+    recipientAccountNumber,
+    recipientBankCode,
+    recipientBankName,
+    response,
+    senderAccountName,
+    senderAccountNumber,
+    senderBankCode,
+    senderBankName,
+    source,
+    target,
+    toWalletId,
+    type,
+    updatedAt,
+    userId,
+    vendType,
+    walletId,
+  } = data?.data?.transaction || {};
+  console.log(initialAmount);
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -121,9 +158,11 @@ const PaymentReceipt = () => {
               }}
             >
               {/* <PaymentRecipient /> */}
-              <BigBank />
+
+              {PROVIDER_LOGOS?.find((each) => each.name === operatorName)
+                ?.logo ?? <BigBank />}
               <AppText style={{ marginTop: 14 }} size="xlarge" variant="medium">
-                NGN {formatMoney(amountPaid || 0)}
+                NGN {formatMoney(initialAmount || 0)}
               </AppText>
               <AppText
                 style={{ marginTop: 10 }}
@@ -152,14 +191,10 @@ const PaymentReceipt = () => {
                   paddingTop: 20,
                 }}
               >
-                {customerId && (
-                  <ListItem name="Customer ID" value={customerId} />
-                )}
                 {meterNumber && (
                   <ListItem name="Meter Number" value={meterNumber} />
                 )}
                 {meterName && <ListItem name="Meter Name" value={meterName} />}
-
                 {/* {serviceProvider && (
               <ListItem name="Service Provider" value={serviceProvider} />
             )} */}
@@ -168,7 +203,6 @@ const PaymentReceipt = () => {
                 )}
                 {units && <ListItem name="Units" value={`${units}`} />}
                 {address && <ListItem name="Address" value={address} />}
-
                 {accountName &&
                   !meterName && ( //to check in case account name is send as meter name, it causes chaos - really.
                     <ListItem
@@ -189,7 +223,17 @@ const PaymentReceipt = () => {
                   />
                 )}
                 {/* {recipient && <ListItem name="Recipient" value={recipient} />} */}
-                {telco && <ListItem name="TELCO" value={telco} />}
+                {operatorName && (
+                  <ListItem name="Operator Name" value={operatorName} />
+                )}
+                {beneficiary && (
+                  <ListItem name="Beneficiary" value={beneficiary} />
+                )}
+                {vendType && <ListItem name="Account Type" value={vendType} />}
+                {electricityToken && (
+                  <ListItem name="Token" value={electricityToken} />
+                )}
+                {units && <ListItem name="Units" value={`${units}`} />}
                 {/* {telcoReference && (
               <ListItem name="Telco Reference" value={telcoReference} canCopy />
             )} */}
@@ -208,18 +252,20 @@ const PaymentReceipt = () => {
                   />
                 )}
                 {narration && <ListItem name="Narration" value={narration} />}
-                {fee && (
-                  <ListItem
-                    name="Fee"
-                    value={`"NGN${formatMoney(fee || 0)}" `}
-                  />
-                )}
-                {cashback && (
-                  <ListItem
-                    name="Cashback Earned"
-                    value={formatNumber(cashback || 0)}
-                  />
-                )}
+                <ListItem
+                  name="Cashback Used"
+                  value={formatNumber(cashbackUsed || 0)}
+                />
+
+                <ListItem
+                  name="Cashback Earned"
+                  value={formatNumber(cashback || 0)}
+                />
+                <ListItem
+                  name="Fee"
+                  value={`NGN${formatMoney(charges || 0)} `}
+                />
+
                 {id && <ListItem name="Transaction ID" value={id} canCopy />}
                 {/* {sessionId && (
               <ListItem name="Session ID" value={sessionId} canCopy />
@@ -229,15 +275,15 @@ const PaymentReceipt = () => {
                 )}
               </View>
             </ScrollView>
-            <PrimaryButton
+            {/* <PrimaryButton
               onPress={() => router.push("/(tabs)")}
               variant="outline"
               style={{ marginTop: 30 }}
               label="Go back to Home"
-            />
+            /> */}
             <PrimaryButton
               onPress={() => setShowModal(true)}
-              style={{ marginTop: 16 }}
+              style={{ marginTop: 30 }}
               label="Share Receipt"
             />
           </>

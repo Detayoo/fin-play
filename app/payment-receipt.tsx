@@ -12,6 +12,7 @@ import {
   Screen,
   ListItem,
   ReusableBottomSheet,
+  styles,
 } from "@/components";
 import { Colors } from "@/constants";
 import {
@@ -23,6 +24,7 @@ import {
 import { formatMoney } from "@/utils";
 import { getUserAccountDetailsFn } from "@/services";
 import { useAuth } from "@/context";
+import { Image } from "expo-image";
 
 const PaymentReceipt = () => {
   const { token } = useAuth();
@@ -60,7 +62,8 @@ const PaymentReceipt = () => {
     accountType,
     serviceProvider,
     token: electricityToken,
-    customerReference, bouquet
+    customerReference,
+    bouquet,
   } = useLocalSearchParams();
   // console.log(useLocalSearchParams());
 
@@ -102,15 +105,21 @@ const PaymentReceipt = () => {
           }}
         >
           {/* <PaymentRecipient /> */}
-          <BigBank />
-          <AppText style={{ marginTop: 14 }} size="xlarge" variant="medium">
-            NGN {formatMoney(amountPaid || 0)}
-          </AppText>
-          <AppText style={{ marginTop: 10 }} color={Colors.inputFocusBorder}>
+          {/* <BigBank /> */}
+          {status?.toString()?.toLowerCase() === "success" && (
+            <Image
+              source={require("../assets/images/success.gif")}
+              style={{ width: 116, height: 116 }}
+            />
+          )}
+          <AppText style={{}} color={Colors.inputFocusBorder}>
             Transfer{" "}
             {status?.toString()?.toLocaleLowerCase() === "success"
               ? "Successful"
               : status}
+          </AppText>
+          <AppText style={{ marginTop: 14 }} size="xlarge" variant="medium">
+            NGN {formatMoney(amountPaid || 0)}
           </AppText>
           <AppText style={{ marginTop: 10, marginBottom: 30 }}>
             {paidAt
@@ -172,7 +181,11 @@ const PaymentReceipt = () => {
               <ListItem name="Telco Reference" value={telcoReference} canCopy />
             )}
             {customerReference && (
-              <ListItem name="Customer Reference" value={customerReference} canCopy />
+              <ListItem
+                name="Customer Reference"
+                value={customerReference}
+                canCopy
+              />
             )}
             {reference && (
               <ListItem

@@ -70,3 +70,5 @@ export * from "./CheckMark";
 export * from "./Upload";
 export * from "./BigGift";
 export * from "./Key";
+export * from "./Bet9ja";
+export * from "./Debit";
