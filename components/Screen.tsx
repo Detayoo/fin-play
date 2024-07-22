@@ -41,7 +41,7 @@ export const Screen = ({
             >
               <KeyboardAvoidingView
                 behavior={Platform.OS === "ios" ? "padding" : undefined}
-                keyboardVerticalOffset={100}
+                keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
                 style={{ flex: 1 }}
               >
                 {children}
