@@ -283,11 +283,19 @@ const TransactionsHistoryPage = () => {
                 <Loading />
               ) : (
                 <FlatList
-                  style={{}}
+                  style={{ flex: 1 }}
                   showsVerticalScrollIndicator={false}
                   data={flatListData}
                   ListEmptyComponent={
-                    <EmptyComponent message="No transaction found" />
+                    <View
+                      style={{
+                        flex: 1,
+                        minHeight: "100%",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <EmptyComponent message="No transaction found" />
+                    </View>
                   }
                   renderItem={({ item, index }) => (
                     <TransactionItem
@@ -317,6 +325,7 @@ const TransactionsHistoryPage = () => {
                       onRefresh={refetchByUser}
                       refreshing={isRefetchingByUser}
                       title="Fetching Transactions"
+                      tintColor={Colors.primary}
                     />
                   }
                 />

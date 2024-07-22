@@ -1,6 +1,8 @@
-import { Colors } from "@/constants";
 import React from "react";
-import { View, ActivityIndicator, Text, StyleSheet } from "react-native";
+import { View, ActivityIndicator, StyleSheet } from "react-native";
+
+import { AppText } from "./AppText";
+import { Colors } from "@/constants";
 
 interface LoadingProps {
   size?: number | "small" | "large";
@@ -18,7 +20,7 @@ export const Loading: React.FC<LoadingProps> = ({
   return (
     <View style={styles.container}>
       <ActivityIndicator size={size} color={color} />
-      {text && <Text style={[styles.text, textStyle]}>{text}</Text>}
+      {text && <AppText style={[styles.text, textStyle]}>{text}</AppText>}
     </View>
   );
 };
