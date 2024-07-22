@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Formik } from "formik";
 import { router } from "expo-router";
@@ -18,11 +19,13 @@ import { changePasswordFn } from "@/services";
 import { useAuth } from "@/context";
 
 const ChangePasswordPage = () => {
-  const { token } = useAuth();
+  const { token, user, saveUser } = useAuth();
+  const [password, setPassword] = useState("");
   const { mutateAsync, isPending } = useMutation({
     mutationFn: changePasswordFn,
     onSuccess: (data) => {
       showToast("success", data?.message);
+      saveUser({ ...user, password }, token); // save user's new password after password change
       setTimeout(() => {
         router.replace("/(tabs)/profile");
       }, 1000);
@@ -33,6 +36,7 @@ const ChangePasswordPage = () => {
   });
   const handleSubmit = async (values: ChangePasswordPayloadType) => {
     const { confirmPassword, newPassword, oldPassword } = values;
+    setPassword(newPassword);
     try {
       await mutateAsync({
         oldPassword,
