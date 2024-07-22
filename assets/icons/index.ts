@@ -73,3 +73,7 @@ export * from "./Key";
 export * from "./Bet9ja";
 export * from "./Debit";
 export * from "./Credit";
+export * from "./Glo";
+export * from "./Airtel";
+export * from "./NineMobile";
+export * from "./Mtn";

@@ -1,4 +1,4 @@
-import { Bet9ja, BigMtn } from "./assets";
+import { Airtel, Bet9ja, BigMtn, Glo, Mtn, NineMobile } from "./assets";
 
 export const states = [
   "Abia",
@@ -44,19 +44,19 @@ export const UTILITY_TYPE = ["Electricity Bill", "Waste Bill", "Land Use"];
 
 export const PROVIDER_LOGOS = [
   {
-    logo: <BigMtn />,
+    logo: <Mtn />,
     name: "MTN",
   },
   {
-    logo: "",
+    logo: <Glo />,
     name: "GLO",
   },
   {
-    logo: "",
+    logo: <Airtel />,
     name: "AIRTEL",
   },
   {
-    logo: "",
+    logo: <NineMobile />,
     name: "9MOBILE",
   },
   {

@@ -29,8 +29,7 @@ const UserProfilePage = () => {
     token,
   });
 
-  const { email, firstName, lastName, tier, fullName, dob, bvn } =
-    userData?.data?.userProfile || {};
+  const { email, tier, fullName, dob, bvn } = userData?.data?.userProfile || {};
   const photo = "y";
 
   const parsedDob = parse(dob, "dd-MM-yyyy", new Date());
@@ -39,7 +38,7 @@ const UserProfilePage = () => {
 
   const { isPending, mutateAsync } = useMutation({
     mutationFn: uploadProfilePhotoFn,
-    onSuccess: (data) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["user profile"],
       });
