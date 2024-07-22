@@ -1,5 +1,5 @@
 import { ScrollView, View } from "react-native";
-import { format } from "date-fns";
+import { format, parse } from "date-fns";
 import { Image } from "expo-image";
 import * as FileSystem from "expo-file-system";
 import * as ImagePicker from "expo-image-picker";
@@ -32,6 +32,10 @@ const UserProfilePage = () => {
   const { email, firstName, lastName, tier, fullName, dob, bvn } =
     userData?.data?.userProfile || {};
   const photo = "y";
+
+  const parsedDob = parse(dob, "dd-MM-yyyy", new Date());
+
+  const formattedDate = format(parsedDob, "do MMMM yyyy");
 
   const { isPending, mutateAsync } = useMutation({
     mutationFn: uploadProfilePhotoFn,
@@ -151,8 +155,7 @@ const UserProfilePage = () => {
               <ListItem name="BVN" value={bvn} hasBottomBorder />
               <ListItem
                 name="Date Of Birth"
-                // value={format(new Date(dob), "do MMMM, yyyy")}
-                value={dob}
+                value={formattedDate}
                 hasBottomBorder
               />
               <ListItem

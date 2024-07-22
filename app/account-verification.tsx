@@ -26,13 +26,11 @@ const AccountVerificationPage = () => {
   useEffect(() => {
     if (otp.length === 6 && from !== "/forgot-password") {
       handleVerification();
-      setSeconds(OTP_TIME);
       return;
     }
 
     if (otp.length === 6 && from === "/forgot-password") {
       handleForgotPasswordOtpVerification();
-      setSeconds(OTP_TIME);
     }
   }, [otp]);
 
@@ -47,7 +45,7 @@ const AccountVerificationPage = () => {
     onSuccess: () => {
       if (from === "/registration" || from === "/login") {
         router.replace("/bvn-verification");
-        setOtp("");
+        setSeconds(OTP_TIME);
         return;
       }
     },
@@ -72,6 +70,8 @@ const AccountVerificationPage = () => {
   const { mutateAsync: verifyForgotFlowAsync } = useMutation({
     mutationFn: verifyForgotPasswordOTPFn,
     onSuccess: (data) => {
+      setSeconds(OTP_TIME);
+
       saveUser(null, data?.data?.token);
       router.push("/reset-password");
     },
@@ -90,6 +90,7 @@ const AccountVerificationPage = () => {
     mutationFn: forgotPasswordFn,
     onSuccess: (data) => {
       showToast("success", data.message);
+      setSeconds(OTP_TIME);
     },
     onError: (error) => {
       showToast("error", extractServerError(error, ERRORS.SOMETHING_HAPPENED));
