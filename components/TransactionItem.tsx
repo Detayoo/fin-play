@@ -2,10 +2,10 @@ import { TouchableOpacity, View } from "react-native";
 import { format } from "date-fns";
 
 import { AppText } from "./AppText";
-import { formatMoney } from "../utils";
+import { formatMoney, naira } from "../utils";
 import { Colors } from "../constants";
-import { BankOutward, GloOutward } from "../assets";
-import { IGetTransactionById } from "@/types";
+import { BankOutward, Credit, GloOutward } from "../assets";
+import { IGetTransactionById, ITransactionsList, Transaction } from "@/types";
 import { Debit } from "@/assets/icons/Debit";
 
 export const TransactionItem = ({
@@ -18,7 +18,7 @@ export const TransactionItem = ({
   addBorder?: boolean;
   status?: "GLO" | "DEBIT" | "CREDIT";
   onPress: () => void;
-  data?: any;
+  data?: Transaction;
   type?: string;
 }) => {
   const renderImage = () => {
@@ -54,8 +54,13 @@ export const TransactionItem = ({
       }}
     >
       <View style={{ position: "relative" }}>
-        {type && renderImage()}
-        <Debit style={{ position: "absolute", bottom: 0, right: 0 }} />
+        {renderImage()}
+
+        {isBill ? (
+          <Debit style={{ position: "absolute", bottom: 0, right: 0 }} />
+        ) : (
+          <Credit style={{ position: "absolute", bottom: 0, right: 0 }} />
+        )}
       </View>
       <View
         style={{
@@ -90,7 +95,8 @@ export const TransactionItem = ({
         >
           {/* check type here */}
           {isBill || data?.type === "debit" ? "-" : ""}
-          NGN{formatMoney(data?.amountPaid || 0)}
+          {naira}
+          {formatMoney(data?.amountPaid || 0)}
         </AppText>
         <AppText
           size="small"

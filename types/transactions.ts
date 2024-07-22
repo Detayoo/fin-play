@@ -1,18 +1,25 @@
 import { BareResponse } from ".";
 
+export type Transaction = {
+  id: string;
+  amount: number;
+  status: string;
+  accountName: string;
+  receipientNumber: string;
+  paidAt: string;
+  category: string;
+  beneficiary: string;
+  time: string;
+  amountPaid: string;
+  operatorName: string;
+  type: string;
+};
+
 export interface ITransactionsList extends BareResponse {
   data: {
     totalCreditAmount: number;
     totalDebitAmount: number;
-    transactions: {
-      id: string;
-      amount: number;
-      status: string;
-      accountName: string;
-      receipientNumber: string;
-      paidAt: string;
-      category: string;
-    }[];
+    transactions: Transaction[];
   };
   metadata: {
     totalRecords: number;
@@ -109,7 +116,7 @@ export interface IGetTransactionById extends BareResponse {
       walletId: string;
       createdAt: string;
       updatedAt: string;
-      deletedAt: string| null;
+      deletedAt: string | null;
     };
   };
 }

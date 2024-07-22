@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Formik } from "formik";
 import { router } from "expo-router";
@@ -18,10 +19,13 @@ import { changePinFn } from "@/services";
 import { useAuth } from "@/context";
 
 const ChangePinPage = () => {
-  const { token } = useAuth();
+  const { token, user, saveUser } = useAuth();
+  const [pin, setPin] = useState("");
+
   const { mutateAsync, isPending } = useMutation({
     mutationFn: changePinFn,
     onSuccess: (data) => {
+      saveUser({ ...user, pin }, token); // save the user's new pin
       showToast("success", data?.message);
       setTimeout(() => {
         router.replace("/(tabs)/profile");
@@ -33,6 +37,7 @@ const ChangePinPage = () => {
   });
   const handleSubmit = async (values: ChangePinPayloadType) => {
     const { newPin, oldPin, confirmPin } = values;
+    setPin(newPin);
     try {
       await mutateAsync({
         oldPin,

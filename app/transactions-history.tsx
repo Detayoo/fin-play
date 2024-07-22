@@ -308,7 +308,7 @@ const TransactionsHistoryPage = () => {
                           },
                         })
                       }
-                      status="GLO"
+                      type="CREDIT"
                       data={item}
                     />
                   )}
