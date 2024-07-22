@@ -15,7 +15,7 @@ import {
 } from "@/components";
 import { uploadProfilePhotoFn, useR } from "@/services";
 import { useAuth } from "@/context";
-import { ERRORS, extractServerError } from "@/utils";
+import { ERRORS, extractServerError, maskBVN } from "@/utils";
 
 const UserProfilePage = () => {
   const MAX_FILE_SIZE = 20;
@@ -152,7 +152,7 @@ const UserProfilePage = () => {
             <View style={{ width: "100%", marginTop: 50 }}>
               <ListItem name="Full Name" value={fullName} hasBottomBorder />
               <ListItem name="Email" value={email} hasBottomBorder />
-              <ListItem name="BVN" value={bvn} hasBottomBorder />
+              <ListItem name="BVN" value={maskBVN(bvn)} hasBottomBorder />
               <ListItem
                 name="Date Of Birth"
                 value={formattedDate}

@@ -61,3 +61,17 @@ export const ERRORS = {
   SOMETHING_HAPPENED: "Something happened, please try again",
   FAILED_ACCOUNT_VERIFICATION: "Could ot verify account, please try again",
 };
+
+export const maskBVN = (bvn: string | undefined) => {
+  if (!bvn) return "";
+  if (bvn.length < 11) {
+    return "Invalid BVN";
+  }
+
+  const visibleStart = bvn.slice(0, 3);
+  const visibleEnd = bvn.slice(-3);
+
+  const maskedPart = "*".repeat(5);
+
+  return visibleStart + maskedPart + visibleEnd;
+};
