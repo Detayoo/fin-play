@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { KeyboardAvoidingView, Platform, StyleSheet, View } from "react-native";
 import OTPInputView from "@twotalltotems/react-native-otp-input";
 
 import { Colors, fonts } from "@/constants";
@@ -18,7 +18,11 @@ export const OtpField = ({
   [x: string]: any;
 }) => {
   return (
-    <View>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
+      style={{}}
+    >
       <OTPInputView
         pinCount={count}
         secureTextEntry={true}
@@ -34,7 +38,7 @@ export const OtpField = ({
         onCodeFilled={handleAction}
         {...rest}
       />
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -47,8 +51,7 @@ const styles = StyleSheet.create({
     margin: 0,
     padding: 0,
     flexDirection: "row",
-    gap: 10,
-    marginRight: 20,
+    gap: 0,
   },
 
   codeInputFieldStyle: {
@@ -59,6 +62,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     color: Colors.black,
     fontSize: 16,
+    // marginRight: 30,
   },
   codeInputHighlightStyle: {
     borderColor: Colors.inputFocusBorder,

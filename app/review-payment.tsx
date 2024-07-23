@@ -552,7 +552,7 @@ const ReviewPayment = () => {
                 alignItems: "center",
                 justifyContent: "center",
                 marginTop: 40,
-                width: "60%",
+                width: "70%",
                 gap: 60,
               }}
             >

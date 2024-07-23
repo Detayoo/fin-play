@@ -98,12 +98,17 @@ const styles = StyleSheet.create({
     paddingVertical: 24,
     backgroundColor: Colors.white,
     justifyContent: "space-between",
-    minHeight: "100%",
+    // alignItems:'center',
+    height: "100%",
   },
   inputFields: {
     // marginTop: 48,
     gap: 25,
     flex: 1,
+    // backgroundColor: "blue",
+    minHeight: "80%",
+
+    marginBottom: 100,
   },
   termsContainer: {
     alignItems: "center",
