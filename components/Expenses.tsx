@@ -1,4 +1,5 @@
 import { ScrollView, View } from "react-native";
+import { UseQueryResult } from "@tanstack/react-query";
 
 import { Colors } from "@/constants";
 import { Bank, Uzzy } from "@/assets";
@@ -8,7 +9,6 @@ import { Electricity } from "./Electricity";
 import { Airtime } from "./Airtime";
 import { Cable } from "./Cable";
 import { Smile } from "./Smile";
-import { UseQueryResult } from "@tanstack/react-query";
 import { IGetStats } from "@/types";
 
 export const Expenses = ({

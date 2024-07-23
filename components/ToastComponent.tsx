@@ -66,6 +66,14 @@ const styles = StyleSheet.create({
     // shadowOffset: { width: 4, height: 6 },
     // shadowOpacity: 4,
     // shadowRadius: 1,
+
+
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
   },
   successToast: {
     borderLeftColor: Colors.primary,

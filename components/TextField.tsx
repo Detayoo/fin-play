@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { StyleSheet, TextInput, View, Text } from "react-native";
 
-import { Colors, fonts } from "@/constants";
-import { Hide, Search, Show } from "@/assets";
+import { Colors, fonts } from "../constants";
+import { Hide, Search, Show } from "../assets";
 import { AppText } from "./AppText";
-import { formatMoney } from "@/utils";
-import { useAuth } from "@/context";
-import { useBalance } from "@/hooks";
+import { formatMoney } from "../utils";
+import { useAuth } from "../context";
+import { useBalance } from "../hooks";
 export const TextField = ({
   touched,
   onChange,

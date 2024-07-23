@@ -10,12 +10,12 @@ import {
   BackButton,
   Screen,
   SwitchComponent,
-  TwoFASetup,
 } from "@/components";
 import { Password, Pin, SmallFingerprint, TwoFA, UpgradeTier } from "@/assets";
 import { useBiometrics } from "@/hooks";
 import { ChevronDown } from "@/components/ChevronDown";
 import { useAuth } from "@/context";
+import { TwoFASetup } from "@/modals";
 
 type Notifications = {
   faceId: boolean;

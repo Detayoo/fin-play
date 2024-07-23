@@ -120,9 +120,10 @@ const ContactSupportPage = () => {
             </View>
           );
         })}
-        {SOCIALS.map(({ icon, name, route }) => {
+        {SOCIALS.map(({ icon, name, route }, index) => {
           return (
             <View
+              key={index}
               style={{
                 flexDirection: "row",
                 justifyContent: "space-between",

@@ -12,7 +12,7 @@ export const SwitchComponent = ({
   return (
     <Switch
       trackColor={{
-        false: Colors.inputBackground,
+        false:Platform.OS === 'ios'?  Colors.inputBackground:  Colors.inputBorder,
         true: Colors.inputFocusBorder,
       }}
       thumbColor={Platform.OS === "android" ? Colors.primary : Colors.white}

@@ -1,7 +1,7 @@
 import { ScrollView, View } from "react-native";
 
 import { Colors } from "@/constants";
-import { Bank, Uzzy } from "@/assets";
+import { Bank, Uzzy } from "../assets";
 import { formatMoney, naira } from "@/utils";
 import { AppText } from "./AppText";
 import { Electricity } from "./Electricity";
@@ -45,7 +45,7 @@ const list = [
 export const Income = () => {
   return (
     <ScrollView>
-      {/* <View
+      <View
         style={{
           backgroundColor: "#90AD0426",
           paddingVertical: 16,
@@ -86,7 +86,7 @@ export const Income = () => {
               <View
                 style={{ flexDirection: "row", alignItems: "center", gap: 15 }}
               >
-                {each.icon}
+                {/* {each.icon} */}
                 <AppText style={{ fontSize: 13 }}>{each.name}</AppText>
                 <AppText
                   variant="medium"
@@ -99,7 +99,7 @@ export const Income = () => {
             </View>
           );
         })}
-      </View> */}
+      </View>
     </ScrollView>
   );
 };

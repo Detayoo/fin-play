@@ -5,10 +5,12 @@ import { Formik } from "formik";
 import { Key } from "../assets";
 import { Colors } from "../constants";
 import { copyToClipboard } from "../utils";
-import { AppText } from "./AppText";
-import { ReusableBottomSheet } from "./BottomSheetModal";
-import { PrimaryButton } from "./PrimaryButton";
-import { TextField } from "./TextField";
+import {
+  AppText,
+  ReusableBottomSheet,
+  TextField,
+  PrimaryButton,
+} from "@/components";
 
 export const TwoFASetup = ({
   showModal,

@@ -9,7 +9,8 @@ import {
 } from "react-native-reanimated";
 
 import { Colors, sizes } from "@/constants";
-import { AppText, Dot, PrimaryButton, Screen } from "@/components";
+import { AppText, Dot, Loading, PrimaryButton, Screen } from "@/components";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const data = [
   {
@@ -38,12 +39,19 @@ export const data = [
 export default function WelcomeScreen() {
   const [carouselIndex, setCarouselIndex] = useState(0);
   const rotation = useSharedValue("0deg");
+  const [loading, setLoading] = useState(true);
+  const getFirstTimer = async () => {
+    const res = await AsyncStorage.getItem("FIRSTTIME");
+    setLoading(false);
 
-  // const rotationStyle = useAnimatedStyle(() => {
-  //   return {
-  //     transform: [{ rotate: rotation.value }],
-  //   };
-  // });
+    if (res) {
+      router.push("/login");
+    }
+  };
+
+  useEffect(() => {
+    getFirstTimer();
+  }, []);
 
   useEffect(() => {
     rotation.value = withRepeat(
@@ -83,34 +91,44 @@ export default function WelcomeScreen() {
 
   return (
     <Screen>
-      <View
-        style={{ padding: 0, height: "100%", backgroundColor: Colors.white }}
-      >
-        <View style={styles.carouselContainer}>
-          <Carousel
-            loop={false}
-            width={sizes.WINDOW_WIDTH}
-            autoPlay={true}
-            autoPlayInterval={1500}
-            data={data}
-            onSnapToItem={(index) => setCarouselIndex(index)}
-            renderItem={renderScrollContent}
-            pagingEnabled
-          />
-          <Dot activeIndex={carouselIndex} length={data?.length} />
+      {loading ? (
+        <Loading />
+      ) : (
+        <View
+          style={{ padding: 0, height: "100%", backgroundColor: Colors.white }}
+        >
+          <View style={styles.carouselContainer}>
+            <Carousel
+              loop={false}
+              width={sizes.WINDOW_WIDTH}
+              autoPlay={true}
+              autoPlayInterval={1500}
+              data={data}
+              onSnapToItem={(index) => setCarouselIndex(index)}
+              renderItem={renderScrollContent}
+              pagingEnabled
+            />
+            <Dot activeIndex={carouselIndex} length={data?.length} />
+          </View>
+          <View style={styles.btnContainer}>
+            <PrimaryButton
+              onPress={async () => {
+                router.push("/registration");
+                await AsyncStorage.setItem("FIRSTTIME", "false");
+              }}
+              label="Create an account"
+            />
+            <PrimaryButton
+              onPress={async () => {
+                router.push("/login");
+                await AsyncStorage.setItem("FIRSTTIME", "false");
+              }}
+              variant="outline"
+              label="Login"
+            />
+          </View>
         </View>
-        <View style={styles.btnContainer}>
-          <PrimaryButton
-            onPress={() => router.push("/registration")}
-            label="Create an account"
-          />
-          <PrimaryButton
-            onPress={() => router.push("/login")}
-            variant="outline"
-            label="Login"
-          />
-        </View>
-      </View>
+      )}
     </Screen>
   );
 }
