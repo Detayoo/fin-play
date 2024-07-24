@@ -208,6 +208,14 @@ const styles = StyleSheet.create({
     // padding: 16,
     backgroundColor: "white",
     marginTop: 20,
+    shadowColor: Colors.black,
+    shadowOffset: {
+      width: 0.4,
+      height: 0.4,
+    },
+    shadowRadius: 4,
+    shadowOpacity: 0.1,
+    elevation: 3,
 
     ...Platform.select({
       ios: {
@@ -228,7 +236,7 @@ const styles = StyleSheet.create({
       android: {
         borderWidth: 1,
         borderColor: "rgba(171, 171, 171, 0.9)",
-        elevation: 1,
+        elevation: 3,
       },
     }),
   },

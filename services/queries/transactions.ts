@@ -39,7 +39,7 @@ export const getAllTransactionsFn = async ({
   }
 
   if (transactionType) {
-    params.transactionType = transactionType;
+    params.category = transactionType;
   }
 
   if (perPage) {

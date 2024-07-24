@@ -10,7 +10,7 @@ import { PrimaryButton } from "./PrimaryButton";
 
 const categories = [
   {
-    name: "ALL",
+    name: null,
     label: "All",
   },
   {
@@ -40,6 +40,10 @@ const categories = [
 ];
 
 const statuses = [
+  {
+    name: null,
+    label: "All",
+  },
   {
     name: "SUCCESS",
     label: "Success",
