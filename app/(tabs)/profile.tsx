@@ -14,7 +14,7 @@ const ProfilePage = () => {
   const { data: user } = useR({
     token,
   });
-  const { tier } = user?.data?.userProfile || {};
+  const { tier } = user?.data?.customer || {};
   const handleNavigation = (route: any) => {
     if (route === "/") {
       logout();

@@ -29,7 +29,7 @@ const UserProfilePage = () => {
     token,
   });
 
-  const { email, tier, fullName, dob, bvn } = userData?.data?.userProfile || {};
+  const { email, tier, fullName, dob, bvn } = userData?.data?.customer || {};
   const photo = "y";
 
   const parsedDob = parse(dob, "dd-MM-yyyy", new Date());

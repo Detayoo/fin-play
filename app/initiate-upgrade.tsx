@@ -27,7 +27,7 @@ const InitialUpgradePage = () => {
     token,
   });
 
-  const { tier } = userData?.data?.userProfile || {};
+  const { tier } = userData?.data?.customer || {};
   return (
     <Screen>
       <View

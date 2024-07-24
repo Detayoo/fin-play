@@ -2,7 +2,7 @@ import { BareResponse } from ".";
 
 export interface IUserProfile extends BareResponse {
   data: {
-    userProfile: {
+    customer: {
       email: string;
       phone: string;
       firstName: string;
@@ -13,6 +13,10 @@ export interface IUserProfile extends BareResponse {
       nin: string;
       address: string;
       bvn: string;
+    };
+    tier: {
+      currentTier: string;
+      tierStatus: boolean;
     };
   };
 }
