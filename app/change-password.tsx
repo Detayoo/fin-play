@@ -80,7 +80,7 @@ const ChangePasswordPage = () => {
               </View>
               <PrimaryButton
                 disabled={!isValid || isPending}
-                style={{ marginTop: "auto" }}
+                style={{}}
                 onPress={() => handleSubmit()}
                 label="Save Changes"
               />
@@ -97,27 +97,22 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: 24,
     backgroundColor: Colors.white,
-    justifyContent: "space-between",
+    // justifyContent: "space-between",
     // alignItems:'center',
-    height: "100%",
+    minHeight: "90%",
   },
   inputFields: {
     // marginTop: 48,
     gap: 25,
     flex: 1,
     // backgroundColor: "blue",
-    minHeight: "80%",
-
-    marginBottom: 100,
+    // minHeight: "80%",
+    // marginBottom: 100,
   },
   termsContainer: {
     alignItems: "center",
     flexDirection: "row",
     gap: 10,
-  },
-  biometricContainer: {
-    alignItems: "center",
-    marginTop: 45,
   },
 });
 

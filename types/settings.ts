@@ -90,3 +90,10 @@ export interface IGetInvitees extends BareResponse {
     };
   };
 }
+
+export interface ITwoFAResponse extends BareResponse {
+  data: {
+    qrlUrl: string;
+    secret: string;
+  };
+}

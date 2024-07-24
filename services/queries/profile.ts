@@ -5,6 +5,7 @@ import {
   IGetInvitees,
   IGetRewards,
   IGetTiers,
+  ITwoFAResponse,
   IUpgradeAccount,
   IUserProfile,
   TokenType,
@@ -138,5 +139,22 @@ export const getInviteesFn = async ({
     "settings/referal/invitees",
     { params }
   );
+  return data;
+};
+
+export const setTwoFAFn = async ({
+  token,
+  enable2fa,
+}: {
+  token: TokenType;
+  enable2fa: boolean;
+}) => {
+  const { data } = await authenticatedRequest(token).patch<ITwoFAResponse>(
+    "/settings/2fa/enable",
+    {
+      enable2fa,
+    }
+  );
+
   return data;
 };

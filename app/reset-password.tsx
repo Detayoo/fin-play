@@ -113,10 +113,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: 10,
   },
-  biometricContainer: {
-    alignItems: "center",
-    marginTop: 45,
-  },
 });
 
 export default ResetPasswordPage;

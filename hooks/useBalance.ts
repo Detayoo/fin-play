@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { getUserAccountDetailsFn, getUserMainBalanceFn } from "@/services";
+import { getUserAccountDetailsFn } from "@/services";
 import { TokenType } from "@/types";
 
 export const useBalance = ({ token }: { token: TokenType }) => {

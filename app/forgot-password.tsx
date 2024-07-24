@@ -109,15 +109,6 @@ const styles = StyleSheet.create({
   inputFields: {
     marginTop: 40,
   },
-  termsContainer: {
-    alignItems: "center",
-    flexDirection: "row",
-    gap: 10,
-  },
-  biometricContainer: {
-    alignItems: "center",
-    marginTop: 45,
-  },
 });
 
 export default ForgotPasswordPage;

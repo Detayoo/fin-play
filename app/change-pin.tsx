@@ -105,21 +105,12 @@ const styles = StyleSheet.create({
     paddingVertical: 24,
     backgroundColor: Colors.white,
     justifyContent: "space-between",
-    minHeight: "100%",
+    minHeight: "90%",
   },
   inputFields: {
     // marginTop: 48,
     gap: 25,
     flex: 1,
-  },
-  termsContainer: {
-    alignItems: "center",
-    flexDirection: "row",
-    gap: 10,
-  },
-  biometricContainer: {
-    alignItems: "center",
-    marginTop: 45,
   },
 });
 
