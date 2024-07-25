@@ -236,7 +236,7 @@ export interface IGetJambProfile {
   };
 }
 
-export interface IBuyEducationService extends BareResponse {
+export interface IBuyEducationServiceResponse extends BareResponse {
   data: {
     status: string;
     paidAt: string;
@@ -246,4 +246,13 @@ export interface IBuyEducationService extends BareResponse {
     candidateNumber: string;
     token: string;
   };
+}
+
+export interface IBuyEducationServicePayload {
+  amount: number;
+  code: string;
+  service: string;
+  category: string;
+  phone: string;
+  candidateNumber: string;
 }

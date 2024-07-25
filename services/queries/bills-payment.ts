@@ -5,12 +5,16 @@ import {
   IBuyBettingResponse,
   IBuyDataPayload,
   IBuyDataResponse,
+  IBuyEducationServicePayload,
+  IBuyEducationServiceResponse,
   IBuyElectricityPayload,
   IBuyElectricityResponse,
   ICheckMeterResponse,
   IGetBouquet,
   IGetDataPlans,
+  IGetEducationalServices,
   IGetElectricityProviders,
+  IGetJambProfile,
   IGetPointBalance,
   IGetProviders,
   IPurchaseBouquet,
@@ -280,5 +284,62 @@ export const buyBouquetFn = async ({
   const { data } = await authenticatedRequest(
     token
   ).post<IPurchaseBouquetResponse>("/tv/vend", payload);
+  return data;
+};
+
+export const getEducationalServicesFn = async ({
+  token,
+}: {
+  token: TokenType;
+}) => {
+  const { data } = await authenticatedRequest(
+    token
+  ).get<IGetEducationalServices>("/education/services");
+  return data;
+};
+
+export const getCandidateProfileFn = async ({
+  token,
+  code,
+  candidateNumber,
+  service,
+}: {
+  token: TokenType;
+  code: string;
+  candidateNumber: string;
+  service: string;
+}) => {
+  const { data } = await authenticatedRequest(token).get<IGetJambProfile>(
+    `/education/candidate?code=${code}&candidateNumber=${candidateNumber}&service=${service}`
+  );
+  return data;
+};
+
+export const buyEducationServiceFn = async ({
+  token,
+  payload,
+}: {
+  token: TokenType;
+  payload: IBuyEducationServicePayload;
+}) => {
+  const { data } = await authenticatedRequest(
+    token
+  ).post<IBuyEducationServiceResponse>("/education/vend", payload);
+  return data;
+};
+
+export const getEducationTransactionStatusFn = async ({
+  token,
+  customerReference,
+}: {
+  token: TokenType;
+  customerReference: string;
+}) => {
+  const { data } = await authenticatedRequest(
+    token
+  ).get<IBuyEducationServiceResponse>(
+    `/education/transaction-status?customerReference=${customerReference}`
+  );
+
   return data;
 };
