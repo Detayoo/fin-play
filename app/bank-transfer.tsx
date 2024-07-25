@@ -4,7 +4,7 @@ import { ScrollView, TouchableOpacity, View } from "react-native";
 import { router } from "expo-router";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueries } from "@tanstack/react-query";
 
 import { Empty, Recipient } from "@/assets";
 import {
@@ -19,7 +19,7 @@ import {
   showToast,
 } from "@/components";
 import { Colors } from "@/constants";
-import { resolveTransferToBankFn } from "@/services";
+import { getBankCodesFn, resolveTransferToBankFn } from "@/services";
 import { ERRORS, bankTransferSchema, extractServerError } from "@/utils";
 import { useAuth } from "@/context";
 
@@ -65,6 +65,8 @@ const BankTransfer = () => {
   const [list, setList] = useState(beneficiaries);
   const [showModal, setShowModal] = useState(false);
   const [selectedBank, setSelectedBank] = useState<Option | null>(null);
+  const [banks, setBanks] = useState<any>([]);
+
   const initialValues = {
     accountNumber: "",
     amount: "",
@@ -88,6 +90,15 @@ const BankTransfer = () => {
     setState((prev) => ({ ...prev, ...payload }));
   };
 
+  const [banksData] = useQueries({
+    queries: [
+      {
+        queryKey: ["banks"],
+        queryFn: () => getBankCodesFn({ token }),
+      },
+    ],
+  });
+
   const { mutateAsync, isPending } = useMutation({
     mutationFn: resolveTransferToBankFn,
     onSuccess: (data) => {
@@ -98,9 +109,9 @@ const BankTransfer = () => {
 
     onError: (error) => {
       showToast("error", extractServerError(error, ERRORS.SOMETHING_HAPPENED));
-      // updateState({
-      //   accountName: "",
-      // });
+      updateState({
+        accountName: "",
+      });
     },
   });
   const handleAccountNumberChange = (
@@ -126,13 +137,25 @@ const BankTransfer = () => {
   };
 
   useEffect(() => {
-    if (state.accountNumber.length === 10) {
+    if (state.accountNumber.length === 10 && selectedBank?.code) {
       handleResolution();
-      updateState({
-        accountName: "Tayo ADE",
-      });
+      // updateState({
+      //   accountName: "Tayo ADE",
+      // });
     }
-  }, [state.accountNumber]);
+  }, [state.accountNumber, selectedBank?.code]);
+
+  useEffect(() => {
+    setBanks(
+      banksData?.data?.data?.banks?.map((each, index) => {
+        return {
+          id: index,
+          label: each.name,
+          ...each,
+        };
+      })
+    );
+  }, [banksData?.data?.data]);
 
   const onSubmit = async (values: FormField) => {
     try {
@@ -215,7 +238,7 @@ const BankTransfer = () => {
                           hasBalance
                         />
                       </View>
-                      {isPending && (
+                      {isPending && !state.accountName && (
                         <AppText style={{ marginTop: -10 }} variant="medium">
                           Fetching User..
                         </AppText>
@@ -354,7 +377,7 @@ const BankTransfer = () => {
           </Screen>
 
           <SelectField
-            options={options}
+            options={banks}
             visible={showModal}
             setVisible={setShowModal}
             setSelectedOption={setSelectedBank}

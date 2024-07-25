@@ -13,6 +13,7 @@ export type Transaction = {
   amountPaid: string;
   operatorName: string;
   type: string;
+  reference: string;
 };
 
 export interface ITransactionsList extends BareResponse {

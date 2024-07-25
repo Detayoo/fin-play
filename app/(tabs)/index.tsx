@@ -333,6 +333,7 @@ export default function HomeScreen() {
                       }
                       status="GLO"
                       data={trx}
+                      type={trx.category}
                     />
                   );
                 }

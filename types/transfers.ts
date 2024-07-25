@@ -32,16 +32,18 @@ export interface IGetAccountResolutionResponse extends BareResponse {
 
 export interface IGetBanks extends BareResponse {
   data: {
-    name: string;
-    slug: string;
-    code: string;
-    longCode: string;
-    gateway: string;
-    active: boolean;
-    country: string;
-    currency: string;
-    type: string;
-  }[];
+    banks: {
+      name: string;
+      slug: string;
+      code: string;
+      longCode: string;
+      gateway: string;
+      active: boolean;
+      country: string;
+      currency: string;
+      type: string;
+    }[];
+  };
 }
 
 export interface ITransferResponse extends BareResponse {

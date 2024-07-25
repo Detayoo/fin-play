@@ -76,6 +76,7 @@ const PaymentSummary = () => {
     useMutation({
       mutationFn: transferToBankFn,
       onSuccess: (data) => {
+        return;
         router.replace({
           pathname: "/payment-receipt",
           params: {

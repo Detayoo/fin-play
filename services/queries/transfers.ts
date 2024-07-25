@@ -59,24 +59,24 @@ export const internalTransferFn = async ({
   token: TokenType;
   payload: InternalTransferPayload;
 }) => {
-  const res = {
-    message: "string",
-    data: {
-      transaction: {
-        status: "string",
-        paidAt: "",
-        reference: "string",
-        currency: "string",
-        amount: "string",
-        accountName: "string",
-        accountNumber: "string",
-        bankName: "string",
-        sessionId: "string",
-      },
-    },
-  };
+  // const res = {
+  //   message: "string",
+  //   data: {
+  //     transaction: {
+  //       status: "string",
+  //       paidAt: "",
+  //       reference: "string",
+  //       currency: "string",
+  //       amount: "string",
+  //       accountName: "string",
+  //       accountNumber: "string",
+  //       bankName: "string",
+  //       sessionId: "string",
+  //     },
+  //   },
+  // };
 
-  return res;
+  // return res;
   const { data } = await authenticatedRequest(token).post<ITransferResponse>(
     "/transfer/",
     payload
@@ -100,7 +100,7 @@ export const getChargeFn = async ({
   amount: string | string[] | undefined;
 }) => {
   const { data } = await authenticatedRequest(token).get<IGetCharge>(
-    "/charge",
+    "/transfer/bank/charges",
     {
       params: { amount },
     }

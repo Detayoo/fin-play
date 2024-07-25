@@ -308,7 +308,7 @@ const TransactionsHistoryPage = () => {
                           },
                         })
                       }
-                      type="CREDIT"
+                      type={item.category?.toUpperCase()}
                       data={item}
                     />
                   )}

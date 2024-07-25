@@ -27,6 +27,10 @@ export const TransactionItem = ({
         return <BankOutward />;
       case "CREDIT":
         return <BigBank />;
+      case "REVERSAL":
+        return <BigBank />;
+      case "PAYOUT":
+        return <BigBank />;
       case "GLO":
         return <GloOutward />;
       default:
@@ -34,7 +38,7 @@ export const TransactionItem = ({
     }
   };
 
-  console.log("tpy", type);
+  console.log(data, "cat");
 
   const isBill =
     data?.category?.toLowerCase() == "airtime" ||
@@ -59,7 +63,7 @@ export const TransactionItem = ({
         {renderImage()}
         {/* <Credit style={{ position: "absolute", bottom: 0, right: 0 }} /> */}
 
-        {isBill ? (
+        {isBill || data?.category?.toUpperCase() === "PAYOUT" ? (
           <Debit style={{ position: "absolute", bottom: -10, right: -5 }} />
         ) : (
           <Credit style={{ position: "absolute", bottom: -10, right: -5 }} />
@@ -81,7 +85,11 @@ export const TransactionItem = ({
             : isBill &&
               !(data?.category === "airtime" || data?.category === "data")
             ? `${data?.category} purchase for ${data?.beneficiary}`
-            : data?.accountName}
+            : data?.category?.toUpperCase() === "PAYOUT"
+            ? `Transfer to ${data?.accountName}`
+            : data?.category?.toUpperCase() === "REVERSAL"
+            ? `Reversal on transaction ${data?.reference}`
+            : `${data?.category} `}
         </AppText>
         <AppText size="small" color={Colors.faintBlack}>
           {data?.time
