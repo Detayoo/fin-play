@@ -107,6 +107,18 @@ const ReviewPayment = () => {
   const { availablePoint: pointBal = 10 } = pointsData?.data?.data || {};
   const subsidizedAmount = (amount ? +amount : 0) - (pointBal ?? 0);
 
+  const invalidateQueries = () => {
+    queryClient.invalidateQueries({
+      queryKey: ["user account details"],
+    });
+    queryClient.invalidateQueries({
+      queryKey: ["points balance"],
+    });
+    queryClient.invalidateQueries({
+      queryKey: ["all-transactions"],
+    });
+  };
+
   const { isPending: buyingAirtime, mutateAsync: buyAirtimeAsync } =
     useMutation({
       mutationFn: buyAirtimeFn,
@@ -123,13 +135,7 @@ const ReviewPayment = () => {
         );
       },
       onSettled: () => {
-        queryClient.invalidateQueries({
-          queryKey: [
-            "points balance",
-            "user account details",
-            "all transactions",
-          ],
-        });
+        invalidateQueries();
       },
     });
 
@@ -145,13 +151,7 @@ const ReviewPayment = () => {
       showToast("error", extractServerError(error, ERRORS.SOMETHING_HAPPENED));
     },
     onSettled: () => {
-      queryClient.invalidateQueries({
-        queryKey: [
-          "points balance",
-          "user account details",
-          "all transactions",
-        ],
-      });
+      invalidateQueries();
     },
   });
 
@@ -180,13 +180,7 @@ const ReviewPayment = () => {
         );
       },
       onSettled: () => {
-        queryClient.invalidateQueries({
-          queryKey: [
-            "points balance",
-            "user account details",
-            "all transactions",
-          ],
-        });
+        invalidateQueries();
       },
     });
 
@@ -212,13 +206,7 @@ const ReviewPayment = () => {
         );
       },
       onSettled: () => {
-        queryClient.invalidateQueries({
-          queryKey: [
-            "points balance",
-            "user account details",
-            "all transactions",
-          ],
-        });
+        invalidateQueries();
       },
     });
 
@@ -248,13 +236,7 @@ const ReviewPayment = () => {
         );
       },
       onSettled: () => {
-        queryClient.invalidateQueries({
-          queryKey: [
-            "all transactions",
-            "points balance",
-            "user account details",
-          ],
-        });
+        invalidateQueries();
       },
     });
 

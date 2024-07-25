@@ -42,8 +42,6 @@ export const TransactionItem = ({
     }
   };
 
-  console.log(data, "cat");
-
   const isBill =
     data?.category?.toLowerCase() == "airtime" ||
     data?.category?.toLowerCase() === "data" ||

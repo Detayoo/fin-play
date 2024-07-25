@@ -210,7 +210,7 @@ const PaymentSummary = () => {
           <View style={{ gap: 30, width: "100%", marginTop: 35 }}>
             <ListItem name="Recipient Name" value={accountName} />
             <ListItem name="Account Number" value={accountNumber} />
-            <ListItem name="Bank Name" value={bankName ?? "Uzzy Account"} />
+            <ListItem name="Bank Name" value={bankName ?? "Xpress Wallet"} />
             <ListItem name="Narration" value={narration} />
             <ListItem
               name="Fee"
