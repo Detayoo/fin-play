@@ -16,6 +16,7 @@ export const ListItem = ({
   maxWidth,
   valueColor,
   styles,
+  value1Styles,
   value2Styles,
 }: {
   name: string;
@@ -28,6 +29,7 @@ export const ListItem = ({
   maxWidth?: any;
   valueColor?: string;
   styles?: any;
+  value1Styles?: TextStyle;
   value2Styles?: TextStyle;
 }) => {
   return (
@@ -68,7 +70,7 @@ export const ListItem = ({
         >
           <AppText
             color={valueColor}
-            style={{ textAlign: "right" }}
+            style={[{ textAlign: "right" }, value1Styles]}
             variant="medium"
           >
             {value}

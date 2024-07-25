@@ -121,7 +121,10 @@ export default function HomeScreen() {
           refreshControl={
             <RefreshControl
               refreshing={userAccountData?.isFetching}
-              onRefresh={userAccountData?.refetch}
+              onRefresh={()=> {
+                userAccountData?.refetch()
+                recentTransactionsData?.refetch()
+              }}
               tintColor={Colors.primary}
             />
           }

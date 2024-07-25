@@ -76,7 +76,15 @@ const LoginPage = () => {
       );
 
       if (data?.metadata?.profile?.is2FAEnabled) {
-        saveUser({ ...data?.metadata?.profile, password, rememberMe }, null);
+        saveUser(
+          {
+            ...data?.metadata?.profile,
+            ...data?.metadata?.wallet,
+            password,
+            rememberMe,
+          },
+          null
+        );
         return router.push({
           pathname: "/two-fa-verification",
           params: {

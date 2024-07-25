@@ -9,6 +9,7 @@ import {
   ITwoFAStatusResponse,
   IUpgradeAccount,
   IUserProfile,
+  LoginResponse,
   TokenType,
 } from "@/types";
 import { authenticatedRequest, baseRequest } from "../api";
@@ -187,7 +188,28 @@ export const validate2faOtpFn = async ({
     { otp },
     {
       headers: {
-        "X-Login-Token": loginToken,
+        "x-login-token": loginToken,
+      },
+    }
+  );
+  return data;
+};
+
+export const validate2faOtpOnLoginFn = async ({
+  otp,
+  loginToken,
+}: {
+  otp: string;
+  loginToken?: string | string[];
+}) => {
+  const { data } = await baseRequest.post<LoginResponse>(
+    `/auth/2fa/login`,
+    {
+      otp,
+    },
+    {
+      headers: {
+        "x-login-token": loginToken,
       },
     }
   );

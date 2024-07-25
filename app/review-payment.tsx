@@ -159,6 +159,7 @@ const ReviewPayment = () => {
     useMutation({
       mutationFn: buyElectricityFn,
       onSuccess: (data) => {
+        return;
         router.replace({
           pathname: "/payment-receipt",
           params: {
@@ -193,6 +194,7 @@ const ReviewPayment = () => {
     useMutation({
       mutationFn: buyBettingPlanFn,
       onSuccess: (data) => {
+        return;
         router.replace({
           pathname: "/payment-receipt",
           params: {
@@ -224,8 +226,7 @@ const ReviewPayment = () => {
     useMutation({
       mutationFn: buyBouquetFn,
       onSuccess: (data) => {
-        console.log(data?.data?.transaction);
-
+        return;
         router.replace({
           pathname: "/payment-receipt",
           params: {

@@ -49,6 +49,7 @@ export const TwoFASetup = ({
       queryClient.invalidateQueries({
         queryKey: ["2fa status"],
       });
+      setShowModal(false);
     },
     onError: (error) => {
       showToast("error", extractServerError(error, ERRORS.SOMETHING_HAPPENED));

@@ -29,7 +29,7 @@ const UserProfilePage = () => {
     token,
   });
 
-  const { email, tier, fullName, dob, bvn } = userData?.data || {};
+  const { email, tier, fullName, dob } = userData?.data || {};
   console.log(userData?.data);
   const photo = "y";
 
@@ -154,7 +154,7 @@ const UserProfilePage = () => {
               <ListItem name="Email" value={email} hasBottomBorder />
               <ListItem
                 name="BVN"
-                value={maskBVN(bvn) || "N/A"}
+                value={maskBVN(tier?.bvn) || "N/A"}
                 hasBottomBorder
               />
               <ListItem
@@ -164,7 +164,7 @@ const UserProfilePage = () => {
               />
               <ListItem
                 name="Current Tier"
-                value={`Tier ${tier?.tierLevel ||0}`}
+                value={`Tier ${tier?.tierLevel || 0}`}
                 // hasBottomBorder
                 hasBackgroundColor
                 styles={{ paddingTop: 20 }}

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ScrollView, TouchableOpacity, View } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
-import { format, parse } from "date-fns";
+import { format, parse, parseISO } from "date-fns";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useQuery } from "@tanstack/react-query";
 
@@ -123,10 +123,7 @@ const PaymentReceipt = () => {
           </AppText>
           <AppText style={{ marginTop: 10, marginBottom: 30 }}>
             {paidAt
-              ? format(
-                  parse(`${paidAt}`, "dd/MM/yyyy HH:mm:ss", new Date()),
-                  "MMMM dd, yyyy hh:mma"
-                )
+              ? format(parseISO(`${paidAt}`), "MMMM dd, yyyy hh:mma")
               : null}
           </AppText>
 

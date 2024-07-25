@@ -13,8 +13,13 @@ import {
   showToast,
 } from "@/components";
 import { Colors } from "@/constants";
-import { ERRORS, extractServerError, storeToken, twoFALoginSchema } from "@/utils";
-import { validate2faOtpFn } from "@/services";
+import {
+  ERRORS,
+  extractServerError,
+  storeToken,
+  twoFALoginSchema,
+} from "@/utils";
+import { validate2faOtpFn, validate2faOtpOnLoginFn } from "@/services";
 import { useAuth } from "@/context";
 
 const TwoFAVerificationPage = () => {
@@ -22,11 +27,9 @@ const TwoFAVerificationPage = () => {
   const { loginToken } = useLocalSearchParams();
 
   const { mutateAsync, isPending } = useMutation({
-    mutationFn: validate2faOtpFn,
+    mutationFn: validate2faOtpOnLoginFn,
     onSuccess: (data) => {
-      //   storeToken()
-
-      //   save token , then take the user to the dashboard
+      saveUser({ ...user, ...data?.metadata?.profile }, data?.data?.token);
 
       router.replace("/(tabs)");
     },
@@ -43,7 +46,6 @@ const TwoFAVerificationPage = () => {
       await mutateAsync({
         otp,
         loginToken,
-        mode: "LOGIN",
       });
     } catch (error) {}
   };
