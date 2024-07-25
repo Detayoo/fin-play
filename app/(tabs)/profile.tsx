@@ -2,9 +2,13 @@ import { Pressable, ScrollView, StyleSheet, View } from "react-native";
 import { Image } from "expo-image";
 import { router } from "expo-router";
 
-import { AppText, DashboardLayout, PrimaryButton } from "@/components";
+import {
+  AppText,
+  DashboardLayout,
+  PrimaryButton,
+  ChevronDown,
+} from "@/components";
 import { MORE_ROUTES, SETTINGS_ROUTES } from "@/utils";
-import { ChevronDown } from "@/components/ChevronDown";
 import { useAuth } from "@/context";
 import { Colors } from "@/constants";
 import { useR } from "@/services";
@@ -14,7 +18,7 @@ const ProfilePage = () => {
   const { data: user } = useR({
     token,
   });
-  const { tier } = user?.data?.customer || {};
+  const { tier } = user?.data || {};
   const handleNavigation = (route: any) => {
     if (route === "/") {
       logout();
@@ -49,7 +53,9 @@ const ProfilePage = () => {
             {loggedInUser?.fullName}
           </AppText>
           <View style={styles.dashedBorder} />
-          <AppText size="small">You're currently on Tier {tier} </AppText>
+          <AppText size="small">
+            You're currently on Tier {tier?.tierLevel || 0}{" "}
+          </AppText>
           <AppText style={{ fontSize: 13, marginTop: 5 }} variant="medium">
             Upgrade your account
           </AppText>
@@ -109,7 +115,7 @@ const ProfilePage = () => {
                           style={{ textAlign: "right" }}
                           variant="medium"
                         >
-                          Tier {tier}
+                          Tier {tier?.tierLevel || 0}
                         </AppText>
                       </View>
                     )}

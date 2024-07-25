@@ -23,6 +23,7 @@ import {
   ReusableBottomSheet,
   Services,
   TransactionItem,
+  showToast,
 } from "@/components";
 import {
   AddMoney,
@@ -176,11 +177,17 @@ export default function HomeScreen() {
 
           <View style={styles.moneyActions}>
             <TouchableOpacity
-              onPress={() =>
+              onPress={() => {
+                if (!user?.tier) {
+                  return showToast(
+                    "error",
+                    "Your wallet has not been created."
+                  );
+                }
                 updateState({
                   accountDetailsModal: true,
-                })
-              }
+                });
+              }}
               style={{ alignItems: "center" }}
             >
               <AddMoney />

@@ -1,28 +1,74 @@
 import { useState } from "react";
 import { KeyboardAvoidingView, Platform, View } from "react-native";
 import { Formik } from "formik";
+import {
+  UseQueryResult,
+  useMutation,
+  useQueryClient,
+} from "@tanstack/react-query";
 
 import { Key } from "../assets";
 import { Colors } from "../constants";
-import { copyToClipboard } from "../utils";
+import { ERRORS, copyToClipboard, extractServerError } from "../utils";
 import {
   AppText,
   ReusableBottomSheet,
   TextField,
   PrimaryButton,
+  showToast,
 } from "@/components";
+import { setTwoFAFn } from "@/services";
+import { useAuth } from "@/context";
+import { IUserProfile, Notifications } from "@/types";
 
 export const TwoFASetup = ({
   showModal,
   setShowModal,
+  secretKey,
+  stage,
+  setStage,
+  state,
+  updateState,
+  userData,
 }: {
   showModal: boolean;
   setShowModal: (state: boolean) => void;
+  secretKey?: string;
+  stage: number;
+  setStage: (state: number) => void;
+  state: Notifications;
+  updateState: any;
+  userData?: IUserProfile;
 }) => {
-  const [stage, setStage] = useState(1);
+  const { token } = useAuth();
+  const queryClient = useQueryClient();
+
+  const { isPending, mutateAsync } = useMutation({
+    mutationFn: setTwoFAFn,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["2fa status"],
+      });
+    },
+    onError: (error) => {
+      showToast("error", extractServerError(error, ERRORS.SOMETHING_HAPPENED));
+    },
+  });
+
+  const onSubmit = async (values: { otp: string }) => {
+    const { otp } = values;
+    try {
+      await mutateAsync({
+        toggle: !state["2fa"],
+        token,
+        otp,
+      });
+    } catch (error) {}
+  };
+
   return (
     <ReusableBottomSheet
-      snapPoints={["75%"]}
+      snapPoints={["100%"]}
       visible={showModal}
       onClose={() => {
         setShowModal(false);
@@ -51,11 +97,11 @@ export const TwoFASetup = ({
         >
           <Key />
           <AppText variant="medium" style={{ marginTop: 26 }}>
-            AXBESF85FGWUEUR84628SHDS
+            {secretKey}
           </AppText>
           <PrimaryButton
             onPress={() => {
-              copyToClipboard("AXBESF85FGWUEUR84628SHDS");
+              copyToClipboard(secretKey);
 
               setTimeout(() => {
                 setStage(2);
@@ -74,7 +120,7 @@ export const TwoFASetup = ({
             behavior={Platform.OS === "ios" ? "padding" : undefined}
             style={{ flex: 1 }}
           >
-            <Formik initialValues={{ otp: "" }} onSubmit={() => {}}>
+            <Formik initialValues={{ otp: "" }} onSubmit={onSubmit}>
               {({
                 handleSubmit,
                 values,
@@ -103,7 +149,8 @@ export const TwoFASetup = ({
                       keyboardType="number-pad"
                     />
                     <PrimaryButton
-                      disabled={values?.otp.length !== 6}
+                      onPress={() => handleSubmit()}
+                      disabled={values?.otp.length !== 6 || isPending}
                       label="Submit"
                     />
                   </View>

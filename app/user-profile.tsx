@@ -29,10 +29,11 @@ const UserProfilePage = () => {
     token,
   });
 
-  const { email, tier, fullName, dob, bvn } = userData?.data?.customer || {};
+  const { email, tier, fullName, dob, bvn } = userData?.data || {};
+  console.log(userData?.data);
   const photo = "y";
 
-  const parsedDob = parse(dob, "dd-MM-yyyy", new Date());
+  const parsedDob = dob ? parse(dob, "dd-MM-yyyy", new Date()) : new Date();
 
   const formattedDate = format(parsedDob, "do MMMM yyyy");
 
@@ -151,15 +152,19 @@ const UserProfilePage = () => {
             <View style={{ width: "100%", marginTop: 50 }}>
               <ListItem name="Full Name" value={fullName} hasBottomBorder />
               <ListItem name="Email" value={email} hasBottomBorder />
-              <ListItem name="BVN" value={maskBVN(bvn)} hasBottomBorder />
+              <ListItem
+                name="BVN"
+                value={maskBVN(bvn) || "N/A"}
+                hasBottomBorder
+              />
               <ListItem
                 name="Date Of Birth"
-                value={formattedDate}
+                value={dob ? formattedDate : "N/A"}
                 hasBottomBorder
               />
               <ListItem
                 name="Current Tier"
-                value={`Tier ${tier}`}
+                value={`Tier ${tier?.tierLevel ||0}`}
                 // hasBottomBorder
                 hasBackgroundColor
                 styles={{ paddingTop: 20 }}

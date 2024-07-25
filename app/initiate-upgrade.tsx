@@ -27,7 +27,7 @@ const InitialUpgradePage = () => {
     token,
   });
 
-  const { tier } = userData?.data?.customer || {};
+  const { tier } = userData?.data || {};
   return (
     <Screen>
       <View
@@ -57,7 +57,7 @@ const InitialUpgradePage = () => {
           <View style={styles.container}>
             <View style={styles.tierNameContainer}>
               <AppText style={styles.tierName}>Tier 1</AppText>
-              {tier === 1 && <CurrentTier />}
+              {tier?.tierLevel === 1 && <CurrentTier />}
             </View>
             <View style={styles.tierDetailsContainer}>
               <AppText>
@@ -89,7 +89,7 @@ const InitialUpgradePage = () => {
           <View style={styles.container}>
             <View style={styles.tierNameContainer}>
               <AppText style={styles.tierName}>Tier 2</AppText>
-              {tier === 2 && <CurrentTier />}
+              {tier?.tierLevel === 2 && <CurrentTier />}
             </View>
             <View style={styles.tierDetailsContainer}>
               <AppText>
@@ -119,7 +119,7 @@ const InitialUpgradePage = () => {
                 </AppText>
               </AppText>
 
-              {tier === 1 && (
+              {tier?.tierLevel === 1 && (
                 <PrimaryButton
                   onPress={() => {
                     router.push({
@@ -149,7 +149,7 @@ const InitialUpgradePage = () => {
           <View style={[styles.container, { marginBottom: 70 }]}>
             <View style={styles.tierNameContainer}>
               <AppText style={styles.tierName}>Tier 3</AppText>
-              {tier === 3 && <CurrentTier />}
+              {tier?.tierLevel === 3 && <CurrentTier />}
             </View>
             <View style={styles.tierDetailsContainer}>
               <AppText>
@@ -176,7 +176,7 @@ const InitialUpgradePage = () => {
                 </AppText>
               </AppText>
 
-              {tier && tier === 2 && (
+              {tier && tier?.tierLevel === 2 && (
                 <PrimaryButton
                   onPress={() => {
                     router.push({

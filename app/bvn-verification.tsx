@@ -22,7 +22,7 @@ import { ERRORS, extractServerError } from "@/utils";
 import { useAuth } from "@/context";
 
 export const AccountVerificationPage = () => {
-  const { token } = useAuth();
+  const { token, user } = useAuth();
   const [showDate, setShowDate] = useState(false);
 
   const initialValues = {
@@ -150,6 +150,16 @@ export const AccountVerificationPage = () => {
                           values?.bvn?.length !== 11 || !isValid || isPending
                         }
                         onPress={() => handleSubmit()}
+                      />
+                      <PrimaryButton
+                        variant="outline"
+                        style={{ marginTop: 5 }}
+                        label="Skip for now"
+                        onPress={() =>
+                          router.push(
+                            !user?.pinSet ? "/set-transaction-pin" : "/(tabs)"
+                          )
+                        }
                       />
                     </View>
                   </View>

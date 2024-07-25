@@ -64,14 +64,30 @@ const LoginPage = () => {
 
   const { mutateAsync, isPending } = useMutation({
     mutationFn: loginFn,
-    onSuccess: (data) => {
+    onSuccess: ({ data, headers }) => {
       saveUser(
-        { ...data.data.metadata?.profile, password, rememberMe },
-        data.data.data.token
+        {
+          ...data.metadata?.profile,
+          ...data?.metadata?.wallet,
+          password,
+          rememberMe,
+        },
+        data.data.token
       );
-      if (!data.data.metadata.profile.verified) {
+
+      if (data?.metadata?.profile?.is2FAEnabled) {
+        saveUser({ ...data?.metadata?.profile, password, rememberMe }, null);
+        return router.push({
+          pathname: "/two-fa-verification",
+          params: {
+            loginToken: headers["x-login-token"],
+          },
+        });
+      }
+
+      if (!data?.metadata.profile.verified) {
         showToast("error", "Please verify your account to continue");
-        storeToken(data.data.data.token);
+        storeToken(data.data?.token);
         router.push({
           pathname: "/account-verification",
           params: {
@@ -82,13 +98,13 @@ const LoginPage = () => {
         return;
       }
 
-      if (!data.data.metadata.profile.bvnVerified) {
+      if (!data?.metadata.profile.bvnVerified) {
         showToast("error", "Please link your BVN to continue");
         router.push("/bvn-verification");
         return;
       }
 
-      if (!data?.data?.metadata?.wallet.pinSet) {
+      if (!data?.metadata?.wallet.pinSet) {
         router.push("/set-transaction-pin");
         return;
       }
@@ -107,10 +123,17 @@ const LoginPage = () => {
     setEmail(email);
     setPassword(password);
 
-    // saveUser({}, "toks");
+    saveUser({}, "toks");
     // router.push("/(tabs)");
 
-    // return;
+    return router.push({
+      pathname: "/two-fa-verification",
+      params: {
+        loginToken: 'aad',
+      },
+    });
+
+    return;
 
     try {
       await mutateAsync({
@@ -148,7 +171,7 @@ const LoginPage = () => {
           email: user?.email && user?.rememberMe ? user?.email : "",
           password: "",
         }}
-        validationSchema={loginSchema}
+        // validationSchema={loginSchema}
         onSubmit={handleSubmit}
       >
         {({

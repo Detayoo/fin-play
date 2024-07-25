@@ -6,11 +6,12 @@ import {
   IGetRewards,
   IGetTiers,
   ITwoFAResponse,
+  ITwoFAStatusResponse,
   IUpgradeAccount,
   IUserProfile,
   TokenType,
 } from "@/types";
-import { authenticatedRequest } from "../api";
+import { authenticatedRequest, baseRequest } from "../api";
 
 export const getUserProfileFn = async ({ token }: { token: TokenType }) => {
   const { data } = await authenticatedRequest(token).get<IUserProfile>(
@@ -144,17 +145,51 @@ export const getInviteesFn = async ({
 
 export const setTwoFAFn = async ({
   token,
-  enable2fa,
+  toggle,
+  otp,
 }: {
   token: TokenType;
-  enable2fa: boolean;
+  toggle: boolean;
+  otp?: string;
 }) => {
   const { data } = await authenticatedRequest(token).patch<ITwoFAResponse>(
-    "/settings/2fa/enable",
+    `/settings/2fa/toggle`,
     {
-      enable2fa,
+      toggle,
+      otp,
     }
   );
 
+  return data;
+};
+
+export const getTwoFAStatusFn = async ({ token }: { token: TokenType }) => {
+  const { data } = await authenticatedRequest(token).get<ITwoFAStatusResponse>(
+    "/settings/2fa"
+  );
+  return data;
+};
+
+export const validate2faOtpFn = async ({
+  token,
+  otp,
+  loginToken,
+  mode,
+}: {
+  token?: any;
+  otp: string;
+  loginToken?: string | string[];
+  mode: "LOGIN" | "SETTINGS";
+}) => {
+  const reqType = mode === "LOGIN" ? baseRequest : authenticatedRequest(token);
+  const { data } = await reqType.patch<BareResponse>(
+    "/settings/2fa/verify",
+    { otp },
+    {
+      headers: {
+        "X-Login-Token": loginToken,
+      },
+    }
+  );
   return data;
 };

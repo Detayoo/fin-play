@@ -20,6 +20,8 @@ export interface User {
   password?: string;
   rememberMe?: boolean;
   pin?: string;
+  tier?: number;
+  pinSet?: boolean;
 }
 
 interface AuthContextData {

@@ -93,3 +93,7 @@ export const internalTransferSchema = Yup.object().shape({
 export const buyBouquetSchema = Yup.object().shape({
   smartCardNumber: Yup.string().required().length(10),
 });
+
+export const twoFALoginSchema = Yup.object({
+  otp: Yup.string().required("OTP is required"),
+});

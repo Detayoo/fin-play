@@ -10,19 +10,22 @@ import {
 import { authenticatedRequest, baseRequest } from "../api";
 
 export const loginFn = async ({ email, password }: LoginType) => {
-  const { data } = await baseRequest.post<LoginResponse>("/auth/login", {
-    email,
-    password,
-  });
+  const { data, headers } = await baseRequest.post<LoginResponse>(
+    "/auth/login",
+    {
+      email,
+      password,
+    }
+  );
 
-  return { data };
+  return { data, headers };
 };
 
 export const registerFn = async ({
   email,
   fullName,
   password,
-  phone
+  phone,
 }: RegistrationType) => {
   const { data } = await baseRequest.post<RegistrationResponse>(
     "/auth/register",

@@ -2,22 +2,19 @@ import { BareResponse } from ".";
 
 export interface IUserProfile extends BareResponse {
   data: {
-    customer: {
-      email: string;
-      phone: string;
-      firstName: string;
-      lastName: string;
-      tier: number;
-      fullName: string;
-      dob: any;
-      nin: string;
-      address: string;
-      bvn: string;
-    };
-    tier: {
-      currentTier: string;
-      tierStatus: boolean;
-    };
+    email: string;
+    phone: string;
+    firstName: string;
+    lastName: string;
+    tier: { tierLevel: number; bvn: string; nin: string };
+    fullName: string;
+    dob: any;
+    nin: string;
+    address: string;
+    bvn: string;
+    hasSecret: boolean;
+    currentTier: string;
+    tierStatus: boolean;
   };
 }
 
@@ -97,3 +94,16 @@ export interface ITwoFAResponse extends BareResponse {
     secret: string;
   };
 }
+export interface ITwoFAStatusResponse extends BareResponse {
+  data: {
+    is2FAEnabled: boolean;
+  };
+}
+
+export type Notifications = {
+  faceId: boolean;
+  fingerprint: boolean;
+  "2fa": boolean;
+  show2FAModal: boolean;
+  transferWithPin: boolean;
+};

@@ -59,12 +59,13 @@ export const copyToClipboard = async (text: any) => {
 
 export const ERRORS = {
   SOMETHING_HAPPENED: "Something happened, please try again",
-  FAILED_ACCOUNT_VERIFICATION: "Could ot verify account, please try again",
+  FAILED_ACCOUNT_VERIFICATION: "Could not verify account, please try again",
+  FAILED_TWOFA_VERIFICATION: "Could not verify account, please try again",
 };
 
 export const maskBVN = (bvn: string | undefined) => {
   if (!bvn) return "";
-  if (bvn.length < 11) {
+  if (bvn?.length < 11) {
     return "Invalid BVN";
   }
 
