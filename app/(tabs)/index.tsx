@@ -178,7 +178,7 @@ export default function HomeScreen() {
           <View style={styles.moneyActions}>
             <TouchableOpacity
               onPress={() => {
-                if (!user?.tier) {
+                if (!accountNumber) {
                   return showToast(
                     "error",
                     "Your wallet has not been created."

@@ -123,17 +123,17 @@ const LoginPage = () => {
     setEmail(email);
     setPassword(password);
 
-    saveUser({}, "toks");
+    // saveUser({}, "toks");
     // router.push("/(tabs)");
 
-    return router.push({
-      pathname: "/two-fa-verification",
-      params: {
-        loginToken: 'aad',
-      },
-    });
+    // return router.push({
+    //   pathname: "/two-fa-verification",
+    //   params: {
+    //     loginToken: 'aad',
+    //   },
+    // });
 
-    return;
+    // return;
 
     try {
       await mutateAsync({
@@ -171,7 +171,7 @@ const LoginPage = () => {
           email: user?.email && user?.rememberMe ? user?.email : "",
           password: "",
         }}
-        // validationSchema={loginSchema}
+        validationSchema={loginSchema}
         onSubmit={handleSubmit}
       >
         {({

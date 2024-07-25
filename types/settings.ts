@@ -6,7 +6,7 @@ export interface IUserProfile extends BareResponse {
     phone: string;
     firstName: string;
     lastName: string;
-    tier: { tierLevel: number; bvn: string; nin: string };
+    tier: { tierLevel: number; bvn: string; nin: string; tierStatus: string };
     fullName: string;
     dob: any;
     nin: string;

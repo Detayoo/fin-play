@@ -26,7 +26,7 @@ const TwoFAVerificationPage = () => {
     onSuccess: (data) => {
       //   storeToken()
 
-      //save token , then take the user to the dashboard
+      //   save token , then take the user to the dashboard
 
       router.replace("/(tabs)");
     },
