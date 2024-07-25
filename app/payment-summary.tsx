@@ -57,6 +57,7 @@ const PaymentSummary = () => {
   const { mutateAsync: internalTransferAsync, isPending } = useMutation({
     mutationFn: internalTransferFn,
     onSuccess: (data) => {
+      return;
       router.replace({
         pathname: "/payment-receipt",
         params: { ...data?.data?.transaction, from: "/internal-transfer" },

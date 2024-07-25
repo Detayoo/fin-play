@@ -29,7 +29,11 @@ export const TransactionItem = ({
         return <BigBank />;
       case "REVERSAL":
         return <BigBank />;
+      case "WALLETTRANSFER":
+        return <BigBank />;
       case "PAYOUT":
+        return <BigBank />;
+      case "WALLET_FUNDING":
         return <BigBank />;
       case "GLO":
         return <GloOutward />;
@@ -63,7 +67,9 @@ export const TransactionItem = ({
         {renderImage()}
         {/* <Credit style={{ position: "absolute", bottom: 0, right: 0 }} /> */}
 
-        {isBill || data?.category?.toUpperCase() === "PAYOUT" ? (
+        {isBill ||
+        data?.category?.toUpperCase() === "PAYOUT" ||
+        data?.category?.toUpperCase() === "WALLETTRANSFER" ? (
           <Debit style={{ position: "absolute", bottom: -10, right: -5 }} />
         ) : (
           <Credit style={{ position: "absolute", bottom: -10, right: -5 }} />
@@ -86,6 +92,8 @@ export const TransactionItem = ({
               !(data?.category === "airtime" || data?.category === "data")
             ? `${data?.category} purchase for ${data?.beneficiary}`
             : data?.category?.toUpperCase() === "PAYOUT"
+            ? `Transfer to ${data?.accountName}`
+            : data?.category?.toUpperCase() === "WALLETTRANSFER"
             ? `Transfer to ${data?.accountName}`
             : data?.category?.toUpperCase() === "REVERSAL"
             ? `Reversal on transaction ${data?.reference}`

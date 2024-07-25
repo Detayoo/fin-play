@@ -121,9 +121,9 @@ export default function HomeScreen() {
           refreshControl={
             <RefreshControl
               refreshing={userAccountData?.isFetching}
-              onRefresh={()=> {
-                userAccountData?.refetch()
-                recentTransactionsData?.refetch()
+              onRefresh={() => {
+                userAccountData?.refetch();
+                recentTransactionsData?.refetch();
               }}
               tintColor={Colors.primary}
             />
@@ -331,9 +331,8 @@ export default function HomeScreen() {
                           },
                         })
                       }
-                      status="GLO"
                       data={trx}
-                      type={trx.category}
+                      type={trx.category?.toUpperCase()}
                     />
                   );
                 }

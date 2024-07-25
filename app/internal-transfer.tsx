@@ -49,9 +49,9 @@ const InternalTransfer = () => {
 
     onError: (error) => {
       showToast("error", extractServerError(error, ERRORS.SOMETHING_HAPPENED));
-      // updateState({
-      //   accountName: "",
-      // });
+      updateState({
+        accountName: "",
+      });
     },
   });
 
@@ -79,9 +79,6 @@ const InternalTransfer = () => {
   useEffect(() => {
     if (state.accountNumber.length === 10) {
       handleResolution();
-      updateState({
-        accountName: "Tayo ADE",
-      });
     }
   }, [state.accountNumber]);
 
@@ -149,7 +146,7 @@ const InternalTransfer = () => {
                   keyboardType="number-pad"
                   hasBalance
                 />
-                {isPending && (
+                {isPending && !state?.accountName && (
                   <AppText style={{ marginTop: -10 }}>Fetching User..</AppText>
                 )}
                 {values.accountNumber.length === 10 && state.accountName && (
