@@ -34,6 +34,7 @@ export interface IBuyBettingPayload {
   customerId: string | string[] | undefined;
   amount: number;
   pin: string;
+  usePoint: boolean;
 }
 
 export interface IValidateBettingAccountResponse extends BareResponse {
@@ -89,6 +90,7 @@ export interface IBuyDataPayload {
   tariffId: string | string[] | undefined;
   pin: string;
   amount: string;
+  usePoint: boolean;
 }
 
 export interface IBuyDataResponse extends BareResponse {
@@ -134,6 +136,7 @@ export interface IBuyElectricityPayload {
   vendType: string | string[] | undefined;
   amount: number;
   pin: string;
+  usePoint: boolean;
 }
 
 export interface IBuyElectricityResponse extends BareResponse {
@@ -200,6 +203,7 @@ export interface IPurchaseBouquet {
   smartCardNumber: string | string[] | undefined;
   amount: number | string[] | undefined;
   pin: string;
+  usePoint: boolean;
 }
 
 export interface IPurchaseBouquetResponse extends BareResponse {
@@ -211,5 +215,35 @@ export interface IPurchaseBouquetResponse extends BareResponse {
       bouquet: string;
       paidAt: string;
     };
+  };
+}
+
+export interface IGetEducationalServices extends BareResponse {
+  data: {
+    products: {
+      amount: number;
+      category: string;
+      code: string;
+      name: string;
+      service: string;
+    }[];
+  };
+}
+
+export interface IGetJambProfile {
+  data: {
+    candidateName: string;
+  };
+}
+
+export interface IBuyEducationService extends BareResponse {
+  data: {
+    status: string;
+    paidAt: string;
+    reference: string;
+    currency: string;
+    amount: string;
+    candidateNumber: string;
+    token: string;
   };
 }

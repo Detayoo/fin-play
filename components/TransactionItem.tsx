@@ -4,7 +4,7 @@ import { format } from "date-fns";
 import { AppText } from "./AppText";
 import { formatMoney, naira } from "../utils";
 import { Colors } from "../constants";
-import { BankOutward, Credit, GloOutward } from "../assets";
+import { BankOutward, BigBank, Credit, GloOutward } from "../assets";
 import { IGetTransactionById, ITransactionsList, Transaction } from "@/types";
 import { Debit } from "@/assets/icons/Debit";
 
@@ -26,13 +26,15 @@ export const TransactionItem = ({
       case "DEBIT":
         return <BankOutward />;
       case "CREDIT":
-        return <BankOutward />;
+        return <BigBank />;
       case "GLO":
         return <GloOutward />;
       default:
         break;
     }
   };
+
+  console.log("tpy", type);
 
   const isBill =
     data?.category?.toLowerCase() == "airtime" ||
@@ -55,11 +57,12 @@ export const TransactionItem = ({
     >
       <View style={{ position: "relative" }}>
         {renderImage()}
+        {/* <Credit style={{ position: "absolute", bottom: 0, right: 0 }} /> */}
 
         {isBill ? (
-          <Debit style={{ position: "absolute", bottom: 0, right: 0 }} />
+          <Debit style={{ position: "absolute", bottom: -10, right: -5 }} />
         ) : (
-          <Credit style={{ position: "absolute", bottom: 0, right: 0 }} />
+          <Credit style={{ position: "absolute", bottom: -10, right: -5 }} />
         )}
       </View>
       <View

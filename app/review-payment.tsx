@@ -287,6 +287,8 @@ const ReviewPayment = () => {
             tariffId: tariffId,
             networkProvider: serviceProvider,
             phoneNumber,
+            usePoint: useCashback,
+
             pin,
           },
           token,
@@ -299,6 +301,8 @@ const ReviewPayment = () => {
             disco,
             meter: meterNumber,
             vendType,
+            usePoint: useCashback,
+
             pin,
           },
           token,
@@ -310,6 +314,8 @@ const ReviewPayment = () => {
             amount: amount ? +amount : 0,
             customerId,
             provider,
+            usePoint: useCashback,
+
             pin,
           },
           token,
@@ -326,6 +332,8 @@ const ReviewPayment = () => {
             provider,
             requestId,
             smartCardNumber,
+            usePoint: useCashback,
+
             pin,
           },
           token,
