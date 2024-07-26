@@ -5,7 +5,7 @@ import {
 } from "@react-navigation/native";
 import * as Linking from "expo-linking";
 import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
+import { Stack, useRouter, useSegments } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect, useState } from "react";
 import "react-native-reanimated";
@@ -41,21 +41,41 @@ export default function RootLayout() {
   const handleDeepLink = (event: any) => {
     let data = Linking.parse(event.url);
   };
+  // useEffect(() => {
+  //   const getInitialURL = async () => {
+  //     const initialURL = await Linking.getInitialURL();
+  //     if (initialURL) setData(Linking.parse(initialURL));
+  //   };
+  //   Linking.addEventListener("url", handleDeepLink);
+
+  //   if (!data) {
+  //     getInitialURL();
+  //   }
+
+  //   // return () => {
+  //   //   Linking.removeEventListener("url");
+  //   // };
+  // }, []);
+
+  const router = useRouter();
+
   useEffect(() => {
-    const getInitialURL = async () => {
-      const initialURL = await Linking.getInitialURL();
-      if (initialURL) setData(Linking.parse(initialURL));
+    const handleDeepLink = (event: { url: string }) => {
+      const { hostname, path, queryParams } = Linking?.parse(event?.url);
+
+      if (path === "change-password") {
+        router.push({
+          pathname: "/change-password",
+          params: { token: queryParams?.token },
+        });
+      }
     };
-    Linking.addEventListener("url", handleDeepLink);
 
-    if (!data) {
-      getInitialURL();
-    }
-
-    // return () => {
-    //   Linking.removeEventListener("url");
-    // };
-  }, []);
+    const subscription = Linking.addEventListener("url", handleDeepLink);
+    return () => {
+      subscription.remove();
+    };
+  }, [router]);
 
   if (!loaded) {
     return null;

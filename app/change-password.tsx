@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Formik } from "formik";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { isValid } from "date-fns";
 import { useMutation } from "@tanstack/react-query";
 
@@ -19,6 +19,8 @@ import { changePasswordFn } from "@/services";
 import { useAuth } from "@/context";
 
 const ChangePasswordPage = () => {
+  const {token: hey} = useLocalSearchParams()
+  console.log('hey', hey)
   const { token, user, saveUser } = useAuth();
   const [password, setPassword] = useState("");
   const { mutateAsync, isPending } = useMutation({

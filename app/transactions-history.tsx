@@ -10,6 +10,7 @@ import {
   BackButton,
   EmptyComponent,
   Expenses,
+  Income,
   Loading,
   Screen,
   TransactionFilterModal,
@@ -80,8 +81,6 @@ const TransactionsHistoryPage = () => {
       end: "",
     },
   });
-
-  console.log(filterObj)
 
   const updateState = (payload: Partial<StateType>) => {
     setState((previousState) => ({ ...previousState, ...payload }));
@@ -157,6 +156,16 @@ const TransactionsHistoryPage = () => {
   const { isRefetchingByUser, refetchByUser } = useRefreshByUser(
     transactionsData.refetch
   );
+
+  const renderStats = () => {
+    switch (statsActiveTab) {
+      case "income":
+        return <Income transactionStatsData={transactionStatsData} />;
+
+      default:
+        return <Expenses transactionStatsData={transactionStatsData} />;
+    }
+  };
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -336,7 +345,7 @@ const TransactionsHistoryPage = () => {
             {/* </ScrollView> */}
           </>
         ) : (
-          <Expenses transactionStatsData={transactionStatsData} />
+          renderStats()
         )}
         <View
           style={{

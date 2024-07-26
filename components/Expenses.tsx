@@ -80,9 +80,10 @@ export const Expenses = ({
         }}
       >
         <AppText variant="medium">Expenses Breakdown</AppText>
-        {list?.map((each) => {
+        {list?.map((each, index) => {
           return (
             <View
+            key={index}
               style={{
                 gap: 10,
                 paddingVertical: 15,
@@ -101,7 +102,7 @@ export const Expenses = ({
                   style={{ fontSize: 13, marginLeft: "auto" }}
                 >
                   {naira}
-                  {formatMoney(each.amount || "0")}
+                  {formatMoney(each.amount ?? "0")}
                 </AppText>
               </View>
             </View>

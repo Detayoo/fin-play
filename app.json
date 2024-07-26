@@ -44,9 +44,7 @@
           "faceIDPermission": "Allow UZZY to use Face ID."
         }
       ],
-      [
-        "expo-router"
-      ],
+      ["expo-router"],
       [
         "expo-contacts",
         {

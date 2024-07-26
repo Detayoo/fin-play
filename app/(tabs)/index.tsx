@@ -86,7 +86,7 @@ export default function HomeScreen() {
     ],
   });
 
-  const pageIsLoading = userAccountData?.isFetching;
+  // const pageIsLoading = userAccountData?.isFetching;
 
   const { accountName, accountNumber, bankName } =
     userAccountData?.data?.data || {};
@@ -194,7 +194,7 @@ export default function HomeScreen() {
               style={{ alignItems: "center" }}
             >
               <AddMoney />
-              <AppText variant="medium" style={{ marginTop: 4 }}>
+              <AppText size="small" variant="medium" style={{ marginTop: 4 }}>
                 Add Money
               </AppText>
             </TouchableOpacity>
@@ -203,7 +203,7 @@ export default function HomeScreen() {
               style={{ alignItems: "center" }}
             >
               <UserHead />
-              <AppText variant="medium" style={{ marginTop: 4 }}>
+              <AppText size="small" variant="medium" style={{ marginTop: 4 }}>
                 To Uzzy
               </AppText>
             </TouchableOpacity>
@@ -212,7 +212,7 @@ export default function HomeScreen() {
               style={{ alignItems: "center" }}
             >
               <Bank />
-              <AppText variant="medium" style={{ marginTop: 4 }}>
+              <AppText size="small" variant="medium" style={{ marginTop: 4 }}>
                 To Banks
               </AppText>
             </TouchableOpacity>

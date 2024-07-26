@@ -8,6 +8,8 @@ import { Electricity } from "./Electricity";
 import { Airtime } from "./Airtime";
 import { Cable } from "./Cable";
 import { Smile } from "./Smile";
+import { UseQueryResult } from "@tanstack/react-query";
+import { IGetStats } from "@/types";
 
 const list = [
   {
@@ -42,7 +44,11 @@ const list = [
   },
 ];
 
-export const Income = () => {
+export const Income = ({
+  transactionStatsData,
+}: {
+  transactionStatsData: UseQueryResult<IGetStats>;
+}) => {
   return (
     <ScrollView>
       <View
@@ -54,7 +60,7 @@ export const Income = () => {
           gap: 10,
         }}
       >
-        <AppText>Total Expenses</AppText>
+        <AppText>Total Income</AppText>
         <AppText variant="medium" style={{ fontSize: 22 }}>
           {naira}
           {formatMoney("540000")}
@@ -72,9 +78,10 @@ export const Income = () => {
         }}
       >
         <AppText variant="medium">Expenses Breakdown</AppText>
-        {list?.map((each) => {
+        {list?.map((each, index) => {
           return (
             <View
+              key={index}
               style={{
                 gap: 10,
                 paddingVertical: 15,
