@@ -41,6 +41,7 @@ import { Colors } from "@/constants";
 import {
   copyToClipboard,
   formatMoney,
+  getFirstLetter,
   getMultiWordFirstLetters,
 } from "@/utils";
 import { useAuth } from "@/context";
@@ -96,10 +97,24 @@ export default function HomeScreen() {
       <DashboardLayout>
         <View style={styles.userCard}>
           <View style={{ flexDirection: "row", gap: 12, alignItems: "center" }}>
-            <Image
+            {/* <Image
               source={require("../../assets/images/animoji.png")}
               style={{ width: 50, height: 50 }}
-            />
+            /> */}
+            <View
+              style={{
+                height: 50,
+                width: 50,
+                backgroundColor: Colors.lightGreen,
+                justifyContent: "center",
+                alignItems: "center",
+                borderRadius: 25,
+              }}
+            >
+              <AppText size="xxlarge" variant="medium">
+                {getMultiWordFirstLetters(user?.fullName ?? "")}
+              </AppText>
+            </View>
             <View>
               <AppText style={{ fontSize: 12 }}>Welcome Back!</AppText>
               <AppText size="xxlarge" variant="medium">

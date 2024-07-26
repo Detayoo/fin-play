@@ -281,7 +281,7 @@ export const TransactionFilterModal = ({
                   initialValues={{ startDate: new Date(), endDate: new Date() }}
                   onSubmit={() => {}}
                 >
-                  {({ handleSubmit, values, setFieldValue }) => {
+                  {({ values, setFieldValue }) => {
                     return (
                       <View
                         style={{
@@ -419,6 +419,7 @@ export const TransactionFilterModal = ({
           label="Apply Filter"
           style={{
             marginBottom: 30,
+            marginTop:80
           }}
         />
       </View>

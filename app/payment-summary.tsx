@@ -22,6 +22,7 @@ import { PaymentRecipient } from "@/assets";
 import { ERRORS, extractServerError, formatMoney } from "@/utils";
 import { getChargeFn, internalTransferFn, transferToBankFn } from "@/services";
 import { useAuth } from "@/context";
+import { globalStyles } from "@/globalStyles";
 
 const PaymentSummary = () => {
   const { token } = useAuth();
@@ -176,6 +177,7 @@ const PaymentSummary = () => {
             shadowRadius: 1,
             elevation: 2,
             paddingHorizontal: 16,
+            ...globalStyles.shadow
           }}
         >
           <PaymentRecipient />

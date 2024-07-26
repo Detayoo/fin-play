@@ -6,7 +6,6 @@ import {
   FlatList,
   Dimensions,
   Pressable,
-  Platform,
 } from "react-native";
 import { router } from "expo-router";
 
@@ -20,6 +19,7 @@ import { Cable } from "./Cable";
 import { Betting } from "./Betting";
 import { Smile } from "./Smile";
 import { Water } from "./Water";
+import { globalStyles } from "@/globalStyles";
 
 const { width } = Dimensions.get("window");
 const COLUMNS = 4;
@@ -155,36 +155,36 @@ export const Services = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.innerContainer}>
-        <AppText variant="medium" style={styles.title}>
-          Services
-        </AppText>
-        <FlatList
-          ref={flatListRef}
-          data={pages}
-          renderItem={({ item }) => <Service services={item} />}
-          keyExtractor={(_, index) => index.toString()}
-          horizontal
-          pagingEnabled
-          showsHorizontalScrollIndicator={false}
-          onScroll={handleScroll}
-          snapToAlignment="start"
-          snapToInterval={width}
-          decelerationRate="fast"
-        />
-        <View style={styles.pagination}>
-          {pages.map((_, index) => (
-            <View
-              key={index}
-              style={[
-                styles.paginationDot,
-                index === activePage && styles.activeDot,
-              ]}
-            />
-          ))}
-        </View>
+      {/* <View style={styles.innerContainer}> */}
+      <AppText variant="medium" style={styles.title}>
+        Services
+      </AppText>
+      <FlatList
+        ref={flatListRef}
+        data={pages}
+        renderItem={({ item }) => <Service services={item} />}
+        keyExtractor={(_, index) => index.toString()}
+        horizontal
+        pagingEnabled
+        showsHorizontalScrollIndicator={false}
+        onScroll={handleScroll}
+        snapToAlignment="start"
+        snapToInterval={width}
+        decelerationRate="fast"
+      />
+      <View style={styles.pagination}>
+        {pages.map((_, index) => (
+          <View
+            key={index}
+            style={[
+              styles.paginationDot,
+              index === activePage && styles.activeDot,
+            ]}
+          />
+        ))}
       </View>
     </View>
+    // </View>
   );
 };
 
@@ -205,40 +205,25 @@ const styles = StyleSheet.create({
   // },
 
   container: {
-    // padding: 16,
     backgroundColor: "white",
-    marginTop: 20,
-    shadowColor: Colors.black,
-    shadowOffset: {
-      width: 0.4,
-      height: 0.4,
-    },
-    shadowRadius: 4,
-    shadowOpacity: 0.1,
-    elevation: 3,
-
-    ...Platform.select({
-      ios: {
-        shadowColor: "#ABABAB",
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-      },
-    }),
+    borderRadius: 8,
+    padding: 16,
+    // marginHorizontal: 2,
+    ...globalStyles.shadow,
   },
   innerContainer: {
     // backgroundColor: "red",
-    borderRadius: 10,
-    paddingHorizontal: 10,
-    paddingVertical: 16,
-    overflow: "hidden",
-    ...Platform.select({
-      android: {
-        borderWidth: 1,
-        borderColor: "rgba(171, 171, 171, 0.9)",
-        elevation: 3,
-      },
-    }),
+    // borderRadius: 10,
+    // paddingHorizontal: 10,
+    // paddingVertical: 16,
+    // overflow: "hidden",
+    // ...Platform.select({
+    //   android: {
+    //     borderWidth: 1,
+    //     borderColor: "rgba(171, 171, 171, 0.9)",
+    //     elevation: 3,
+    //   },
+    // }),
   },
   title: {
     fontSize: 16,

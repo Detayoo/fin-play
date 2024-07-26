@@ -1,5 +1,7 @@
 import { StyleSheet } from "react-native";
 
+import { globalStyles } from "@/globalStyles";
+
 export const homeStyles = StyleSheet.create({
   userCard: {
     flexDirection: "row",
@@ -38,11 +40,13 @@ export const homeStyles = StyleSheet.create({
     paddingVertical: 17,
     backgroundColor: "#fff",
     borderRadius: 10,
-    shadowColor: "#ABABAB1A",
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 4,
-    shadowRadius: 1,
-    elevation: 2,
+
+    // backgroundColor: "white",
+    // borderRadius: 8,
+    padding: 16,
+    // marginHorizontal: 2,
+    marginBottom: 20,
+    ...globalStyles.shadow,
   },
 
   carouselContainer: {

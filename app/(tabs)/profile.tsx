@@ -8,7 +8,11 @@ import {
   PrimaryButton,
   ChevronDown,
 } from "@/components";
-import { MORE_ROUTES, SETTINGS_ROUTES } from "@/utils";
+import {
+  MORE_ROUTES,
+  SETTINGS_ROUTES,
+  getMultiWordFirstLetters,
+} from "@/utils";
 import { useAuth } from "@/context";
 import { Colors } from "@/constants";
 import { useR } from "@/services";
@@ -45,10 +49,24 @@ const ProfilePage = () => {
             borderColor: "#D6D6D6",
           }}
         >
-          <Image
+          {/* <Image
             source={require("../../assets/images/animoji.png")}
             style={{ width: 50, height: 50 }}
-          />
+          /> */}
+          <View
+            style={{
+              height: 50,
+              width: 50,
+              backgroundColor: Colors.lightGreen,
+              justifyContent: "center",
+              alignItems: "center",
+              borderRadius: 25,
+            }}
+          >
+            <AppText size="xxlarge" variant="medium">
+              {getMultiWordFirstLetters(loggedInUser?.fullName ?? "")}
+            </AppText>
+          </View>
           <AppText style={{ fontSize: 15, marginTop: 12 }} variant="medium">
             {loggedInUser?.fullName}
           </AppText>

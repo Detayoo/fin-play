@@ -15,7 +15,8 @@ import {
 } from "@/components";
 import { uploadProfilePhotoFn, useR } from "@/services";
 import { useAuth } from "@/context";
-import { ERRORS, extractServerError, maskBVN } from "@/utils";
+import { ERRORS, extractServerError, getMultiWordFirstLetters, maskBVN } from "@/utils";
+import { Colors } from "@/constants";
 
 const UserProfilePage = () => {
   const MAX_FILE_SIZE = 20;
@@ -135,10 +136,24 @@ const UserProfilePage = () => {
             }}
           >
             {photo ? (
-              <Image
-                source={require("../assets/images/animoji.png")}
-                style={{ width: 50, height: 50 }}
-              />
+              // <Image
+              //   source={require("../assets/images/animoji.png")}
+              //   style={{ width: 50, height: 50 }}
+              // />
+              <View
+                style={{
+                  height: 50,
+                  width: 50,
+                  backgroundColor: Colors.lightGreen,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  borderRadius: 25,
+                }}
+              >
+                <AppText size="xxlarge" variant="medium">
+                  {getMultiWordFirstLetters(fullName ?? "")}
+                </AppText>
+              </View>
             ) : null}
             {/* <AppText
             onPress={pickImage}
@@ -149,7 +164,7 @@ const UserProfilePage = () => {
             Tap to change photo
           </AppText> */}
 
-            <View style={{ width: "100%", marginTop: 50 }}>
+            <View style={{ width: "100%", marginTop: 20 }}>
               <ListItem name="Full Name" value={fullName} hasBottomBorder />
               <ListItem name="Email" value={email} hasBottomBorder />
               <ListItem

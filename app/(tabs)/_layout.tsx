@@ -13,14 +13,30 @@ import {
   Savings,
 } from "@/assets";
 import { useAuth } from "@/context";
-import { Loading } from "@/components";
+import { AppText, Loading } from "@/components";
+import { View } from "react-native";
+import { getMultiWordFirstLetters } from "@/utils";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
   const { token, isLoading, user } = useAuth();
-  // console.log("isloading is", isLoading);
-  // console.log("token is then", token);
-  // console.log("user is then", user);
+
+  const Avatar = () => (
+    <View
+      style={{
+        height: 24,
+        width: 24,
+        backgroundColor: Colors.lightGreen,
+        justifyContent: "center",
+        alignItems: "center",
+        borderRadius: 12,
+      }}
+    >
+      <AppText size="small" variant="medium">
+        {getMultiWordFirstLetters(user?.fullName ?? "")}
+      </AppText>
+    </View>
+  );
 
   if (isLoading) return <Loading />;
   if (!token) {
@@ -52,7 +68,7 @@ export default function TabLayout() {
             focused ? <ActiveRewards /> : <Rewards />,
         }}
       />
-      <Tabs.Screen
+      {/* <Tabs.Screen
         name="savings"
         options={{
           headerShown: false,
@@ -60,14 +76,13 @@ export default function TabLayout() {
           tabBarIcon: ({ focused }) =>
             focused ? <ActiveSavings /> : <Savings />,
         }}
-      />
+      /> */}
       <Tabs.Screen
         name="profile"
         options={{
           headerShown: false,
           title: "Profile",
-          tabBarIcon: ({ focused }) =>
-            focused ? <ActiveHome /> : <ProfileIcon />,
+          tabBarIcon: ({ focused }) => <Avatar />,
         }}
       />
     </Tabs>

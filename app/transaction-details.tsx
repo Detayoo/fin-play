@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { ScrollView, TouchableOpacity, View } from "react-native";
-import { router, useLocalSearchParams } from "expo-router";
-import { format, parse, parseISO } from "date-fns";
+import { ScrollView, TouchableOpacity, View, Platform } from "react-native";
+import { useLocalSearchParams } from "expo-router";
+import { format, parseISO } from "date-fns";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useQuery } from "@tanstack/react-query";
 
@@ -25,6 +25,7 @@ import { formatMoney, formatNumber } from "@/utils";
 import { getTransactionById, getUserAccountDetailsFn } from "@/services";
 import { useAuth } from "@/context";
 import { PROVIDER_LOGOS } from "@/data";
+import { globalStyles } from "@/globalStyles";
 
 const PaymentReceipt = () => {
   const { token } = useAuth();
@@ -114,7 +115,6 @@ const PaymentReceipt = () => {
     vendType,
     walletId,
   } = data?.data?.transaction || {};
-  console.log(initialAmount);
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -128,7 +128,7 @@ const PaymentReceipt = () => {
         >
           <BackButton />
           <AppText size="xlarge" variant="medium">
-            Payment Summary
+            Transaction Details
           </AppText>
           <BackButton
             style={{
@@ -144,17 +144,13 @@ const PaymentReceipt = () => {
               showsVerticalScrollIndicator={false}
               contentContainerStyle={{
                 alignItems: "center",
-                backgroundColor: "#90AD0408",
+                backgroundColor: "white",
                 paddingTop: 20,
                 paddingBottom: 30,
                 borderRadius: 10,
                 marginTop: 15,
-                shadowColor: "#ABABAB1A",
-                shadowOffset: { width: 4, height: 6 },
-                shadowOpacity: 4,
-                shadowRadius: 1,
-                elevation: 2,
                 paddingHorizontal: 16,
+                ...globalStyles.shadow,
               }}
             >
               {/* <PaymentRecipient /> */}
@@ -268,7 +264,11 @@ const PaymentReceipt = () => {
               <ListItem name="Session ID" value={sessionId} canCopy />
             )} */}
                 {transactionType && (
-                  <ListItem name="Transaction Type" value={transactionType} value1Styles={{textTransform:'capitalize'}} />
+                  <ListItem
+                    name="Transaction Type"
+                    value={transactionType}
+                    value1Styles={{ textTransform: "capitalize" }}
+                  />
                 )}
               </View>
             </ScrollView>
