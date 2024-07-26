@@ -5,7 +5,7 @@ import { AppText } from "./AppText";
 import { formatMoney, naira } from "../utils";
 import { Colors } from "../constants";
 import { BankOutward, BigBank, Credit, GloOutward } from "../assets";
-import { IGetTransactionById, ITransactionsList, Transaction } from "@/types";
+import { Transaction } from "@/types";
 import { Debit } from "@/assets/icons/Debit";
 
 export const TransactionItem = ({
@@ -38,7 +38,7 @@ export const TransactionItem = ({
       case "GLO":
         return <GloOutward />;
       default:
-        break;
+        return <BigBank />;
     }
   };
 

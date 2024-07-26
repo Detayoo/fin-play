@@ -125,7 +125,7 @@ export default function RootLayout() {
             />
           </Stack>
         </QueryClientProvider>
-        {/* <View style={{ height: 250 }}>
+        {/* <View style={{ height: 350 }}>
           <NetworkLogger />
         </View> */}
       </AuthProvider>

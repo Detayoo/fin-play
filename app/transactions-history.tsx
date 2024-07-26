@@ -81,13 +81,15 @@ const TransactionsHistoryPage = () => {
     },
   });
 
+  console.log(filterObj)
+
   const updateState = (payload: Partial<StateType>) => {
     setState((previousState) => ({ ...previousState, ...payload }));
   };
 
-  const updateFilter = (payload: Partial<TransactionFilter>) => {
-    setFilterObj((previousState) => ({ ...previousState, ...payload }));
-  };
+  // const updateFilter = (payload: Partial<TransactionFilter>) => {
+  //   setFilterObj((previousState) => ({ ...previousState, ...payload }));
+  // };
 
   const transactionsData = useInfiniteQuery({
     queryKey: ["all transactions", JSON.stringify(filterObj)],

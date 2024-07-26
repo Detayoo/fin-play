@@ -14,6 +14,8 @@ export const DateComponent = ({
   onOpen,
   onClose,
   dateFormat,
+  maxDate,
+  minDate,
 }: {
   open: boolean;
   date: Date;
@@ -21,12 +23,14 @@ export const DateComponent = ({
   onOpen: () => void;
   onClose: () => void;
   dateFormat?: string;
+  maxDate?: Date;
+  minDate?: Date;
 }) => {
   const formattedDate = date ? format(date, "dd/MM/yyyy") : "dd/MM/yyyy";
   return (
     <View style={styles.container}>
       <AppText style={styles.dateText}>
-        {!!date ? formattedDate : "DD/MM/YYYY"}
+        {date ? formattedDate : "DD/MM/YYYY"}
       </AppText>
       <Pressable onPress={onOpen}>
         <Calendar />
@@ -40,7 +44,8 @@ export const DateComponent = ({
             onClose();
           }}
           onCancel={onClose}
-          maximumDate={new Date()}
+          maximumDate={maxDate || new Date()}
+          minimumDate={minDate}
         />
       </View>
     </View>

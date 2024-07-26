@@ -1,10 +1,10 @@
 import { Pressable, ScrollView, View } from "react-native";
+import { useState } from "react";
+import { Formik } from "formik";
 
 import { ReusableBottomSheet } from "./BottomSheetModal";
 import { AppText } from "./AppText";
 import { Colors } from "@/constants";
-import { useState } from "react";
-import { Formik } from "formik";
 import { DateComponent } from "./DateComponent";
 import { PrimaryButton } from "./PrimaryButton";
 
@@ -30,11 +30,11 @@ const categories = [
     label: "Data",
   },
   {
-    name: "MONEY-IN",
+    name: "CREDIT",
     label: "Money In",
   },
   {
-    name: "MONEY-OUT",
+    name: "DEBIT",
     label: "Money Out",
   },
 ];
@@ -106,7 +106,9 @@ export const TransactionFilterModal = ({
     setFilterObj({
       ...filterObj,
       duration: selected.duration,
-      status: selected.status?.toLowerCase(),
+      status: statuses
+        .find((sta) => sta.label === selected.status)
+        ?.name?.toLowerCase(),
       type: categories
         .find((cat) => cat.label === selected.category)
         ?.name?.toLowerCase(),
@@ -297,6 +299,7 @@ export const TransactionFilterModal = ({
                             });
                           }}
                           dateFormat="yyyy"
+                          maxDate={values.endDate}
                         />
                       </View>
                       <View>
@@ -321,6 +324,7 @@ export const TransactionFilterModal = ({
                             });
                           }}
                           dateFormat="yyyy"
+                          minDate={values.startDate}
                         />
                       </View>
                     </View>
