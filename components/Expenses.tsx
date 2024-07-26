@@ -52,7 +52,7 @@ export const Expenses = ({
     },
   ];
   return (
-    <ScrollView>
+    <ScrollView showsVerticalScrollIndicator={false}>
       <View
         style={{
           backgroundColor: "#90AD0426",

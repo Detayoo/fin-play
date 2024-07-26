@@ -46,7 +46,7 @@ export const upgradeAccountFn = async ({
 }: {
   token: TokenType;
   tier: string;
-  payload: FormData;
+  payload: { nin: string } | FormData;
 }) => {
   const { data } = await authenticatedRequest(token).post<BareResponse>(
     `/settings/tier/${tier}`,

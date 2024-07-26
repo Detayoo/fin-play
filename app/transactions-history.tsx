@@ -112,7 +112,7 @@ const TransactionsHistoryPage = () => {
           filterObj.duration === "Last 30 Days"
             ? format(new Date(currentDate), "dd-MM-yyyy")
             : filterObj.duration === "Custom"
-            ? format(new Date(filterObj.range.end), "dd-MM-yyyyy")
+            ? format(new Date(filterObj.range.end), "dd-MM-yyyy")
             : null,
       }),
     enabled: !!token,
@@ -301,8 +301,9 @@ const TransactionsHistoryPage = () => {
                     <View
                       style={{
                         flex: 1,
-                        minHeight: "100%",
+                        // minHeight: "100%",
                         justifyContent: "center",
+                        backgroundColor:'red'
                       }}
                     >
                       <EmptyComponent message="No transaction found" />

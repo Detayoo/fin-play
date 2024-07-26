@@ -50,7 +50,7 @@ export const Income = ({
   transactionStatsData: UseQueryResult<IGetStats>;
 }) => {
   return (
-    <ScrollView>
+    <ScrollView showsVerticalScrollIndicator={false}>
       <View
         style={{
           backgroundColor: "#90AD0426",

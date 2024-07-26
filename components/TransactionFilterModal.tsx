@@ -128,218 +128,300 @@ export const TransactionFilterModal = ({
         setShowModal(false);
       }}
     >
-      <ScrollView contentContainerStyle={{ flex: 1 }}>
-        <View style={{ paddingTop: 20 }}>
-          <AppText style={{ fontSize: 17 }} variant="medium">
-            Filter Transactions
-          </AppText>
-          <AppText style={{ marginTop: 10 }} color={Colors.faintBlack}>
-            Select categories, type, status and duration to filter your
-            transactions.
-          </AppText>
-        </View>
-        <View>
-          <AppText variant="medium" style={{ marginBottom: 20, marginTop: 24 }}>
-            Categories
-          </AppText>
-          <View
-            style={{
-              flexDirection: "row",
-              gap: 10,
-              flexWrap: "wrap",
-              paddingBottom: 20,
-              borderBottomWidth: 1,
-              borderBottomColor: "#EDEDED",
-            }}
-          >
-            {categories.map((category) => {
-              return (
-                <Pressable
-                  key={category.label}
-                  onPress={() =>
-                    updateSelectedState({
-                      category: category.label,
-                    })
-                  }
-                  style={{
-                    borderWidth: 1,
-                    borderColor: "#DADADA",
-                    borderRadius: 100,
-                    paddingVertical: 10,
-                    paddingHorizontal: 16,
-                    backgroundColor:
-                      selected.category === category.label
-                        ? Colors.lightGreen
-                        : "transparent",
-                  }}
-                >
-                  <AppText>{category.label}</AppText>
-                </Pressable>
-              );
-            })}
+      <View style={{ flex: 1 }}>
+        <ScrollView
+          contentContainerStyle={{
+            paddingBottom: 80,
+            minHeight: "100%",
+            flexGrow: 1,
+          }}
+        >
+          <View style={{ paddingTop: 20 }}>
+            <AppText style={{ fontSize: 17 }} variant="medium">
+              Filter Transactions
+            </AppText>
+            <AppText style={{ marginTop: 10 }} color={Colors.faintBlack}>
+              Select categories, type, status and duration to filter your
+              transactions.
+            </AppText>
           </View>
-        </View>
-        <View>
-          <AppText variant="medium" style={{ marginBottom: 20, marginTop: 24 }}>
-            Transaction Status
-          </AppText>
-          <View
-            style={{
-              flexDirection: "row",
-              gap: 10,
-              flexWrap: "wrap",
-              paddingBottom: 20,
-              borderBottomWidth: 1,
-              borderBottomColor: "#EDEDED",
-            }}
-          >
-            {statuses.map((status) => {
-              return (
-                <Pressable
-                  key={status.label}
-                  onPress={() =>
-                    updateSelectedState({
-                      status: status.label,
-                    })
-                  }
-                  style={{
-                    borderWidth: 1,
-                    borderColor: "#DADADA",
-                    borderRadius: 100,
-                    paddingVertical: 10,
-                    paddingHorizontal: 16,
-                    backgroundColor:
-                      selected.status === status.label
-                        ? Colors.lightGreen
-                        : "transparent",
-                  }}
-                >
-                  <AppText>{status.label}</AppText>
-                </Pressable>
-              );
-            })}
+          <View>
+            <AppText
+              variant="medium"
+              style={{ marginBottom: 20, marginTop: 24 }}
+            >
+              Categories
+            </AppText>
+            <View
+              style={{
+                flexDirection: "row",
+                gap: 10,
+                flexWrap: "wrap",
+                paddingBottom: 20,
+                borderBottomWidth: 1,
+                borderBottomColor: "#EDEDED",
+              }}
+            >
+              {categories.map((category) => {
+                return (
+                  <Pressable
+                    key={category.label}
+                    onPress={() =>
+                      updateSelectedState({
+                        category: category.label,
+                      })
+                    }
+                    style={{
+                      borderWidth: 1,
+                      borderColor: "#DADADA",
+                      borderRadius: 100,
+                      paddingVertical: 10,
+                      paddingHorizontal: 16,
+                      backgroundColor:
+                        selected.category === category.label
+                          ? Colors.lightGreen
+                          : "transparent",
+                    }}
+                  >
+                    <AppText>{category.label}</AppText>
+                  </Pressable>
+                );
+              })}
+            </View>
           </View>
-        </View>
+          <View>
+            <AppText
+              variant="medium"
+              style={{ marginBottom: 20, marginTop: 24 }}
+            >
+              Transaction Status
+            </AppText>
+            <View
+              style={{
+                flexDirection: "row",
+                gap: 10,
+                flexWrap: "wrap",
+                paddingBottom: 20,
+                borderBottomWidth: 1,
+                borderBottomColor: "#EDEDED",
+              }}
+            >
+              {statuses.map((status) => {
+                return (
+                  <Pressable
+                    key={status.label}
+                    onPress={() =>
+                      updateSelectedState({
+                        status: status.label,
+                      })
+                    }
+                    style={{
+                      borderWidth: 1,
+                      borderColor: "#DADADA",
+                      borderRadius: 100,
+                      paddingVertical: 10,
+                      paddingHorizontal: 16,
+                      backgroundColor:
+                        selected.status === status.label
+                          ? Colors.lightGreen
+                          : "transparent",
+                    }}
+                  >
+                    <AppText>{status.label}</AppText>
+                  </Pressable>
+                );
+              })}
+            </View>
+          </View>
 
-        <View style={{}}>
-          <AppText variant="medium" style={{ marginBottom: 20, marginTop: 24 }}>
-            Duration
-          </AppText>
-          <View
-            style={{
-              flexDirection: "row",
-              gap: 10,
-              flexWrap: "wrap",
-              paddingBottom: 20,
-              borderBottomWidth: 1,
-              borderBottomColor: "#EDEDED",
-            }}
-          >
-            {duration.map((dur) => {
-              return (
-                <Pressable
-                  key={dur}
-                  onPress={() =>
-                    updateSelectedState({
-                      duration: dur,
-                    })
-                  }
-                  style={{
-                    borderWidth: 1,
-                    borderColor: "#DADADA",
-                    borderRadius: 100,
-                    paddingVertical: 10,
-                    paddingHorizontal: 16,
-                    backgroundColor:
-                      selected.duration === dur
-                        ? Colors.lightGreen
-                        : "transparent",
-                  }}
+          <View style={{}}>
+            <AppText
+              variant="medium"
+              style={{ marginBottom: 20, marginTop: 24 }}
+            >
+              Duration
+            </AppText>
+            <View
+              style={{
+                flexDirection: "row",
+                gap: 10,
+                flexWrap: "wrap",
+                paddingBottom: 20,
+                borderBottomWidth: 1,
+                borderBottomColor: "#EDEDED",
+              }}
+            >
+              {duration.map((dur) => {
+                return (
+                  <Pressable
+                    key={dur}
+                    onPress={() =>
+                      updateSelectedState({
+                        duration: dur,
+                      })
+                    }
+                    style={{
+                      borderWidth: 1,
+                      borderColor: "#DADADA",
+                      borderRadius: 100,
+                      paddingVertical: 10,
+                      paddingHorizontal: 16,
+                      backgroundColor:
+                        selected.duration === dur
+                          ? Colors.lightGreen
+                          : "transparent",
+                    }}
+                  >
+                    <AppText>{dur}</AppText>
+                  </Pressable>
+                );
+              })}
+              {selected.duration === "Custom" && (
+                <Formik
+                  initialValues={{ startDate: new Date(), endDate: new Date() }}
+                  onSubmit={() => {}}
                 >
-                  <AppText>{dur}</AppText>
-                </Pressable>
-              );
-            })}
-            {selected.duration === "Custom" && (
-              <Formik
-                initialValues={{ startDate: new Date(), endDate: new Date() }}
-                onSubmit={() => {}}
-              >
-                {({ handleSubmit, values, setFieldValue }) => {
-                  return (
-                    <View
-                      style={{
-                        gap: 20,
-                        alignItems: "center",
-                        width: "100%",
-                        marginTop: 20,
-                      }}
-                    >
-                      <View>
-                        <AppText style={{ marginBottom: 10 }}>
-                          Start Date
-                        </AppText>
-                        <DateComponent
-                          date={values?.startDate}
-                          open={state.startDate}
-                          onOpen={() =>
-                            updateState({
-                              startDate: true,
-                            })
-                          }
-                          onClose={() =>
-                            updateState({
-                              startDate: false,
-                            })
-                          }
-                          handleAction={(date) => {
-                            setFieldValue("startDate", date);
-                            updateSelectedState({
-                              dateRange: { ...selected.dateRange, start: date },
-                            });
-                          }}
-                          dateFormat="yyyy"
-                          maxDate={values.endDate}
-                        />
+                  {({ handleSubmit, values, setFieldValue }) => {
+                    return (
+                      <View
+                        style={{
+                          gap: 20,
+                          alignItems: "center",
+                          width: "100%",
+                          marginTop: 20,
+                        }}
+                      >
+                        <View>
+                          <AppText style={{ marginBottom: 10 }}>
+                            Start Date
+                          </AppText>
+                          <DateComponent
+                            date={values?.startDate}
+                            open={state.startDate}
+                            onOpen={() =>
+                              updateState({
+                                startDate: true,
+                              })
+                            }
+                            onClose={() =>
+                              updateState({
+                                startDate: false,
+                              })
+                            }
+                            handleAction={(date) => {
+                              setFieldValue("startDate", date);
+                              updateSelectedState({
+                                dateRange: {
+                                  ...selected.dateRange,
+                                  start: date,
+                                },
+                              });
+                            }}
+                            dateFormat="yyyy"
+                            maxDate={values.endDate}
+                          />
+                        </View>
+                        <View>
+                          <AppText style={{ marginBottom: 10 }}>
+                            End Date
+                          </AppText>
+                          <DateComponent
+                            date={values?.endDate}
+                            open={state.endDate}
+                            onOpen={() =>
+                              updateState({
+                                endDate: true,
+                              })
+                            }
+                            onClose={() =>
+                              updateState({
+                                endDate: false,
+                              })
+                            }
+                            handleAction={(date) => {
+                              setFieldValue("endDate", date);
+                              updateSelectedState({
+                                dateRange: { ...selected.dateRange, end: date },
+                              });
+                            }}
+                            dateFormat="yyyy"
+                            minDate={values.startDate}
+                          />
+                        </View>
+                        <View>
+                          <AppText style={{ marginBottom: 10 }}>
+                            Start Date
+                          </AppText>
+                          <DateComponent
+                            date={values?.startDate}
+                            open={state.startDate}
+                            onOpen={() =>
+                              updateState({
+                                startDate: true,
+                              })
+                            }
+                            onClose={() =>
+                              updateState({
+                                startDate: false,
+                              })
+                            }
+                            handleAction={(date) => {
+                              setFieldValue("startDate", date);
+                              updateSelectedState({
+                                dateRange: {
+                                  ...selected.dateRange,
+                                  start: date,
+                                },
+                              });
+                            }}
+                            dateFormat="yyyy"
+                            maxDate={values.endDate}
+                          />
+                        </View>
+                        <View>
+                          <AppText style={{ marginBottom: 10 }}>
+                            End Date
+                          </AppText>
+                          <DateComponent
+                            date={values?.endDate}
+                            open={state.endDate}
+                            onOpen={() =>
+                              updateState({
+                                endDate: true,
+                              })
+                            }
+                            onClose={() =>
+                              updateState({
+                                endDate: false,
+                              })
+                            }
+                            handleAction={(date) => {
+                              setFieldValue("endDate", date);
+                              updateSelectedState({
+                                dateRange: { ...selected.dateRange, end: date },
+                              });
+                            }}
+                            dateFormat="yyyy"
+                            minDate={values.startDate}
+                          />
+                        </View>
                       </View>
-                      <View>
-                        <AppText style={{ marginBottom: 10 }}>End Date</AppText>
-                        <DateComponent
-                          date={values?.endDate}
-                          open={state.endDate}
-                          onOpen={() =>
-                            updateState({
-                              endDate: true,
-                            })
-                          }
-                          onClose={() =>
-                            updateState({
-                              endDate: false,
-                            })
-                          }
-                          handleAction={(date) => {
-                            setFieldValue("endDate", date);
-                            updateSelectedState({
-                              dateRange: { ...selected.dateRange, end: date },
-                            });
-                          }}
-                          dateFormat="yyyy"
-                          minDate={values.startDate}
-                        />
-                      </View>
-                    </View>
-                  );
-                }}
-              </Formik>
-            )}
+                    );
+                  }}
+                </Formik>
+                // </ScrollView>
+              )}
+            </View>
           </View>
-        </View>
+        </ScrollView>
         <PrimaryButton
           onPress={onSubmit}
           label="Apply Filter"
-          style={{ marginTop: "auto", marginBottom: 30 }}
+          style={{
+            marginBottom: 30,
+          }}
         />
-      </ScrollView>
+      </View>
     </ReusableBottomSheet>
   );
 };

@@ -37,13 +37,13 @@ const EnterNin = () => {
     },
   });
   const onSubmit = async ({ nin }: { nin: string }, { resetForm }: any) => {
-    const formData = new FormData();
-    formData.append("nin", nin);
+    // const formData = new FormData();
+    // formData.append("nin", nin);
     try {
       await mutateAsync({
         token,
         tier: "2",
-        payload: formData,
+        payload: { nin },
       });
     } catch (error) {}
   };
