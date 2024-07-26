@@ -303,7 +303,7 @@ const TransactionsHistoryPage = () => {
                         flex: 1,
                         // minHeight: "100%",
                         justifyContent: "center",
-                        backgroundColor:'red'
+                        // backgroundColor:'red'
                       }}
                     >
                       <EmptyComponent message="No transaction found" />

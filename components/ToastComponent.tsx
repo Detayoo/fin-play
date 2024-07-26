@@ -2,6 +2,7 @@ import { Colors, fonts } from "@/constants";
 import React from "react";
 import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
 import { View, StyleSheet } from "react-native";
+import { globalStyles } from "@/globalStyles";
 
 const toastConfig = {
   success: (props: any) => (
@@ -55,25 +56,13 @@ const styles = StyleSheet.create({
     zIndex: 9999999,
 
     elevation: 9999,
-    backgroundColor: "red",
+    backgroundColor: "white",
   },
   toast: {
     width: "95%",
     zIndex: 9999999999,
 
-    elevation: 10000,
-    // shadowColor: "#ABABAB1A",
-    // shadowOffset: { width: 4, height: 6 },
-    // shadowOpacity: 4,
-    // shadowRadius: 1,
-
-
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
+    ...globalStyles.shadow,
   },
   successToast: {
     borderLeftColor: Colors.primary,

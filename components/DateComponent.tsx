@@ -69,6 +69,6 @@ const styles = StyleSheet.create({
   dateText: {
     flex: 1,
     fontFamily: fonts["satoshi-medium"],
-    fontSize: 14,
+    fontSize: 12,
   },
 });

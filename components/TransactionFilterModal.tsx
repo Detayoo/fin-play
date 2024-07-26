@@ -1,4 +1,4 @@
-import { Pressable, ScrollView, View } from "react-native";
+import { Platform, Pressable, ScrollView, View } from "react-native";
 import { useState } from "react";
 import { Formik } from "formik";
 
@@ -122,7 +122,7 @@ export const TransactionFilterModal = ({
 
   return (
     <ReusableBottomSheet
-      snapPoints={["50%", "75%", "92%"]}
+      snapPoints={["50%", "75%", "94%"]}
       visible={showModal}
       onClose={() => {
         setShowModal(false);
@@ -130,13 +130,14 @@ export const TransactionFilterModal = ({
     >
       <View style={{ flex: 1 }}>
         <ScrollView
+          showsVerticalScrollIndicator={false}
           contentContainerStyle={{
             paddingBottom: 80,
             minHeight: "100%",
             flexGrow: 1,
           }}
         >
-          <View style={{ paddingTop: 20 }}>
+          <View style={{ paddingTop: 20, flex: 1 }}>
             <AppText style={{ fontSize: 17 }} variant="medium">
               Filter Transactions
             </AppText>
@@ -183,7 +184,7 @@ export const TransactionFilterModal = ({
                           : "transparent",
                     }}
                   >
-                    <AppText>{category.label}</AppText>
+                    <AppText size="small">{category.label}</AppText>
                   </Pressable>
                 );
               })}
@@ -227,7 +228,7 @@ export const TransactionFilterModal = ({
                           : "transparent",
                     }}
                   >
-                    <AppText>{status.label}</AppText>
+                    <AppText size="small">{status.label}</AppText>
                   </Pressable>
                 );
               })}
@@ -272,7 +273,7 @@ export const TransactionFilterModal = ({
                           : "transparent",
                     }}
                   >
-                    <AppText>{dur}</AppText>
+                    <AppText size="small">{dur}</AppText>
                   </Pressable>
                 );
               })}
@@ -413,15 +414,15 @@ export const TransactionFilterModal = ({
               )}
             </View>
           </View>
-        </ScrollView>
         <PrimaryButton
           onPress={onSubmit}
           label="Apply Filter"
           style={{
-            marginBottom: 30,
-            marginTop:80
+            marginBottom: Platform.OS === "ios" ? 30 : 20,
+            // marginTop:80
           }}
         />
+        </ScrollView>
       </View>
     </ReusableBottomSheet>
   );
