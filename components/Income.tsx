@@ -10,45 +10,68 @@ import { Cable } from "./Cable";
 import { Smile } from "./Smile";
 import { UseQueryResult } from "@tanstack/react-query";
 import { IGetStats } from "@/types";
-
-const list = [
-  {
-    icon: <Electricity />,
-    name: "Electricity",
-    amount: "4500",
-  },
-  {
-    icon: <Bank />,
-    name: "Transfer to Banks",
-    amount: "4500",
-  },
-  {
-    icon: <Airtime />,
-    name: "Uzzy to Uzzy",
-    amount: "4500",
-  },
-  {
-    icon: <Airtime />,
-    name: "Airtime",
-    amount: "4500",
-  },
-  {
-    icon: <Cable />,
-    name: "Cable TV",
-    amount: "4500",
-  },
-  {
-    icon: <Smile />,
-    name: "Internet",
-    amount: "4500",
-  },
-];
+import { Loading } from "./Loading";
 
 export const Income = ({
   transactionStatsData,
 }: {
   transactionStatsData: UseQueryResult<IGetStats>;
 }) => {
+  const { airtime, betting, data, electricity, payout, tv, walletTransfer } =
+    transactionStatsData?.data?.data?.income || {};
+
+  const list = [
+    {
+      icon: <Electricity />,
+      name: "Electricity",
+      amount: electricity,
+    },
+    {
+      icon: <Bank />,
+      name: "Transfer to Banks",
+      amount: payout,
+    },
+    {
+      icon: <Bank />,
+      name: "Uzzy to Uzzy",
+      amount: walletTransfer,
+    },
+    {
+      icon: <Airtime />,
+      name: "Airtime",
+      amount: airtime,
+    },
+    {
+      icon: <Airtime />,
+      name: "Data",
+      amount: data,
+    },
+    {
+      icon: <Airtime />,
+      name: "Airtime",
+      amount: airtime,
+    },
+    {
+      icon: <Cable />,
+      name: "Cable TV",
+      amount: tv,
+    },
+    // {
+    //   icon: <Smile />,
+    //   name: "Internet",
+    //   amount: "4500",
+    // },
+    {
+      icon: <Airtime />,
+      name: "Betting",
+      amount: betting,
+    },
+  ];
+
+  if (transactionStatsData?.isFetching) {
+    return <Loading />;
+  }
+
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View
@@ -63,7 +86,7 @@ export const Income = ({
         <AppText>Total Income</AppText>
         <AppText variant="medium" style={{ fontSize: 22 }}>
           {naira}
-          {formatMoney("540000")}
+          {formatMoney(transactionStatsData?.data?.data?.totalSum ?? "0")}
         </AppText>
       </View>
       <View
@@ -93,7 +116,7 @@ export const Income = ({
               <View
                 style={{ flexDirection: "row", alignItems: "center", gap: 15 }}
               >
-                {/* {each.icon} */}
+                {each.icon}
                 <AppText style={{ fontSize: 13 }}>{each.name}</AppText>
                 <AppText
                   variant="medium"

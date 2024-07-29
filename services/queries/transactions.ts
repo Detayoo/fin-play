@@ -59,14 +59,19 @@ export const getAllTransactionsFn = async ({
 export const getTransactionStatsFn = async ({
   token,
   period,
+  type,
 }: {
   token: TokenType;
-  period: string;
+  period?: string;
+  type: string;
 }) => {
   const params: any = {};
 
   if (period) {
     params.period = period;
+  }
+  if (type) {
+    params.type = type;
   }
 
   const { data } = await authenticatedRequest(token).get<IGetStats>(

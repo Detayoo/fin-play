@@ -130,12 +130,14 @@ const TransactionsHistoryPage = () => {
   const [transactionStatsData] = useQueries({
     queries: [
       {
-        queryKey: ["transaction stats"],
+        queryKey: ["transaction stats", statsActiveTab],
         queryFn: () =>
           getTransactionStatsFn({
             token,
-            period: "week",
+            // period: "week",
+            type: statsActiveTab.toUpperCase(),
           }),
+        enabled: !!statsActiveTab,
       },
     ],
   });
@@ -160,7 +162,7 @@ const TransactionsHistoryPage = () => {
   const renderStats = () => {
     switch (statsActiveTab) {
       case "income":
-        return <Income transactionStatsData={transactionStatsData} />;
+        return <Income  />;
 
       default:
         return <Expenses transactionStatsData={transactionStatsData} />;

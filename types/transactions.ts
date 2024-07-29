@@ -31,16 +31,17 @@ export interface ITransactionsList extends BareResponse {
 
 export interface IGetStats extends BareResponse {
   data: {
-    income: {
-      total: number;
-      transfer: number;
-      bills: number;
+    [key: string]: {
+      airtime: number;
+      data: number;
+      electricity: number;
+      betting: number;
+      tv: number;
+      payout: number;
+      walletTransfer: number;
     };
-    expense: {
-      total: number;
-      transfer: number;
-      bills: number;
-    };
+  } & {
+    totalSum: number;
   };
 }
 

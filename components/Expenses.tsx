@@ -10,47 +10,68 @@ import { Airtime } from "./Airtime";
 import { Cable } from "./Cable";
 import { Smile } from "./Smile";
 import { IGetStats } from "@/types";
+import { Loading } from "./Loading";
 
 export const Expenses = ({
   transactionStatsData,
 }: {
   transactionStatsData: UseQueryResult<IGetStats>;
 }) => {
-  const { bills, total, transfer } =
+  const { airtime, betting, data, electricity, payout, tv, walletTransfer } =
     transactionStatsData?.data?.data?.expense || {};
 
   const list = [
     {
       icon: <Electricity />,
       name: "Electricity",
-      amount: "4500",
+      amount: electricity,
     },
     {
       icon: <Bank />,
       name: "Transfer to Banks",
-      amount: transfer,
+      amount: payout,
     },
     {
       icon: <Bank />,
       name: "Uzzy to Uzzy",
-      amount: "4500",
+      amount: walletTransfer,
     },
     {
       icon: <Airtime />,
       name: "Airtime",
-      amount: "4500",
+      amount: airtime,
+    },
+    {
+      icon: <Airtime />,
+      name: "Data",
+      amount: data,
+    },
+    {
+      icon: <Airtime />,
+      name: "Airtime",
+      amount: airtime,
     },
     {
       icon: <Cable />,
       name: "Cable TV",
-      amount: "4500",
+      amount: tv,
     },
+    // {
+    //   icon: <Smile />,
+    //   name: "Internet",
+    //   amount: "4500",
+    // },
     {
-      icon: <Smile />,
-      name: "Internet",
-      amount: "4500",
+      icon: <Airtime />,
+      name: "Betting",
+      amount: betting,
     },
   ];
+
+  if (transactionStatsData?.isFetching) {
+    return <Loading />;
+  }
+
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View
@@ -65,7 +86,7 @@ export const Expenses = ({
         <AppText>Total Expenses</AppText>
         <AppText variant="medium" style={{ fontSize: 22 }}>
           {naira}
-          {formatMoney(total || "0")}
+          {formatMoney(transactionStatsData?.data?.data?.totalSum ?? "0")}
         </AppText>
       </View>
       <View
@@ -83,7 +104,7 @@ export const Expenses = ({
         {list?.map((each, index) => {
           return (
             <View
-            key={index}
+              key={index}
               style={{
                 gap: 10,
                 paddingVertical: 15,

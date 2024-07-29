@@ -46,7 +46,7 @@ const RewardsPage = () => {
             // position: "absolute",
             // top: 0,
             // right: 0,
-            resizeMode: "cover",
+            // resizeMode: "cover",
             marginTop: -insets.top * 2 - 10,
             zIndex: 0,
           }}
@@ -79,14 +79,32 @@ const RewardsPage = () => {
               <ChevronRight style={{ alignSelf: "center" }} />
             </Pressable>
             <Pressable
-              onPress={() => router.push("/referrals")}
+              // onPress={() => router.push("/referrals")}
               style={{ flexDirection: "row", gap: 20 }}
             >
               <Referrals />
               <View style={{ gap: 5, flex: 1 }}>
-                <AppText style={{ fontSize: 15 }} variant="medium">
-                  Referrals
-                </AppText>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <AppText style={{ fontSize: 15 }} variant="medium">
+                    Referrals
+                  </AppText>
+                  <View
+                    style={{
+                      backgroundColor: "#90AD0433",
+                      borderRadius: 30,
+                      paddingVertical: 4,
+                      paddingHorizontal: 10,
+                    }}
+                  >
+                    <AppText size="small" variant="medium">Coming soon</AppText>
+                  </View>
+                </View>
                 <AppText style={{ fontSize: 13 }} color={Colors.faintBlack}>
                   Invite your friends to join us and earn exciting rewards for
                   every successful referral!
