@@ -59,15 +59,23 @@ const TierThreeUpgrade = () => {
     { resetForm }: any
   ) => {
     const formData = new FormData();
+    //     tier
+    // city
+
+    // state
+    // address
+
+    // documentId
     formData.append("type", type?.label ?? "");
-    formData.append("proofOfAddress", image);
+    formData.append("documentId", image);
     formData.append("address", values.address);
     formData.append("state", state?.label ?? "");
     formData.append("city", values.city);
+    formData.append("tier", "3");
+
     try {
       await mutateAsync({
         token,
-        tier: "3",
         payload: formData,
       });
     } catch (error) {}

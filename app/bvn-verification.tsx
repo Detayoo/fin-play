@@ -153,7 +153,7 @@ export const AccountVerificationPage = () => {
                       />
                       <PrimaryButton
                         variant="outline"
-                        style={{ marginTop: 5 }}
+                        style={{ marginTop: 15 }}
                         label="Skip for now"
                         onPress={() =>
                           router.push(

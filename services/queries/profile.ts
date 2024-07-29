@@ -32,24 +32,35 @@ export const useR = ({ token }: { token: TokenType }) => {
   });
 };
 
-export const getRewardsFn = async ({ token }: { token: TokenType }) => {
+export const getRewardsFn = async ({
+  token,
+  perPage,
+  currentPage,
+}: {
+  token: TokenType;
+  perPage?: number;
+  currentPage?: unknown;
+}) => {
+  const params: any = {};
+
+  if (perPage) params.perPage = perPage;
+  if (currentPage) params.currentPage = currentPage;
   const { data } = await authenticatedRequest(token).get<IGetRewards>(
-    "/wallet/rewards"
+    "/wallet/rewards",
+    { params }
   );
   return data;
 };
 
 export const upgradeAccountFn = async ({
   token,
-  tier,
   payload,
 }: {
   token: TokenType;
-  tier: string;
-  payload: { nin: string } | FormData;
+  payload: { nin: string; tier: string } | FormData;
 }) => {
   const { data } = await authenticatedRequest(token).post<BareResponse>(
-    `/settings/tier/${tier}`,
+    `/settings/tier`,
     payload,
     { headers: { "Content-Type": "multipart/form-data" } }
   );

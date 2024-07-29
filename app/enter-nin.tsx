@@ -42,8 +42,7 @@ const EnterNin = () => {
     try {
       await mutateAsync({
         token,
-        tier: "2",
-        payload: { nin },
+        payload: { nin, tier: "2" },
       });
     } catch (error) {}
   };

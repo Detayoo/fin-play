@@ -162,7 +162,7 @@ const TransactionsHistoryPage = () => {
   const renderStats = () => {
     switch (statsActiveTab) {
       case "income":
-        return <Income  />;
+        return <Income transactionStatsData={transactionStatsData} />;
 
       default:
         return <Expenses transactionStatsData={transactionStatsData} />;

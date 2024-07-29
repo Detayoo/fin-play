@@ -35,6 +35,11 @@ export interface IGetRewards extends BareResponse {
     expenses: number;
     cashback_transaction: RewardTransactionType[];
   };
+  metadata: {
+    perPage: number;
+    currentPage: number;
+    totalRecords: number;
+  };
 }
 
 export interface IUpgradeAccount {
