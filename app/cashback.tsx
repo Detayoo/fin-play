@@ -19,10 +19,10 @@ import { formatMoney } from "@/utils";
 import { useRefreshByUser, useRefreshOnFocus } from "@/hooks";
 import { RewardTransactionType } from "@/types";
 import { useState } from "react";
+import { Spinner } from "@/components/Spinner";
 
 const CashbackPage = () => {
   const { token } = useAuth();
-  const [current, setCurrent] = useState(0);
   const [rewardsData] = useQueries({
     queries: [
       {
@@ -33,13 +33,13 @@ const CashbackPage = () => {
             currentPage: 1,
             perPage: 50,
           }),
-        enabled: false,
+        // enabled: false,
       },
     ],
   });
 
   const transactionsData = useInfiniteQuery({
-    queryKey: ["rewards"],
+    queryKey: ["rewards list"],
     queryFn: ({ pageParam: currentPage }) =>
       getRewardsFn({
         token,
@@ -51,7 +51,6 @@ const CashbackPage = () => {
     getNextPageParam: (lastPage) => {
       const { totalRecords, currentPage, perPage } = lastPage?.metadata || {};
       if (totalRecords > currentPage * perPage) {
-        // setCurrent(currentPage + 1);
         return currentPage + 1;
       } else {
         return null;
@@ -67,10 +66,7 @@ const CashbackPage = () => {
   useRefreshOnFocus(transactionsData?.refetch);
 
   const loadMore = () => {
-    if (transactionsData?.hasNextPage) {
-      console.log(transactionsData)
-      transactionsData?.fetchNextPage();
-    }
+    if (transactionsData?.hasNextPage) transactionsData?.fetchNextPage();
   };
 
   const { isRefetchingByUser, refetchByUser } = useRefreshByUser(
@@ -99,7 +95,7 @@ const CashbackPage = () => {
       </View>
       <View style={{ gap: 2 }}>
         <AppText style={{ textAlign: "right" }} variant="medium">
-          +{item?.bonus}
+          +{item?.bonus?.toFixed(2)}
         </AppText>
         <AppText style={{ fontSize: 10 }} color={Colors.faintBlack}>
           Balance before:{" "}
@@ -135,7 +131,17 @@ const CashbackPage = () => {
         </View>
       </View>
 
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            onRefresh={refetchByUser}
+            refreshing={isRefetchingByUser}
+            // title="Fetching Records"
+            tintColor={Colors.primary}
+          />
+        }
+        showsVerticalScrollIndicator={false}
+      >
         <View
           style={{
             marginTop: 20,
@@ -211,43 +217,40 @@ const CashbackPage = () => {
           />
         ) : (
           <View style={{ marginTop: 20 }}>
-            <AppText style={{ marginBottom: 30 }} variant="medium">
+            <AppText style={{ marginBottom: 0 }} variant="medium">
               {/* June, 2024 */}
             </AppText>
-            <View style={{ gap: 20 }}>
-              <FlatList
-                style={{ flex: 1 }}
-                showsVerticalScrollIndicator={false}
-                data={flatListData}
-                ListEmptyComponent={
-                  <View
-                    style={{
-                      flex: 1,
-                      justifyContent: "center",
-                    }}
-                  >
-                    <EmptyComponent message="No record found" />
-                  </View>
-                }
-                renderItem={renderItem}
-                onEndReached={loadMore}
-                onEndReachedThreshold={0.1}
-                keyExtractor={(item) => item.transaction_id}
-                ListFooterComponent={
-                  transactionsData.isFetchingNextPage ? (
-                    <AppText>LOADING MORE..</AppText>
-                  ) : null
-                }
-                refreshControl={
-                  <RefreshControl
-                    onRefresh={refetchByUser}
-                    refreshing={isRefetchingByUser}
-                    title="Fetching Records"
-                    tintColor={Colors.primary}
-                  />
-                }
-              />
-            </View>
+
+            <FlatList
+              style={{ flex: 1 }}
+              showsVerticalScrollIndicator={false}
+              data={flatListData}
+              ListEmptyComponent={
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: "center",
+                  }}
+                >
+                  <EmptyComponent message="No record found" />
+                </View>
+              }
+              renderItem={renderItem}
+              onEndReached={loadMore}
+              onEndReachedThreshold={0.2}
+              keyExtractor={(item) => item.transaction_id}
+              ListFooterComponent={
+                transactionsData.isFetchingNextPage ? <Spinner /> : null
+              }
+              refreshControl={
+                <RefreshControl
+                  onRefresh={refetchByUser}
+                  refreshing={isRefetchingByUser}
+                  title="Fetching Records"
+                  tintColor={Colors.primary}
+                />
+              }
+            />
           </View>
         )}
       </ScrollView>
